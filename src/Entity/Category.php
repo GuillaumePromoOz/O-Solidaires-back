@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,22 @@ class Category
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Proposition::class, mappedBy="category")
+     */
+    private $propositions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="category")
+     */
+    private $requests;
+
+    public function __construct()
+    {
+        $this->propositions = new ArrayCollection();
+        $this->requests = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +87,66 @@ class Category
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Proposition[]
+     */
+    public function getPropositions(): Collection
+    {
+        return $this->propositions;
+    }
+
+    public function addProposition(Proposition $proposition): self
+    {
+        if (!$this->propositions->contains($proposition)) {
+            $this->propositions[] = $proposition;
+            $proposition->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProposition(Proposition $proposition): self
+    {
+        if ($this->propositions->removeElement($proposition)) {
+            // set the owning side to null (unless already changed)
+            if ($proposition->getCategory() === $this) {
+                $proposition->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Request[]
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(Request $request): self
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests[] = $request;
+            $request->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(Request $request): self
+    {
+        if ($this->requests->removeElement($request)) {
+            // set the owning side to null (unless already changed)
+            if ($request->getCategory() === $this) {
+                $request->setCategory(null);
+            }
+        }
 
         return $this;
     }
