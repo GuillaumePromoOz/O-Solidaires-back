@@ -25,11 +25,6 @@ class Department
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $number;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
