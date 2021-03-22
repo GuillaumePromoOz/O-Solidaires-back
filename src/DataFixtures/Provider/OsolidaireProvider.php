@@ -244,4 +244,12 @@ class OsolidaireProvider
     {
         return $this->departments;
     }
+
+    /**
+     * Get the value of categories
+     */ 
+    public function getCategories()
+    {
+        return $this->categories;
+    }
 }
