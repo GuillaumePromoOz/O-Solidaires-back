@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\DepartmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,6 +22,7 @@ class Department
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups("beneficiaries_read")
      */
     private $name;
 
@@ -57,18 +59,6 @@ class Department
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getNumber(): ?int
-    {
-        return $this->number;
-    }
-
-    public function setNumber(int $number): self
-    {
-        $this->number = $number;
 
         return $this;
     }

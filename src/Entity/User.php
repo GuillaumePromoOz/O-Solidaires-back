@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -22,11 +23,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups("beneficiaries_read")
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups("beneficiaries_read")
      */
     private $roles = [];
 
@@ -38,16 +41,19 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups("beneficiaries_read")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups("beneficiaries_read")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups("beneficiaries_read")
      */
     private $picture;
 
@@ -64,6 +70,7 @@ class User implements UserInterface
     /**
      * @ORM\ManyToOne(targetEntity=Department::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("beneficiaries_read")
      */
     private $department;
 
@@ -74,6 +81,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Request::class, mappedBy="user")
+     * @Groups("beneficiaries_read")
      */
     private $requests;
 

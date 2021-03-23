@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\RequestRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,16 +20,19 @@ class Request
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups("beneficiaries_read")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("beneficiaries_read")
      */
     private $content;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("beneficiaries_read")
      */
     private $interventionDate;
 
@@ -51,6 +55,7 @@ class Request
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="requests")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("beneficiaries_read")
      */
     private $category;
 
