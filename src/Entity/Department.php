@@ -44,6 +44,7 @@ class Department
 
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->users = new ArrayCollection();
     }
 
@@ -117,4 +118,11 @@ class Department
 
         return $this;
     }
+
+    // public function __toString() {
+    //     if(is_null($this->name)) {
+    //         return 'NULL';
+    //     }
+    //     return $this->name;
+    // }
 }
