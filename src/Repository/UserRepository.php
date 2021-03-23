@@ -36,7 +36,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    public function findAllBeneficiaries($role)
+    public function findAllByRole($role)
     {
         $entityManager = $this->getEntityManager();
 

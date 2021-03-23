@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PropositionRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,11 +20,13 @@ class Proposition
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups("volunteers_read")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("volunteers_read")
      */
     private $content;
 
@@ -51,6 +54,7 @@ class Proposition
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="propositions")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("volunteers_read")
      */
     private $category;
 

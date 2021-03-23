@@ -15,13 +15,29 @@ class UserController extends AbstractController
     public function readBeneficiaries(UserRepository $userRepository): Response
     {
         $role = '["ROLE_BENEFICIARY"]';
-        $beneficiaries = $userRepository->findAllBeneficiaries($role);
+        $beneficiaries = $userRepository->findAllByRole($role);
 
         return $this->json(
             $beneficiaries,
             200,
             [],
             ['groups' => 'beneficiaries_read']
+        );
+    }
+
+    /**
+     * @Route("/volunteers", name="api_volunteers", methods="GET")
+     */
+    public function readVolunteers(UserRepository $userRepository): Response
+    {
+        $role = '["ROLE_VOLUNTEER"]';
+        $volunteers = $userRepository->findAllByRole($role);
+
+        return $this->json(
+            $volunteers,
+            200,
+            [],
+            ['groups' => 'volunteers_read']
         );
     }
 }

@@ -24,12 +24,14 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups("beneficiaries_read")
+     * @Groups("volunteers_read")
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
      * @Groups("beneficiaries_read")
+     * @Groups("volunteers_read")
      */
     private $roles = [];
 
@@ -42,18 +44,21 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=100)
      * @Groups("beneficiaries_read")
+     * @Groups("volunteers_read")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=100)
      * @Groups("beneficiaries_read")
+     * @Groups("volunteers_read")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Groups("beneficiaries_read")
+     * @Groups("volunteers_read")
      */
     private $picture;
 
@@ -71,11 +76,13 @@ class User implements UserInterface
      * @ORM\ManyToOne(targetEntity=Department::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      * @Groups("beneficiaries_read")
+     * @Groups("volunteers_read")
      */
     private $department;
 
     /**
      * @ORM\OneToMany(targetEntity=Proposition::class, mappedBy="user")
+     * @Groups("volunteers_read")
      */
     private $propositions;
 
