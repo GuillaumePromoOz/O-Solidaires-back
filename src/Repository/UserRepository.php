@@ -56,8 +56,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $query = $entityManager->createQuery(
             'SELECT u
             FROM App\Entity\User u
-            WHERE u.roles = :role
-            WHERE u.id = :id'
+            WHERE u.roles = :role 
+            AND u.id = :id'
         )
         ->setParameter('role', $role)
         ->setParameter('id', $id);

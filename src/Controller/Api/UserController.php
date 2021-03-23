@@ -53,6 +53,18 @@ class UserController extends AbstractController
         $role = '["ROLE_BENEFICIARY"]';
         $beneficiary = $userRepository->findUserById($role, $id);
 
+        if (empty($beneficiary)) {
+
+            
+            $message = [
+                'status' => Response::HTTP_NOT_FOUND,
+                'error' => 'Bénéficiaire non trouvé.',
+            ];
+
+            // On défini un message custom et un status code HTTP 404
+            return $this->json($message, Response::HTTP_NOT_FOUND);
+        }
+
         return $this->json(
             $beneficiary,
             200,
