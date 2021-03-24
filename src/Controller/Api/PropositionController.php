@@ -25,7 +25,7 @@ class PropositionController extends AbstractController
     {
         $propostions = $propositionRepository->findAll();
 
-        return $this->json($propostions, 200, ['Access-Control-Allow-Origin' => '*'], ['groups' => 'propositions_read']);
+        return $this->json($propostions, 200, [], ['groups' => 'propositions_read']);
     }
 
     /**
@@ -45,10 +45,10 @@ class PropositionController extends AbstractController
                 'error' => 'Propostion non trouvée.',
             ];
 
-            return $this->json($message, Response::HTTP_NOT_FOUND, [ 'Access-Control-Allow-Origin' => '*' ]);
+            return $this->json($message, Response::HTTP_NOT_FOUND);
         }
 
-        return $this->json($proposition, 200, [ 'Access-Control-Allow-Origin' => '*' ], ['groups' => [
+        return $this->json($proposition, 200, [], ['groups' => [
             'propositions_read',
         ]]);
     }
@@ -62,19 +62,19 @@ class PropositionController extends AbstractController
         $proposition = $serializer->deserialize($jsonContent, Proposition::class, 'json');
         $errors = $validator->validate($proposition);
         if (count($errors) > 0) {
-            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY, [ 'Access-Control-Allow-Origin' => '*' ]);
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $role = $proposition->getUser()->getRoles();
         $roleIndex= $role[0];
         //dd($roleIndex);
         if ($roleIndex !== "ROLE_VOLUNTEER"){
-            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénévole'], Response::HTTP_NOT_FOUND, [ 'Access-Control-Allow-Origin' => '*' ]);
+            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénévole'], Response::HTTP_NOT_FOUND);
         }
 
         $entityManager->persist($proposition);
         $entityManager->flush();
-        return $this->json('Proposition créée', Response::HTTP_CREATED, [ 'Access-Control-Allow-Origin' => '*' ]);
+        return $this->json('Proposition créée', Response::HTTP_CREATED);
     }
 
     /**
@@ -89,7 +89,7 @@ class PropositionController extends AbstractController
         // 404 ?
         if ($proposition === null) {
             // On retourne un message JSON + un statut 404
-            return $this->json(['error' => 'Proposition non trouvée.'], Response::HTTP_NOT_FOUND, [ 'Access-Control-Allow-Origin' => '*' ]);
+            return $this->json(['error' => 'Proposition non trouvée.'], Response::HTTP_NOT_FOUND, []);
         }
 
         // Notre JSON qui se trouve dans le body
@@ -111,14 +111,14 @@ class PropositionController extends AbstractController
         // Génération des erreurs
         if (count($errors) > 0) {
             // On retourne le tableau d'erreurs en Json au front avec un status code 422
-            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY, [ 'Access-Control-Allow-Origin' => '*' ]);
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY, []);
         }
 
         $role = $proposition->getUser()->getRoles();
         $roleIndex= $role[0];
         //dd($roleIndex);
         if ($roleIndex !== "ROLE_VOLUNTEER"){
-            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénévole'], Response::HTTP_NOT_FOUND, [ 'Access-Control-Allow-Origin' => '*' ]);
+            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénévole'], Response::HTTP_NOT_FOUND, []);
         }
 
         $proposition->setUpdatedAt(new \DateTime());
@@ -127,6 +127,6 @@ class PropositionController extends AbstractController
 
         // @todo Conditionner le message de retour au cas où
         // l'entité ne serait pas modifiée
-        return $this->json(['message' => 'Proposition modifiée.'], Response::HTTP_OK, [ 'Access-Control-Allow-Origin' => '*' ]);
+        return $this->json(['message' => 'Proposition modifiée.'], Response::HTTP_OK, []);
     }
 }
