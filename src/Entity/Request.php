@@ -21,6 +21,7 @@ class Request
     /**
      * @ORM\Column(type="string", length=100)
      * @Groups("beneficiaries_read")
+     * @Groups("requests_read")
      */
     private $title;
 
@@ -33,11 +34,13 @@ class Request
     /**
      * @ORM\Column(type="datetime")
      * @Groups("beneficiaries_read")
+     * @Groups("requests_read")
      */
     private $interventionDate;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("requests_read")
      */
     private $createdAt;
 
@@ -49,6 +52,7 @@ class Request
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="requests")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("requests_read")
      */
     private $user;
 
@@ -56,6 +60,7 @@ class Request
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="requests")
      * @ORM\JoinColumn(nullable=false)
      * @Groups("beneficiaries_read")
+     * @Groups("requests_read")
      */
     private $category;
 

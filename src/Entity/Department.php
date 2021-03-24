@@ -24,6 +24,7 @@ class Department
      * @ORM\Column(type="string", length=100)
      * @Groups("beneficiaries_read")
      * @Groups("volunteers_read")
+     * @Groups("requests_read")
      */
     private $name;
 
