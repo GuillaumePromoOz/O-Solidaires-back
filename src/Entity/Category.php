@@ -55,6 +55,7 @@ class Category
 
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->propositions = new ArrayCollection();
         $this->requests = new ArrayCollection();
     }
