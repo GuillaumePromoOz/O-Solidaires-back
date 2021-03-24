@@ -26,6 +26,8 @@ class Category
      * @Groups("volunteers_read")
      * @Groups("requests_read")
      * @Groups("propositions_read")
+     * @Groups("categories_read")
+     * 
      */
     private $name;
 
@@ -41,11 +43,13 @@ class Category
 
     /**
      * @ORM\OneToMany(targetEntity=Proposition::class, mappedBy="category")
+     * @Groups("categories_read")
      */
     private $propositions;
 
     /**
      * @ORM\OneToMany(targetEntity=Request::class, mappedBy="category")
+     * @Groups("categories_read")
      */
     private $requests;
 

@@ -183,7 +183,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users", name="api_user_create", methods="POST")
      */
-    public function createBeneficiary(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder,  SerializerInterface $serializer, ValidatorInterface $validator)
+    public function createUser(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder,  SerializerInterface $serializer, ValidatorInterface $validator)
     {
         $jsonContent = $request->getContent();
         $user = $serializer->deserialize($jsonContent, User::class, 'json');

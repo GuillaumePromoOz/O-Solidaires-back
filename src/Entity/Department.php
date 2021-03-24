@@ -27,6 +27,7 @@ class Department
      * @Groups("requests_read")
      * @Groups("propositions_read")
      * @Groups("departments_read")
+     * @Groups("categories_read")
      */
     private $name;
 

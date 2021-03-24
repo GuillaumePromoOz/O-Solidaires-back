@@ -29,6 +29,7 @@ class User implements UserInterface
      * @Groups("requests_read")
      * @Groups("propositions_read")
      * @Groups("departments_read")
+     * @Groups("categories_read")
      */
     private $email;
 
@@ -39,6 +40,7 @@ class User implements UserInterface
      * @Groups("requests_read")
      * @Groups("propositions_read")
      * @Groups("departments_read")
+     * @Groups("categories_read")
      */
     private $roles = [];
 
@@ -55,6 +57,7 @@ class User implements UserInterface
      * @Groups("requests_read")
      * @Groups("propositions_read")
      * @Groups("departments_read")
+     * @Groups("categories_read")
      */
     private $lastname;
 
@@ -65,6 +68,7 @@ class User implements UserInterface
      * @Groups("requests_read")
      * @Groups("propositions_read")
      * @Groups("departments_read")
+     * @Groups("categories_read")
      */
     private $firstname;
 
@@ -75,6 +79,7 @@ class User implements UserInterface
      * @Groups("requests_read")
      * @Groups("propositions_read")
      * @Groups("departments_read")
+     * @Groups("categories_read")
      */
     private $picture;
 
@@ -95,6 +100,7 @@ class User implements UserInterface
      * @Groups("volunteers_read")
      * @Groups("requests_read")
      * @Groups("propositions_read")
+     * @Groups("categories_read")
      * 
      */
     private $department;
