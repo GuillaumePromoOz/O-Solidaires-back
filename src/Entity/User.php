@@ -84,7 +84,7 @@ class User implements UserInterface
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Department::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Department::class, inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups("beneficiaries_read")
      * @Groups("volunteers_read")

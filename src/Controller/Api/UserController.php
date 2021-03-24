@@ -143,43 +143,57 @@ class UserController extends AbstractController
     }
 
     
-     /**
+    //  /**
+    //  * @Route("/beneficiaries", name="api_beneficiary_create", methods="POST")
+    //  */
+    // public function createBeneficiary(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
+    // {
+    //     $jsonContent = $request->getContent();
+
+    //     $userData = json_decode($jsonContent, true);
+
+    //     $user = new User();
+
+    //     $form = $this->createForm(UserType::class, $user);
+
+    //     // $form->handleRequest($userData);
+    //     $form->submit($userData);
+
+    //     if($form->isSubmitted() && $form->isValid()) {
+    //         //dd($form);
+    //         $user->setPassword($passwordEncoder->encodePassword($user, $form->getData()->getPassword()));
+            
+    //         $entityManager->persist($user);
+    //         $entityManager->flush();
+            
+    //         return $this->redirectToRoute(
+    //             'api_beneficiaries_read_item',
+    //             ['id' => $user->getId()],
+    //             Response::HTTP_CREATED
+    //         );
+    
+    //     }
+    //     $message = $form->getErrors();
+    
+    //     return $this->json($message, Response::HTTP_UNPROCESSABLE_ENTITY);
+        
+    // }
+    
+    /**
      * @Route("/beneficiaries", name="api_beneficiary_create", methods="POST")
      */
-    public function createBeneficiary(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function createBeneficiary(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder,  SerializerInterface $serializer, ValidatorInterface $validator)
     {
         $jsonContent = $request->getContent();
-
-        $userData = json_decode($jsonContent, true);
-
-        $user = new User();
-
-        $form = $this->createForm(UserType::class, $user);
-
-        // $form->handleRequest($userData);
-        $form->submit($userData);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            //dd($form);
-            $user->setPassword($passwordEncoder->encodePassword($user, $form->getData()->getPassword()));
-            
-            $entityManager->persist($user);
-            $entityManager->flush();
-            
-            return $this->redirectToRoute(
-                'api_beneficiaries_read_item',
-                ['id' => $user->getId()],
-                Response::HTTP_CREATED
-            );
-    
+        $user = $serializer->deserialize($jsonContent, User::class, 'json');
+        $errors = $validator->validate($user);
+        if (count($errors) > 0) {
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        $message = $form->getErrors();
-    
-        return $this->json($message, Response::HTTP_UNPROCESSABLE_ENTITY);
-        
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return $this->json('Utilisateur créé', Response::HTTP_CREATED);
     }
-    
-
 }
 
 
