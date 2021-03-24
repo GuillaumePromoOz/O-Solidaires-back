@@ -67,6 +67,13 @@ class Proposition
      */
     private $category;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->disponibilityDate = new \DateTime();
+
+    }
+
     public function getId(): ?int
     {
         return $this->id;
