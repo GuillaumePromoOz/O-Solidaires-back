@@ -17,9 +17,9 @@ class RequestController extends AbstractController
      */
     public function read(RequestRepository $requestRepository): Response
     {
-        $request = $requestRepository->findAll();
+        $requests = $requestRepository->findAll();
 
-        return $this->json($request, 200, [], ['groups' => 'requests_read']);
+        return $this->json($requests, 200, [], ['groups' => 'requests_read']);
     }
 
     /**
