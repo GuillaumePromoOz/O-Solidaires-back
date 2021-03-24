@@ -53,7 +53,7 @@ class UserController extends AbstractController
             ];
 
             // On défini un message custom et un status code HTTP 404
-            return $this->json($message, Response::HTTP_NOT_FOUND, []);
+            return $this->json($message, Response::HTTP_NOT_FOUND);
         }
 
         $id = $user->getId();
@@ -69,7 +69,7 @@ class UserController extends AbstractController
             ];
 
             // On défini un message custom et un status code HTTP 404
-            return $this->json($message, Response::HTTP_NOT_FOUND, []);
+            return $this->json($message, Response::HTTP_NOT_FOUND);
         }
 
         return $this->json(
@@ -116,7 +116,7 @@ class UserController extends AbstractController
             ];
 
             // On défini un message custom et un status code HTTP 404
-            return $this->json($message, Response::HTTP_NOT_FOUND, []);
+            return $this->json($message, Response::HTTP_NOT_FOUND);
         }
 
         $id = $user->getId();
@@ -132,7 +132,7 @@ class UserController extends AbstractController
             ];
 
             // On défini un message custom et un status code HTTP 404
-            return $this->json($message, Response::HTTP_NOT_FOUND, []);
+            return $this->json($message, Response::HTTP_NOT_FOUND);
         }
 
         return $this->json(
@@ -143,43 +143,6 @@ class UserController extends AbstractController
         );
     }
 
-
-    //  /**
-    //  * @Route("/beneficiaries", name="api_beneficiary_create", methods="POST")
-    //  */
-    // public function createBeneficiary(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
-    // {
-    //     $jsonContent = $request->getContent();
-
-    //     $userData = json_decode($jsonContent, true);
-
-    //     $user = new User();
-
-    //     $form = $this->createForm(UserType::class, $user);
-
-    //     // $form->handleRequest($userData);
-    //     $form->submit($userData);
-
-    //     if($form->isSubmitted() && $form->isValid()) {
-    //         //dd($form);
-    //         $user->setPassword($passwordEncoder->encodePassword($user, $form->getData()->getPassword()));
-
-    //         $entityManager->persist($user);
-    //         $entityManager->flush();
-
-    //         return $this->redirectToRoute(
-    //             'api_beneficiaries_read_item',
-    //             ['id' => $user->getId()],
-    //             Response::HTTP_CREATED
-    //         );
-
-    //     }
-    //     $message = $form->getErrors();
-
-    //     return $this->json($message, Response::HTTP_UNPROCESSABLE_ENTITY);
-
-    // }
-
     /**
      * @Route("/users", name="api_user_create", methods="POST")
      */
@@ -189,12 +152,12 @@ class UserController extends AbstractController
         $user = $serializer->deserialize($jsonContent, User::class, 'json');
         $errors = $validator->validate($user);
         if (count($errors) > 0) {
-            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY, []);
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
         $entityManager->persist($user);
         $entityManager->flush();
-        return $this->json('Utilisateur créé', Response::HTTP_CREATED, []);
+        return $this->json('Utilisateur créé', Response::HTTP_CREATED);
     }
 
 
@@ -210,7 +173,7 @@ class UserController extends AbstractController
         // 404 ?
         if ($user === null) {
             // On retourne un message JSON + un statut 404
-            return $this->json(['error' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND, []);
+            return $this->json(['error' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
         // Notre JSON qui se trouve dans le body
@@ -232,7 +195,7 @@ class UserController extends AbstractController
         // Génération des erreurs
         if (count($errors) > 0) {
             // On retourne le tableau d'erreurs en Json au front avec un status code 422
-            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY, []);
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         $user->setUpdatedAt(new \DateTime());
         // On flush $movie qui a été modifiée par le Serializer
@@ -240,6 +203,6 @@ class UserController extends AbstractController
 
         // @todo Conditionner le message de retour au cas où
         // l'entité ne serait pas modifiée
-        return $this->json(['message' => 'Utilisateur modifié.'], Response::HTTP_OK, []);
+        return $this->json(['message' => 'Utilisateur modifié.'], Response::HTTP_OK);
     }
 }

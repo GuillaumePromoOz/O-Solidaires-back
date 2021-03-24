@@ -66,9 +66,9 @@ class PropositionController extends AbstractController
         }
 
         $role = $proposition->getUser()->getRoles();
-        $roleIndex= $role[0];
+        $roleIndex = $role[0];
         //dd($roleIndex);
-        if ($roleIndex !== "ROLE_VOLUNTEER"){
+        if ($roleIndex !== "ROLE_VOLUNTEER") {
             return $this->json(['error' => 'Cet utilisateur n\'est pas un bénévole'], Response::HTTP_NOT_FOUND);
         }
 
@@ -89,7 +89,7 @@ class PropositionController extends AbstractController
         // 404 ?
         if ($proposition === null) {
             // On retourne un message JSON + un statut 404
-            return $this->json(['error' => 'Proposition non trouvée.'], Response::HTTP_NOT_FOUND, []);
+            return $this->json(['error' => 'Proposition non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
         // Notre JSON qui se trouve dans le body
@@ -111,14 +111,14 @@ class PropositionController extends AbstractController
         // Génération des erreurs
         if (count($errors) > 0) {
             // On retourne le tableau d'erreurs en Json au front avec un status code 422
-            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY, []);
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $role = $proposition->getUser()->getRoles();
-        $roleIndex= $role[0];
+        $roleIndex = $role[0];
         //dd($roleIndex);
-        if ($roleIndex !== "ROLE_VOLUNTEER"){
-            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénévole'], Response::HTTP_NOT_FOUND, []);
+        if ($roleIndex !== "ROLE_VOLUNTEER") {
+            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénévole'], Response::HTTP_NOT_FOUND);
         }
 
         $proposition->setUpdatedAt(new \DateTime());
@@ -127,6 +127,6 @@ class PropositionController extends AbstractController
 
         // @todo Conditionner le message de retour au cas où
         // l'entité ne serait pas modifiée
-        return $this->json(['message' => 'Proposition modifiée.'], Response::HTTP_OK, []);
+        return $this->json(['message' => 'Proposition modifiée.'], Response::HTTP_OK);
     }
 }

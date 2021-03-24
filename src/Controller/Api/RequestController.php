@@ -44,7 +44,7 @@ class RequestController extends AbstractController
                 'error' => 'Demande non trouvée.',
             ];
 
-            return $this->json($message, Response::HTTP_NOT_FOUND, []);
+            return $this->json($message, Response::HTTP_NOT_FOUND);
         }
 
         return $this->json($request, 200, [], ['groups' => [
@@ -61,14 +61,14 @@ class RequestController extends AbstractController
         $userRequest = $serializer->deserialize($jsonContent, RequestEntity::class, 'json');
         $errors = $validator->validate($userRequest);
         if (count($errors) > 0) {
-            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY, []);
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        
+
         $role = $userRequest->getUser()->getRoles();
-        $roleIndex= $role[0];
+        $roleIndex = $role[0];
         //dd($roleIndex);
-        if ($roleIndex !== "ROLE_BENEFICIARY"){
-            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénéficiaire'], Response::HTTP_NOT_FOUND, []);
+        if ($roleIndex !== "ROLE_BENEFICIARY") {
+            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénéficiaire'], Response::HTTP_NOT_FOUND);
         }
 
         $entityManager->persist($userRequest);
@@ -88,7 +88,7 @@ class RequestController extends AbstractController
         // 404 ?
         if ($userRequest === null) {
             // On retourne un message JSON + un statut 404
-            return $this->json(['error' => 'Demande non trouvée.'], Response::HTTP_NOT_FOUND, []);
+            return $this->json(['error' => 'Demande non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
         // Notre JSON qui se trouve dans le body
@@ -110,14 +110,14 @@ class RequestController extends AbstractController
         // Génération des erreurs
         if (count($errors) > 0) {
             // On retourne le tableau d'erreurs en Json au front avec un status code 422
-            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY, []);
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        
+
         $role = $userRequest->getUser()->getRoles();
         $roleIndex = $role[0];
         //dd($roleIndex);
-        if ($roleIndex !== "ROLE_BENEFICIARY"){
-            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénéficiaire'], Response::HTTP_NOT_FOUND, []);
+        if ($roleIndex !== "ROLE_BENEFICIARY") {
+            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénéficiaire'], Response::HTTP_NOT_FOUND);
         }
 
         $userRequest->setUpdatedAt(new \DateTime());
@@ -126,6 +126,6 @@ class RequestController extends AbstractController
 
         // @todo Conditionner le message de retour au cas où
         // l'entité ne serait pas modifiée
-        return $this->json(['message' => 'Demande modifiée.'], Response::HTTP_OK, []);
+        return $this->json(['message' => 'Demande modifiée.'], Response::HTTP_OK);
     }
 }
