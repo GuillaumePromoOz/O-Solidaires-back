@@ -15,6 +15,10 @@ class Proposition
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("categories_read")
+     * @Groups("departments_read")
+     * @Groups("propositions_read")
+     * @Groups("volunteers_read")
      */
     private $id;
 
@@ -75,7 +79,6 @@ class Proposition
     {
         $this->createdAt = new \DateTime();
         $this->disponibilityDate = new \DateTime();
-
     }
 
     public function getId(): ?int

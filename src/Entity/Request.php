@@ -15,6 +15,10 @@ class Request
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("categories_read")
+     * @Groups("departments_read")
+     * @Groups("requests_read")
+     * @Groups("beneficiaries_read")
      */
     private $id;
 
