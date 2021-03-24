@@ -26,6 +26,7 @@ class Department
      * @Groups("volunteers_read")
      * @Groups("requests_read")
      * @Groups("propositions_read")
+     * @Groups("departments_read")
      */
     private $name;
 
@@ -41,6 +42,7 @@ class Department
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="department")
+     * @Groups("departments_read")
      */
     private $users;
 

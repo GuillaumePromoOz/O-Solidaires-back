@@ -28,6 +28,7 @@ class User implements UserInterface
      * @Groups("volunteers_read")
      * @Groups("requests_read")
      * @Groups("propositions_read")
+     * @Groups("departments_read")
      */
     private $email;
 
@@ -37,6 +38,7 @@ class User implements UserInterface
      * @Groups("volunteers_read")
      * @Groups("requests_read")
      * @Groups("propositions_read")
+     * @Groups("departments_read")
      */
     private $roles = [];
 
@@ -52,6 +54,7 @@ class User implements UserInterface
      * @Groups("volunteers_read")
      * @Groups("requests_read")
      * @Groups("propositions_read")
+     * @Groups("departments_read")
      */
     private $lastname;
 
@@ -61,6 +64,7 @@ class User implements UserInterface
      * @Groups("volunteers_read")
      * @Groups("requests_read")
      * @Groups("propositions_read")
+     * @Groups("departments_read")
      */
     private $firstname;
 
@@ -70,6 +74,7 @@ class User implements UserInterface
      * @Groups("volunteers_read")
      * @Groups("requests_read")
      * @Groups("propositions_read")
+     * @Groups("departments_read")
      */
     private $picture;
 
@@ -97,12 +102,14 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity=Proposition::class, mappedBy="user")
      * @Groups("volunteers_read")
+     * @Groups("departments_read")
      */
     private $propositions;
 
     /**
      * @ORM\OneToMany(targetEntity=Request::class, mappedBy="user")
      * @Groups("beneficiaries_read")
+     * @Groups("departments_read")
      */
     private $requests;
 

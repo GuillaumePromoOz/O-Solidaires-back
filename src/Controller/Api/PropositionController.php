@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Proposition;
+use App\Repository\DepartmentRepository;
 use App\Repository\PropositionRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
