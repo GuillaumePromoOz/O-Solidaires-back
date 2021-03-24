@@ -24,7 +24,7 @@ class CategoryController extends AbstractController
     {
         $categories = $categoryRepository->findAll();
 
-        return $this->json($categories, 200, [], ['groups' => 'categories_read']);
+        return $this->json($categories, 200, [ 'Access-Control-Allow-Origin' => '*' ], ['groups' => 'categories_read']);
     }
 
     /**
@@ -44,10 +44,10 @@ class CategoryController extends AbstractController
                 'error' => 'Catégorie non trouvée.',
             ];
 
-            return $this->json($message, Response::HTTP_NOT_FOUND);
+            return $this->json($message, Response::HTTP_NOT_FOUND, ['Access-Control-Allow-Origin' => '*']);
         }
 
-        return $this->json($category, 200, [], ['groups' => [
+        return $this->json($category, 200, [ 'Access-Control-Allow-Origin' => '*' ], ['groups' => [
             'categories_read',
         ]]);
     }
@@ -61,12 +61,12 @@ class CategoryController extends AbstractController
         $category = $serializer->deserialize($jsonContent, Category::class, 'json');
         $errors = $validator->validate($category);
         if (count($errors) > 0) {
-            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY,  [ 'Access-Control-Allow-Origin' => '*' ]);
         }
         
         $entityManager->persist($category);
         $entityManager->flush();
-        return $this->json('Catégorie créée', Response::HTTP_CREATED);
+        return $this->json('Catégorie créée', Response::HTTP_CREATED,  [ 'Access-Control-Allow-Origin' => '*' ]);
     }
 
     /**
@@ -81,7 +81,7 @@ class CategoryController extends AbstractController
         // 404 ?
         if ($category === null) {
             // On retourne un message JSON + un statut 404
-            return $this->json(['error' => 'Categories non trouvée.'], Response::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Categories non trouvée.'], Response::HTTP_NOT_FOUND,  [ 'Access-Control-Allow-Origin' => '*' ]);
         }
 
         // Notre JSON qui se trouve dans le body
@@ -103,7 +103,7 @@ class CategoryController extends AbstractController
         // Génération des erreurs
         if (count($errors) > 0) {
             // On retourne le tableau d'erreurs en Json au front avec un status code 422
-            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY,  [ 'Access-Control-Allow-Origin' => '*' ]);
         }
         $category->setUpdatedAt(new \DateTime());
         // On flush $movie qui a été modifiée par le Serializer
@@ -111,7 +111,7 @@ class CategoryController extends AbstractController
 
         // @todo Conditionner le message de retour au cas où
         // l'entité ne serait pas modifiée
-        return $this->json(['message' => 'Catégorie modifiée.'], Response::HTTP_OK);
+        return $this->json(['message' => 'Catégorie modifiée.'], Response::HTTP_OK,  [ 'Access-Control-Allow-Origin' => '*' ]);
     }
 
 }

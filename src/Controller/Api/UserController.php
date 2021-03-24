@@ -34,7 +34,7 @@ class UserController extends AbstractController
         return $this->json(
             $beneficiaries,
             200,
-            [],
+            ['Access-Control-Allow-Origin' => '*'],
             ['groups' => 'beneficiaries_read']
         );
     }
@@ -53,7 +53,7 @@ class UserController extends AbstractController
             ];
 
             // On défini un message custom et un status code HTTP 404
-            return $this->json($message, Response::HTTP_NOT_FOUND);
+            return $this->json($message, Response::HTTP_NOT_FOUND, [ 'Access-Control-Allow-Origin' => '*' ]);
         }
 
         $id = $user->getId();
@@ -69,13 +69,13 @@ class UserController extends AbstractController
             ];
 
             // On défini un message custom et un status code HTTP 404
-            return $this->json($message, Response::HTTP_NOT_FOUND);
+            return $this->json($message, Response::HTTP_NOT_FOUND, ['Access-Control-Allow-Origin' => '*']);
         }
 
         return $this->json(
             $beneficiary,
             200,
-            [],
+            ['Access-Control-Allow-Origin' => '*'],
             ['groups' => 'beneficiaries_read']
         );
     }
@@ -97,7 +97,7 @@ class UserController extends AbstractController
         return $this->json(
             $volunteers,
             200,
-            [],
+            ['Access-Control-Allow-Origin' => '*'],
             ['groups' => 'volunteers_read']
         );
     }
@@ -116,7 +116,7 @@ class UserController extends AbstractController
             ];
 
             // On défini un message custom et un status code HTTP 404
-            return $this->json($message, Response::HTTP_NOT_FOUND);
+            return $this->json($message, Response::HTTP_NOT_FOUND, [ 'Access-Control-Allow-Origin' => '*' ]);
         }
 
         $id = $user->getId();
@@ -132,13 +132,13 @@ class UserController extends AbstractController
             ];
 
             // On défini un message custom et un status code HTTP 404
-            return $this->json($message, Response::HTTP_NOT_FOUND);
+            return $this->json($message, Response::HTTP_NOT_FOUND, ['Access-Control-Allow-Origin' => '*']);
         }
 
         return $this->json(
             $volunteer,
             200,
-            [],
+            ['Access-Control-Allow-Origin' => '*'],
             ['groups' => 'volunteers_read']
         );
     }
@@ -189,12 +189,12 @@ class UserController extends AbstractController
         $user = $serializer->deserialize($jsonContent, User::class, 'json');
         $errors = $validator->validate($user);
         if (count($errors) > 0) {
-            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY, [ 'Access-Control-Allow-Origin' => '*' ]);
         }
         $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
         $entityManager->persist($user);
         $entityManager->flush();
-        return $this->json('Utilisateur créé', Response::HTTP_CREATED);
+        return $this->json('Utilisateur créé', Response::HTTP_CREATED, ['Access-Control-Allow-Origin' => '*']);
     }
 
 
@@ -210,7 +210,7 @@ class UserController extends AbstractController
         // 404 ?
         if ($user === null) {
             // On retourne un message JSON + un statut 404
-            return $this->json(['error' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND, ['Access-Control-Allow-Origin' => '*']);
         }
 
         // Notre JSON qui se trouve dans le body
@@ -232,7 +232,7 @@ class UserController extends AbstractController
         // Génération des erreurs
         if (count($errors) > 0) {
             // On retourne le tableau d'erreurs en Json au front avec un status code 422
-            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY, ['Access-Control-Allow-Origin' => '*']);
         }
         $user->setUpdatedAt(new \DateTime());
         // On flush $movie qui a été modifiée par le Serializer
@@ -240,6 +240,6 @@ class UserController extends AbstractController
 
         // @todo Conditionner le message de retour au cas où
         // l'entité ne serait pas modifiée
-        return $this->json(['message' => 'Utilisateur modifié.'], Response::HTTP_OK);
+        return $this->json(['message' => 'Utilisateur modifié.'], Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*']);
     }
 }

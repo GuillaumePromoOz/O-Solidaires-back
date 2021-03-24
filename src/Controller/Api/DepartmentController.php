@@ -19,7 +19,7 @@ class DepartmentController extends AbstractController
     {
         $departments = $departmentRepository->findAll();
 
-        return $this->json($departments, 200, [], ['groups' => 'departments_read']);
+        return $this->json($departments, 200, [ 'Access-Control-Allow-Origin' => '*' ], ['groups' => 'departments_read']);
     }
 
     /**
@@ -39,10 +39,10 @@ class DepartmentController extends AbstractController
                 'error' => 'Departement non trouvé.',
             ];
 
-            return $this->json($message, Response::HTTP_NOT_FOUND);
+            return $this->json($message, Response::HTTP_NOT_FOUND, [ 'Access-Control-Allow-Origin' => '*' ]);
         }
 
-        return $this->json($department, 200, [], ['groups' => [
+        return $this->json($department, 200, [ 'Access-Control-Allow-Origin' => '*' ], ['groups' => [
             'departments_read',
         ]]);
     }
