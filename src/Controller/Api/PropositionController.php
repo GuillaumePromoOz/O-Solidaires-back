@@ -87,9 +87,9 @@ class PropositionController extends AbstractController
         // Notre JSON qui se trouve dans le body
         $jsonContent = $request->getContent();
 
-        
+
         // @todo Pour PATCH, s'assurer qu'on au moins un champ
-        
+
         $serializer->deserialize(
             $jsonContent,
             Proposition::class,
@@ -105,7 +105,7 @@ class PropositionController extends AbstractController
             // On retourne le tableau d'erreurs en Json au front avec un status code 422
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
+        $proposition->setUpdatedAt(new \DateTime());
         // On flush $movie qui a été modifiée par le Serializer
         $em->flush();
 

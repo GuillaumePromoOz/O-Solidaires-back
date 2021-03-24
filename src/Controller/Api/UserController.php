@@ -46,7 +46,7 @@ class UserController extends AbstractController
     {
         if ($user === null) {
 
-            
+
             $message = [
                 'status' => Response::HTTP_NOT_FOUND,
                 'error' => 'Bénéficiaire non trouvé.',
@@ -62,7 +62,7 @@ class UserController extends AbstractController
 
         if (empty($beneficiary)) {
 
-            
+
             $message = [
                 'status' => Response::HTTP_NOT_FOUND,
                 'error' => 'Bénéficiaire non trouvé.',
@@ -102,14 +102,14 @@ class UserController extends AbstractController
         );
     }
 
-     /**
+    /**
      * @Route("/volunteers/{id<\d+>}", name="api_volunteers_read_item", methods="GET")
      */
     public function readVolunteersItem(UserRepository $userRepository, User $user = null): Response
     {
         if ($user === null) {
 
-            
+
             $message = [
                 'status' => Response::HTTP_NOT_FOUND,
                 'error' => 'Bénévole non trouvé.',
@@ -125,7 +125,7 @@ class UserController extends AbstractController
 
         if (empty($volunteer)) {
 
-            
+
             $message = [
                 'status' => Response::HTTP_NOT_FOUND,
                 'error' => 'Bénévole non trouvé.',
@@ -143,7 +143,7 @@ class UserController extends AbstractController
         );
     }
 
-    
+
     //  /**
     //  * @Route("/beneficiaries", name="api_beneficiary_create", methods="POST")
     //  */
@@ -163,23 +163,23 @@ class UserController extends AbstractController
     //     if($form->isSubmitted() && $form->isValid()) {
     //         //dd($form);
     //         $user->setPassword($passwordEncoder->encodePassword($user, $form->getData()->getPassword()));
-            
+
     //         $entityManager->persist($user);
     //         $entityManager->flush();
-            
+
     //         return $this->redirectToRoute(
     //             'api_beneficiaries_read_item',
     //             ['id' => $user->getId()],
     //             Response::HTTP_CREATED
     //         );
-    
+
     //     }
     //     $message = $form->getErrors();
-    
+
     //     return $this->json($message, Response::HTTP_UNPROCESSABLE_ENTITY);
-        
+
     // }
-    
+
     /**
      * @Route("/users", name="api_user_create", methods="POST")
      */
@@ -198,7 +198,7 @@ class UserController extends AbstractController
     }
 
 
-     /**
+    /**
      * Edit User(PATCH)
      * 
      * @Route("/users/{id<\d+>}", name="api_users_patch", methods={"PATCH"})
@@ -216,9 +216,9 @@ class UserController extends AbstractController
         // Notre JSON qui se trouve dans le body
         $jsonContent = $request->getContent();
 
-        
+
         // @todo Pour PATCH, s'assurer qu'on au moins un champ
-        
+
         $serializer->deserialize(
             $jsonContent,
             User::class,
@@ -234,7 +234,7 @@ class UserController extends AbstractController
             // On retourne le tableau d'erreurs en Json au front avec un status code 422
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
+        $user->setUpdatedAt(new \DateTime());
         // On flush $movie qui a été modifiée par le Serializer
         $em->flush();
 
@@ -243,5 +243,3 @@ class UserController extends AbstractController
         return $this->json(['message' => 'Utilisateur modifié.'], Response::HTTP_OK);
     }
 }
-
-

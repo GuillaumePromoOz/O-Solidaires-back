@@ -68,6 +68,12 @@ class Request
      */
     private $category;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->interventionDate = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
