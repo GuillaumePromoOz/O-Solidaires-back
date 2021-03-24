@@ -25,6 +25,7 @@ class Category
      * @Groups("beneficiaries_read")
      * @Groups("volunteers_read")
      * @Groups("requests_read")
+     * @Groups("propositions_read")
      */
     private $name;
 

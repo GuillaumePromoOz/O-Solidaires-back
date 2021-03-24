@@ -21,17 +21,20 @@ class Proposition
     /**
      * @ORM\Column(type="string", length=100)
      * @Groups("volunteers_read")
+     * @Groups("propositions_read")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
      * @Groups("volunteers_read")
+     * @Groups("propositions_read")
      */
     private $content;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("propositions_read")
      */
     private $disponibilityDate;
 
@@ -48,6 +51,7 @@ class Proposition
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="propositions")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("propositions_read")
      */
     private $user;
 
@@ -55,6 +59,7 @@ class Proposition
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="propositions")
      * @ORM\JoinColumn(nullable=false)
      * @Groups("volunteers_read")
+     * @Groups("propositions_read")
      */
     private $category;
 
