@@ -23,6 +23,7 @@ class Request
      * @Groups("beneficiaries_read")
      * @Groups("requests_read")
      * @Groups("categories_read")
+     * @Groups("departments_read")
      */
     private $title;
 
@@ -30,6 +31,7 @@ class Request
      * @ORM\Column(type="text")
      * @Groups("beneficiaries_read")
      * @Groups("categories_read")
+     * @Groups("departments_read")
      */
     private $content;
 
@@ -38,6 +40,7 @@ class Request
      * @Groups("beneficiaries_read")
      * @Groups("requests_read")
      * @Groups("categories_read")
+     * @Groups("departments_read")
      */
     private $interventionDate;
 
@@ -65,6 +68,7 @@ class Request
      * @ORM\JoinColumn(nullable=false)
      * @Groups("beneficiaries_read")
      * @Groups("requests_read")
+     * @Groups("departments_read")
      */
     private $category;
 

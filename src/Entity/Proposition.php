@@ -23,6 +23,7 @@ class Proposition
      * @Groups("volunteers_read")
      * @Groups("propositions_read")
      * @Groups("categories_read")
+     * @Groups("departments_read")
      */
     private $title;
 
@@ -31,6 +32,7 @@ class Proposition
      * @Groups("volunteers_read")
      * @Groups("propositions_read")
      * @Groups("categories_read")
+     * @Groups("departments_read")
      */
     private $content;
 
@@ -38,6 +40,7 @@ class Proposition
      * @ORM\Column(type="datetime")
      * @Groups("propositions_read")
      * @Groups("categories_read")
+     * @Groups("departments_read")
      */
     private $disponibilityDate;
 
@@ -64,6 +67,7 @@ class Proposition
      * @ORM\JoinColumn(nullable=false)
      * @Groups("volunteers_read")
      * @Groups("propositions_read")
+     * @Groups("departments_read")
      */
     private $category;
 
