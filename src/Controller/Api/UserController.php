@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -180,7 +181,7 @@ class UserController extends AbstractController
     // }
     
     /**
-     * @Route("/beneficiaries", name="api_beneficiary_create", methods="POST")
+     * @Route("/users", name="api_user_create", methods="POST")
      */
     public function createBeneficiary(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder,  SerializerInterface $serializer, ValidatorInterface $validator)
     {
@@ -194,6 +195,52 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
         return $this->json('Utilisateur créé', Response::HTTP_CREATED);
+    }
+
+
+     /**
+     * Edit User(PATCH)
+     * 
+     * @Route("/users/{id<\d+>}", name="api_users_patch", methods={"PATCH"})
+     */
+    public function patch(User $user = null, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
+    {
+        // 1. On souhaite modifier le film dont l'id est transmis via l'URL
+
+        // 404 ?
+        if ($user === null) {
+            // On retourne un message JSON + un statut 404
+            return $this->json(['error' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Notre JSON qui se trouve dans le body
+        $jsonContent = $request->getContent();
+
+        
+        // @todo Pour PATCH, s'assurer qu'on au moins un champ
+        
+        $serializer->deserialize(
+            $jsonContent,
+            User::class,
+            'json',
+            // On a cet argument en plus qui indique au serializer quelle entité existante modifier
+            [AbstractNormalizer::OBJECT_TO_POPULATE => $user]
+        );
+
+        // Validation de l'entité désérialisée
+        $errors = $validator->validate($user);
+        // Génération des erreurs
+        if (count($errors) > 0) {
+            // On retourne le tableau d'erreurs en Json au front avec un status code 422
+            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        // On flush $movie qui a été modifiée par le Serializer
+        $em->flush();
+
+        // @todo Conditionner le message de retour au cas où
+        // l'entité ne serait pas modifiée
+        return $this->json(['message' => 'Utilisateur modifié.'], Response::HTTP_OK);
     }
 }
 
