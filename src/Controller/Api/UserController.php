@@ -34,7 +34,7 @@ class UserController extends AbstractController
         return $this->json(
             $beneficiaries,
             200,
-            ['Access-Control-Allow-Origin' => '*'],
+            [],
             ['groups' => 'beneficiaries_read']
         );
     }
