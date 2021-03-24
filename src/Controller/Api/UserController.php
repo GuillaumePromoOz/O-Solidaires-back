@@ -190,6 +190,7 @@ class UserController extends AbstractController
         if (count($errors) > 0) {
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+        $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
         $entityManager->persist($user);
         $entityManager->flush();
         return $this->json('Utilisateur créé', Response::HTTP_CREATED);
