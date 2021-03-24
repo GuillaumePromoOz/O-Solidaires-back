@@ -64,6 +64,14 @@ class PropositionController extends AbstractController
         if (count($errors) > 0) {
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
+        $role = $proposition->getUser()->getRoles();
+        $roleIndex= $role[0];
+        //dd($roleIndex);
+        if ($roleIndex !== "ROLE_VOLUNTEER"){
+            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénévole'], Response::HTTP_NOT_FOUND);
+        }
+
         $entityManager->persist($proposition);
         $entityManager->flush();
         return $this->json('Proposition créée', Response::HTTP_CREATED);
@@ -105,6 +113,14 @@ class PropositionController extends AbstractController
             // On retourne le tableau d'erreurs en Json au front avec un status code 422
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
+        $role = $proposition->getUser()->getRoles();
+        $roleIndex= $role[0];
+        //dd($roleIndex);
+        if ($roleIndex !== "ROLE_VOLUNTEER"){
+            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénévole'], Response::HTTP_NOT_FOUND);
+        }
+
         $proposition->setUpdatedAt(new \DateTime());
         // On flush $movie qui a été modifiée par le Serializer
         $em->flush();

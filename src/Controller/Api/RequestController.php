@@ -63,6 +63,13 @@ class RequestController extends AbstractController
         if (count($errors) > 0) {
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+        
+        $role = $userRequest->getUser()->getRoles();
+        $roleIndex= $role[0];
+        //dd($roleIndex);
+        if ($roleIndex !== "ROLE_BENEFICIARY"){
+            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénéficiaire'], Response::HTTP_NOT_FOUND);
+        }
 
         $entityManager->persist($userRequest);
         $entityManager->flush();
@@ -104,6 +111,13 @@ class RequestController extends AbstractController
         if (count($errors) > 0) {
             // On retourne le tableau d'erreurs en Json au front avec un status code 422
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        
+        $role = $userRequest->getUser()->getRoles();
+        $roleIndex = $role[0];
+        //dd($roleIndex);
+        if ($roleIndex !== "ROLE_BENEFICIARY"){
+            return $this->json(['error' => 'Cet utilisateur n\'est pas un bénéficiaire'], Response::HTTP_NOT_FOUND);
         }
 
         $userRequest->setUpdatedAt(new \DateTime());
