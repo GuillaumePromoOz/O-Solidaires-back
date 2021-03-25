@@ -26,6 +26,8 @@ security:
         api:
             pattern:   ^/
             stateless: true
+            #access ok for anonymous
+            anonymous: true
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
@@ -51,28 +53,39 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
 
-        # API LOGIN
-        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        
+
         
         # ADMIN
-        - { path: ^/categories, methods: [GET,POST,PATCH], roles: ROLE_ADMIN }
-        - { path: ^/departments, methods: [GET], roles: ROLE_ADMIN }
+        - { path: ^/categories, methods: [POST,PATCH], roles: ROLE_ADMIN }
+        # - { path: ^/categories, methods: [GET,POST,PATCH], roles: ROLE_ADMIN }
+        # - { path: ^/departments, methods: [GET], roles: ROLE_ADMIN }
         
 
         # BENEFICIARY
         - { path: ^/propositions, methods: [GET], roles: ROLE_BENEFICIARY }
-        - { path: ^/users, methods: [POST,PATCH], roles: ROLE_BENEFICIARY }
-        - { path: ^/requests, methods: [POST, PATCH], roles: ROLE_BENEFICIARY }
-        - { path: ^/beneficiaries, methods: [GET], roles: ROLE_BENEFICIARY }
-        - { path: ^/volunteers, methods: [GET], roles: ROLE_BENEFICIARY }
+        - { path: ^/(requests|users), methods: [POST, PATCH], roles: ROLE_BENEFICIARY }
+        - { path: ^/(volunteers|beneficiaries), methods: [GET], roles: ROLE_BENEFICIARY }
+        # - { path: ^/users, methods: [POST,PATCH], roles: ROLE_BENEFICIARY }
+        # - { path: ^/requests, methods: [POST, PATCH], roles: ROLE_BENEFICIARY }
+        # - { path: ^/beneficiaries, methods: [GET], roles: ROLE_BENEFICIARY }
+        # - { path: ^/volunteers, methods: [GET], roles: ROLE_BENEFICIARY }
 
 
         # VOLUNTEER
         - { path: ^/requests, methods: [GET], roles: ROLE_VOLUNTEER }
-        - { path: ^/users, methods: [POST, PATCH], roles: ROLE_VOLUNTEER }
-        - { path: ^/propositions, methods: [POST, PATCH], roles: ROLE_VOLUNTEER }
-        - { path: ^/volunteers, methods: [GET], roles: ROLE_VOLUNTEER }
-        - { path: ^/beneficiaries, methods: [GET], roles: ROLE_VOLUNTEER }
+        - { path: ^/(propositions|users), methods: [POST, PATCH], roles: ROLE_VOLUNTEER }
+        - { path: ^/(volunteers|beneficiaries), methods: [GET], roles: ROLE_VOLUNTEER }
+        # - { path: ^/users, methods: [POST, PATCH], roles: ROLE_VOLUNTEER }
+        # - { path: ^/propositions, methods: [POST, PATCH], roles: ROLE_VOLUNTEER }
+        # - { path: ^/volunteers, methods: [GET], roles: ROLE_VOLUNTEER }
+        # - { path: ^/beneficiaries, methods: [GET], roles: ROLE_VOLUNTEER }
+
+        # API LOGIN
+        # - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/categories, methods: [GET], roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/departments, methods: [GET], roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/, methods: [GET], roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
     role_hierarchy:
         ROLE_ADMIN: [ROLE_VOLUNTEER, ROLE_BENEFICIARY]
