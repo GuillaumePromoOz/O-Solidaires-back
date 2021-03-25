@@ -14,6 +14,7 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        #placer ici
         main:
             anonymous: true
             lazy: true
@@ -21,11 +22,6 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
-
-            # Login en API/JSON
-            json_login:
-                check_path: /login
-
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -40,5 +36,28 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        
+        # ADMIN
+        - { path: ^/categories, methods: [GET,POST,PATCH], roles: ROLE_ADMIN }
+        - { path: ^/departments, methods: [GET], roles: ROLE_ADMIN }
+        
+
+        # BENEFICIARY
+        - { path: ^/propositions, methods: [GET], roles: ROLE_BENEFICIARY }
+        - { path: ^/users, methods: [POST,PATCH], roles: ROLE_BENEFICIARY }
+        - { path: ^/requests, methods: [POST, PATCH], roles: ROLE_BENEFICIARY }
+        - { path: ^/beneficiaries, methods: [GET], roles: ROLE_BENEFICIARY }
+        - { path: ^/volunteers, methods: [GET], roles: ROLE_BENEFICIARY }
+
+
+        # VOLUNTEER
+        - { path: ^/requests, methods: [GET], roles: ROLE_VOLUNTEER }
+        - { path: ^/users, methods: [POST, PATCH], roles: ROLE_VOLUNTEER }
+        - { path: ^/propositions, methods: [POST, PATCH], roles: ROLE_VOLUNTEER }
+        - { path: ^/volunteers, methods: [GET], roles: ROLE_VOLUNTEER }
+        - { path: ^/beneficiaries, methods: [GET], roles: ROLE_VOLUNTEER }
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_VOLUNTEER, ROLE_BENEFICIARY]
+        
+       
