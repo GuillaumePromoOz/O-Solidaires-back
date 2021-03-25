@@ -213,10 +213,30 @@ class UserController extends AbstractController
     {
 
         $user = $this->getUser();
-        dd($user);
-       
-
-        return $this->json($user, 200, [], ['groups' => 'user_connected_read']);
+        $role = $user->getRoles()[0];
+        // dump($user);
+        // dd($role);
+       if ($role === 'ROLE_VOLUNTEER'){
+        return $this->json(
+            $user,
+            200,
+            [],
+            ['groups' => 'volunteers_read']
+        );
+       }
+       if ($role === 'ROLE_BENEFICIARY'){
+            return $this->json(
+                $user,
+                200,
+                [],
+                ['groups' => 'beneficiaries_read']
+            );
+        }
+        if ($role === 'ROLE_ADMIN'){
+            return $this->json($user, 200, [], ['groups' => 'admins_read']);
+        }
+        
+        
     }
     
 }

@@ -23,6 +23,7 @@ class Department
      * @Groups("requests_read")
      * @Groups("beneficiaries_read")
      * @Groups("volunteers_read")
+     * @Groups("admins_read")
      */
     private $id;
 
@@ -34,6 +35,7 @@ class Department
      * @Groups("propositions_read")
      * @Groups("departments_read")
      * @Groups("categories_read")
+     * @Groups("admins_read")
      */
     private $name;
 
