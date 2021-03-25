@@ -205,4 +205,18 @@ class UserController extends AbstractController
         // l'entité ne serait pas modifiée
         return $this->json(['message' => 'Utilisateur modifié.'], Response::HTTP_OK);
     }
+
+    /**
+     * @Route("/connected_user", name="api_user_connected", methods="GET")
+     */
+    public function connectedUser()
+    {
+
+        $user = $this->getUser();
+        dd($user);
+       
+
+        return $this->json($user, 200, [], ['groups' => 'user_connected_read']);
+    }
+    
 }
