@@ -53,9 +53,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
 
-        
-
-        
         # ADMIN
         - { path: ^/categories, methods: [POST,PATCH], roles: ROLE_ADMIN }
         # - { path: ^/categories, methods: [GET,POST,PATCH], roles: ROLE_ADMIN }
@@ -90,6 +87,7 @@ security:
         # - { path: ^/, methods: [GET], roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
     role_hierarchy:
+    #ROLE_ADMIN inherits from ROLE_VOLUNTEER and ROLE_BENEFICIARY
         ROLE_ADMIN: [ROLE_VOLUNTEER, ROLE_BENEFICIARY]
         
        

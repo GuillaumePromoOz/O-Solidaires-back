@@ -36,15 +36,16 @@ class PropositionController extends AbstractController
     public function readItem(Proposition $proposition = null): Response
     {
 
-        /// la 404
+        // Checks if request is null
+        // if request is null then it returns a 404
         if ($proposition === null) {
 
-            // Optionnel, message pour le front
+
             $message = [
                 'status' => Response::HTTP_NOT_FOUND,
                 'error' => 'Propostion non trouvée.',
             ];
-
+            // We define a custom message and generate a HTTP 404 status code
             return $this->json($message, Response::HTTP_NOT_FOUND);
         }
 
@@ -54,26 +55,48 @@ class PropositionController extends AbstractController
     }
 
     /**
+     * Add proposition
+     * 
      * @Route("/propositions", name="api_propositions_create", methods="POST")
      */
     public function createProposition(Request $request, EntityManagerInterface $entityManager,  SerializerInterface $serializer, ValidatorInterface $validator)
     {
+        // We fetch the data sent via method POST into our Symfony Component "Request"
+        // the content is in the body of the request
+        // the content is store into variable $jsonContent
         $jsonContent = $request->getContent();
+
+        // We deserialize the JSON content into the Proposition Entity
+        // Basically it transforms the json into an object
         $proposition = $serializer->deserialize($jsonContent, Proposition::class, 'json');
+
+        // The recieved data is checked for anomalies (ex, empty fields, invalid values)
+        // The Validator alidates a property of an object against the constraints specified
+        // for this property.
         $errors = $validator->validate($proposition);
+
+        // Counts the number of errors, if bigger than zero -> returns error 422
+        // returns an array of errors to the frontend
         if (count($errors) > 0) {
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        // from the Proposition Entity we fetch the user (getUser) then from the User Entity we fetch the roles (getRoles)
+        // we store the date inside variable $role
         $role = $proposition->getUser()->getRoles();
+
+        // we fetch index 0 from the $role array and store that into the $roleIndex variable ( 0 => "ROLE_VOLUNTEER")
         $roleIndex = $role[0];
-        //dd($roleIndex);
+
+        // if roleIndex is different from "ROLE_VOLUNTEER" then return a 404 error
         if ($roleIndex !== "ROLE_VOLUNTEER") {
             return $this->json(['error' => 'Cet utilisateur n\'est pas un bénévole'], Response::HTTP_NOT_FOUND);
         }
 
+        // else, save new proposition in database !
         $entityManager->persist($proposition);
         $entityManager->flush();
+
         return $this->json('Proposition créée', Response::HTTP_CREATED);
     }
 
@@ -82,51 +105,42 @@ class PropositionController extends AbstractController
      * 
      * @Route("/propositions/{id<\d+>}", name="api_propositions_patch", methods={"PATCH"})
      */
-    public function patch(Proposition $proposition = null, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
+    public function patchPropostion(Proposition $proposition = null, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
     {
-        // 1. On souhaite modifier le film dont l'id est transmis via l'URL
+        // We would like to modify the request via the id sent by the URL
 
-        // 404 ?
         if ($proposition === null) {
-            // On retourne un message JSON + un statut 404
+
             return $this->json(['error' => 'Proposition non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
-        // Notre JSON qui se trouve dans le body
         $jsonContent = $request->getContent();
-
-
-        // @todo Pour PATCH, s'assurer qu'on au moins un champ
 
         $serializer->deserialize(
             $jsonContent,
             Proposition::class,
             'json',
-            // On a cet argument en plus qui indique au serializer quelle entité existante modifier
+            // This extra argument specifies to the serializer which existing entity to modify
             [AbstractNormalizer::OBJECT_TO_POPULATE => $proposition]
         );
 
-        // Validation de l'entité désérialisée
         $errors = $validator->validate($proposition);
-        // Génération des erreurs
+        // Generates errors
         if (count($errors) > 0) {
-            // On retourne le tableau d'erreurs en Json au front avec un status code 422
+            // Returns errors
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $role = $proposition->getUser()->getRoles();
         $roleIndex = $role[0];
-        //dd($roleIndex);
         if ($roleIndex !== "ROLE_VOLUNTEER") {
             return $this->json(['error' => 'Cet utilisateur n\'est pas un bénévole'], Response::HTTP_NOT_FOUND);
         }
 
         $proposition->setUpdatedAt(new \DateTime());
-        // On flush $movie qui a été modifiée par le Serializer
+
         $em->flush();
 
-        // @todo Conditionner le message de retour au cas où
-        // l'entité ne serait pas modifiée
         return $this->json(['message' => 'Proposition modifiée.'], Response::HTTP_OK);
     }
 }

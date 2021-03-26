@@ -30,10 +30,9 @@ class DepartmentController extends AbstractController
     public function readItem(Department $department = null): Response
     {
 
-        /// la 404
+        // Checks for errors
         if ($department === null) {
 
-            // Optionnel, message pour le front
             $message = [
                 'status' => Response::HTTP_NOT_FOUND,
                 'error' => 'Departement non trouvé.',

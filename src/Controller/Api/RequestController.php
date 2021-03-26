@@ -35,10 +35,10 @@ class RequestController extends AbstractController
     public function readItem(Request $request = null): Response
     {
 
-        /// la 404
+        // Checks if request is null
+        // if request is null then it returns a 404
         if ($request === null) {
 
-            // Optionnel, message pour le front
             $message = [
                 'status' => Response::HTTP_NOT_FOUND,
                 'error' => 'Demande non trouvée.',
@@ -53,26 +53,41 @@ class RequestController extends AbstractController
     }
 
     /**
+     * Add request
+     * 
      * @Route("/requests", name="api_requests_create", methods="POST")
      */
-    public function createUser(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, ValidatorInterface $validator)
+    public function createRequest(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, ValidatorInterface $validator)
     {
+        // We fetch the data sent via method POST into our Symfony Component "Request"
+        // the content is in the body of the request
+        // the content is stored into variable $jsonContent
         $jsonContent = $request->getContent();
+
+        // We deserialize the JSON content into the User Entity
+        // Basically it transforms the json into an object
         $userRequest = $serializer->deserialize($jsonContent, RequestEntity::class, 'json');
+        //Generates errors
         $errors = $validator->validate($userRequest);
+        // Returns errors
         if (count($errors) > 0) {
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        // from the Request Entity we fetch the user (getUser) then from the User Entity we fetch the roles (getRoles)
+        // we store the date inside variable $role
         $role = $userRequest->getUser()->getRoles();
+        // we fetch index 0 from the $role array and store that into the $roleIndex variable ( 0 => "ROLE_BENEFICIARY")
         $roleIndex = $role[0];
-        //dd($roleIndex);
+        // if roleIndex is different from "ROLE_BENEFICIARY" then return a 404 error
         if ($roleIndex !== "ROLE_BENEFICIARY") {
             return $this->json(['error' => 'Cet utilisateur n\'est pas un bénéficiaire'], Response::HTTP_NOT_FOUND);
         }
 
+        // else, save new request in database !
         $entityManager->persist($userRequest);
         $entityManager->flush();
+
         return $this->json('Demande créée', Response::HTTP_CREATED, []);
     }
 
@@ -81,51 +96,43 @@ class RequestController extends AbstractController
      * 
      * @Route("/requests/{id<\d+>}", name="api_requests_patch", methods={"PATCH"})
      */
-    public function patch(RequestEntity $userRequest = null, EntityManagerInterface $em, SerializerInterface $serializer, ValidatorInterface $validator, Request $request)
+    public function patchRequest(RequestEntity $userRequest = null, EntityManagerInterface $em, SerializerInterface $serializer, ValidatorInterface $validator, Request $request)
     {
-        // 1. On souhaite modifier le film dont l'id est transmis via l'URL
+        // We would like to modify the request via the id sent by the URL
 
-        // 404 ?
+        // Checks for errors
         if ($userRequest === null) {
-            // On retourne un message JSON + un statut 404
             return $this->json(['error' => 'Demande non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
-        // Notre JSON qui se trouve dans le body
         $jsonContent = $request->getContent();
-
-
-        // @todo Pour PATCH, s'assurer qu'on au moins un champ
 
         $serializer->deserialize(
             $jsonContent,
             RequestEntity::class,
             'json',
-            // On a cet argument en plus qui indique au serializer quelle entité existante modifier
+            // This extra argument specifies to the serializer which existing entity to modify
             [AbstractNormalizer::OBJECT_TO_POPULATE => $userRequest]
         );
 
-        // Validation de l'entité désérialisée
         $errors = $validator->validate($userRequest);
-        // Génération des erreurs
+        // Generates errors
         if (count($errors) > 0) {
-            // On retourne le tableau d'erreurs en Json au front avec un status code 422
+            // Returns errors
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $role = $userRequest->getUser()->getRoles();
         $roleIndex = $role[0];
-        //dd($roleIndex);
         if ($roleIndex !== "ROLE_BENEFICIARY") {
             return $this->json(['error' => 'Cet utilisateur n\'est pas un bénéficiaire'], Response::HTTP_NOT_FOUND);
         }
 
         $userRequest->setUpdatedAt(new \DateTime());
-        // On flush $movie qui a été modifiée par le Serializer
+
+        // save !
         $em->flush();
 
-        // @todo Conditionner le message de retour au cas où
-        // l'entité ne serait pas modifiée
         return $this->json(['message' => 'Demande modifiée.'], Response::HTTP_OK);
     }
 }

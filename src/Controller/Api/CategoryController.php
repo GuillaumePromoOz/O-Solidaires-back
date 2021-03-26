@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CategoryController extends AbstractController
 {
-     /**
+    /**
      * Get all categories
      * 
      * @Route("/categories", name="api_categories_read", methods="GET")
@@ -35,10 +35,9 @@ class CategoryController extends AbstractController
     public function readItem(Category $category = null): Response
     {
 
-        /// la 404
+        /// Checks if category exist if not returns a 404
         if ($category === null) {
 
-            // Optionnel, message pour le front
             $message = [
                 'status' => Response::HTTP_NOT_FOUND,
                 'error' => 'Catégorie non trouvée.',
@@ -52,20 +51,33 @@ class CategoryController extends AbstractController
         ]]);
     }
 
-     /**
+    /**
+     * Add category
+     * 
      * @Route("/categories", name="api_categories_create", methods="POST")
      */
     public function createCategory(Request $request, EntityManagerInterface $entityManager,  SerializerInterface $serializer, ValidatorInterface $validator)
     {
+        // We fetch the data sent via method POST into our Symfony Component "Request"
+        // the content is in the body of the request
+        // the content is stored into variable $jsonContent
         $jsonContent = $request->getContent();
+
+        // We deserialize the JSON content into the User Entity
+        // Basically it transforms the json into an object
         $category = $serializer->deserialize($jsonContent, Category::class, 'json');
+
+        //Generates errors
         $errors = $validator->validate($category);
+        //returns errors
         if (count($errors) > 0) {
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        
+
+        // save !
         $entityManager->persist($category);
         $entityManager->flush();
+
         return $this->json('Catégorie créée', Response::HTTP_CREATED);
     }
 
@@ -76,42 +88,36 @@ class CategoryController extends AbstractController
      */
     public function patch(Category $category = null, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
     {
-        // 1. On souhaite modifier le film dont l'id est transmis via l'URL
+        // We would like to modify the request via the id sent by the URL
 
-        // 404 ?
+        // Checks for errors
         if ($category === null) {
-            // On retourne un message JSON + un statut 404
             return $this->json(['error' => 'Categories non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
-        // Notre JSON qui se trouve dans le body
         $jsonContent = $request->getContent();
 
-        
-        // @todo Pour PATCH, s'assurer qu'on au moins un champ
-        
         $serializer->deserialize(
             $jsonContent,
             Category::class,
             'json',
-            // On a cet argument en plus qui indique au serializer quelle entité existante modifier
+            // This extra argument specifies to the serializer which existing entity to modify
             [AbstractNormalizer::OBJECT_TO_POPULATE => $category]
         );
 
-        // Validation de l'entité désérialisée
+        // Validation of the deserialized entity
         $errors = $validator->validate($category);
-        // Génération des erreurs
+        // Checks for errors
         if (count($errors) > 0) {
-            // On retourne le tableau d'erreurs en Json au front avec un status code 422
+            // Returns errors
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
         $category->setUpdatedAt(new \DateTime());
-        // On flush $movie qui a été modifiée par le Serializer
+
+        // save !
         $em->flush();
 
-        // @todo Conditionner le message de retour au cas où
-        // l'entité ne serait pas modifiée
         return $this->json(['message' => 'Catégorie modifiée.'], Response::HTTP_OK);
     }
-
 }

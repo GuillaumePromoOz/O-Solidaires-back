@@ -64,7 +64,7 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\Length(min = 8, max = 16)
+     * @Assert\Length(min = 8)
      * 
      * - au moins une lettre minuscule
      * - au moins une lettre majuscule

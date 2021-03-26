@@ -169,9 +169,13 @@ class UserController extends AbstractController
      */
     public function createUser(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder,  SerializerInterface $serializer, ValidatorInterface $validator)
     {
+        //!\ When creating a new user we have to assign it an already existing department via its ID
+        //!\ however the serializer has no idea that this ID is linked to the Department Entity 
+        //!\ we resolved this issue inside the Normalizer by indicating that the ID is linked to an existing Entity (@see EntityNormalizer.php)
+
         // We fetch the data sent via method POST into our Symfony Component "Request"
         // the content is in the body of the request
-        // the content is stocked into variable $jsonContent
+        // the content is stored into variable $jsonContent
         $jsonContent = $request->getContent();
 
         // We deserialize the JSON content into the User Entity
@@ -182,6 +186,7 @@ class UserController extends AbstractController
         // The Validator alidates a property of an object against the constraints specified
         // for this property.
         $errors = $validator->validate($user);
+
         // Counts the number of errors, if bigger than zero -> returns error 422
         // returns an array of errors to the frontend
         if (count($errors) > 0) {
@@ -205,7 +210,7 @@ class UserController extends AbstractController
      * 
      * @Route("/users/{id<\d+>}", name="api_users_patch", methods={"PATCH"})
      */
-    public function patch(User $user = null, EntityManagerInterface $em, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder, Request $request, ValidatorInterface $validator)
+    public function patchUser(User $user = null, EntityManagerInterface $em, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder, Request $request, ValidatorInterface $validator)
     {
 
         if ($user === null) {
@@ -213,9 +218,6 @@ class UserController extends AbstractController
             return $this->json(['error' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND);
         }
         $jsonContent = $request->getContent();
-
-
-        // @todo Pour PATCH, s'assurer qu'on au moins un champ
 
         $serializer->deserialize(
             $jsonContent,
@@ -239,15 +241,20 @@ class UserController extends AbstractController
     }
 
     /**
+     * 
+     * Get user data
+     * 
      * @Route("/connected_user", name="api_user_connected", methods="GET")
      */
     public function connectedUser()
     {
-        // 
+        // JWT replaces our Session which is used to store the user in memory 
+        // We get the connected user using the getter getUser() from the Abstract Controller
         $user = $this->getUser();
+        // With getter getRoles we go fetch index 0 inside the array which value equals to the user's role
         $role = $user->getRoles()[0];
-        // dump($user);
-        // dd($role);
+
+        // If role matches "volunteer" we send the accessible datas of a volunteer (same goes for beneficiaries and admin)
         if ($role === 'ROLE_VOLUNTEER') {
             return $this->json(
                 $user,
