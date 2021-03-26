@@ -31,9 +31,7 @@ class Request
      * @Groups("departments_read")
      * 
      * @Assert\NotBlank
-     * @Assert\Type("string")(
-     *     message = "il me faut des lettres"
-     * )
+     *
      */
     private $title;
 
