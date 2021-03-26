@@ -42,6 +42,7 @@ class User implements UserInterface
      * 
      * @Assert\NotBlank
      * @Assert\Email
+     * @Assert\Unique
      */
     private $email;
 
@@ -54,6 +55,8 @@ class User implements UserInterface
      * @Groups("departments_read")
      * @Groups("categories_read")
      * @Groups("admins_read")
+     * 
+     * @Assert\NotBlank
      */
     private $roles = [];
 
@@ -66,6 +69,7 @@ class User implements UserInterface
      * - au moins une lettre majuscule
      * - au moins un chiffre
      * @Assert\Regex("/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/")  
+     * @Assert\NotBlank
      * 
      */
     private $password;
@@ -81,6 +85,7 @@ class User implements UserInterface
      * @Groups("admins_read")
      * 
      * @Assert\NotBlank
+     * @Assert\Type("string")
      */
     private $lastname;
 
@@ -95,6 +100,7 @@ class User implements UserInterface
      * @Groups("admins_read")
      * 
      * @Assert\NotBlank
+     * @Assert\Type("string")
      */
     private $firstname;
 
