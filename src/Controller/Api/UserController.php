@@ -24,10 +24,14 @@ class UserController extends AbstractController
 
 
     /**
+     * Get all beneficiaries
+     * 
      * @Route("/beneficiaries", name="api_beneficiaries", methods="GET")
      */
     public function readBeneficiaries(UserRepository $userRepository): Response
     {
+        // We use a custom method in the UserRepostiry to find all users by their role
+        // we provide as a parameter into the function the user's role.
         $role = '["ROLE_BENEFICIARY"]';
         $beneficiaries = $userRepository->findAllByRole($role);
 
@@ -40,26 +44,40 @@ class UserController extends AbstractController
     }
 
     /**
+     * 
+     * Get one beneficiary
+     * 
      * @Route("/beneficiaries/{id<\d+>}", name="api_beneficiaries_read_item", methods="GET")
      */
     public function readBeneficiaryItem(UserRepository $userRepository, User $user = null): Response
     {
+        // Checks if user is null
+        // if user is null then it returns a 404
         if ($user === null) {
 
 
             $message = [
+                // HTTP status code
                 'status' => Response::HTTP_NOT_FOUND,
+                // Custom message
                 'error' => 'Bénéficiaire non trouvé.',
             ];
 
-            // On défini un message custom et un status code HTTP 404
+            // We define a custom message and generate a HTTP 404 status code
             return $this->json($message, Response::HTTP_NOT_FOUND);
         }
 
+        // We verify if the user's ID matches the user's role
+        // (as there is THREE separate roles: Beneficiary, Volunteer and Admin)
+
         $id = $user->getId();
         $role = '["ROLE_BENEFICIARY"]';
+
+        // A custom method was created in the UserRepository
         $beneficiary = $userRepository->findUserById($role, $id);
 
+
+        // if there is no match, the beneficiary variable is considered empty and returns a 404
         if (empty($beneficiary)) {
 
 
@@ -68,7 +86,6 @@ class UserController extends AbstractController
                 'error' => 'Bénéficiaire non trouvé.',
             ];
 
-            // On défini un message custom et un status code HTTP 404
             return $this->json($message, Response::HTTP_NOT_FOUND);
         }
 
@@ -87,6 +104,8 @@ class UserController extends AbstractController
 
 
     /**
+     * Get all volunteers
+     * 
      * @Route("/volunteers", name="api_volunteers", methods="GET")
      */
     public function readVolunteers(UserRepository $userRepository): Response
@@ -103,6 +122,8 @@ class UserController extends AbstractController
     }
 
     /**
+     * Get one volunteer
+     * 
      * @Route("/volunteers/{id<\d+>}", name="api_volunteers_read_item", methods="GET")
      */
     public function readVolunteersItem(UserRepository $userRepository, User $user = null): Response
@@ -115,7 +136,6 @@ class UserController extends AbstractController
                 'error' => 'Bénévole non trouvé.',
             ];
 
-            // On défini un message custom et un status code HTTP 404
             return $this->json($message, Response::HTTP_NOT_FOUND);
         }
 
@@ -131,7 +151,6 @@ class UserController extends AbstractController
                 'error' => 'Bénévole non trouvé.',
             ];
 
-            // On défini un message custom et un status code HTTP 404
             return $this->json($message, Response::HTTP_NOT_FOUND);
         }
 
@@ -144,19 +163,37 @@ class UserController extends AbstractController
     }
 
     /**
+     * Add User
+     * 
      * @Route("/users", name="api_user_create", methods="POST")
      */
     public function createUser(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder,  SerializerInterface $serializer, ValidatorInterface $validator)
     {
+        // We fetch the data sent via method POST into our Symfony Component "Request"
+        // the content is in the body of the request
+        // the content is stocked into variable $jsonContent
         $jsonContent = $request->getContent();
+
+        // We deserialize the JSON content into the User Entity
+        // Basically it transforms the json into an object
         $user = $serializer->deserialize($jsonContent, User::class, 'json');
+
+        // The recieved data is checked for anomalies (ex, empty fields, invalid values)
+        // The Validator alidates a property of an object against the constraints specified
+        // for this property.
         $errors = $validator->validate($user);
+        // Counts the number of errors, if bigger than zero -> returns error 422
         if (count($errors) > 0) {
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
+        // We encode the password
         $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
+
+        // Save
         $entityManager->persist($user);
         $entityManager->flush();
+
         return $this->json('Utilisateur créé', Response::HTTP_CREATED);
     }
 
@@ -168,15 +205,11 @@ class UserController extends AbstractController
      */
     public function patch(User $user = null, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
     {
-        // 1. On souhaite modifier le film dont l'id est transmis via l'URL
 
-        // 404 ?
         if ($user === null) {
-            // On retourne un message JSON + un statut 404
+
             return $this->json(['error' => 'Utilisateur non trouvé.'], Response::HTTP_NOT_FOUND);
         }
-
-        // Notre JSON qui se trouve dans le body
         $jsonContent = $request->getContent();
 
 
@@ -216,15 +249,15 @@ class UserController extends AbstractController
         $role = $user->getRoles()[0];
         // dump($user);
         // dd($role);
-       if ($role === 'ROLE_VOLUNTEER'){
-        return $this->json(
-            $user,
-            200,
-            [],
-            ['groups' => 'volunteers_read']
-        );
-       }
-       if ($role === 'ROLE_BENEFICIARY'){
+        if ($role === 'ROLE_VOLUNTEER') {
+            return $this->json(
+                $user,
+                200,
+                [],
+                ['groups' => 'volunteers_read']
+            );
+        }
+        if ($role === 'ROLE_BENEFICIARY') {
             return $this->json(
                 $user,
                 200,
@@ -232,11 +265,8 @@ class UserController extends AbstractController
                 ['groups' => 'beneficiaries_read']
             );
         }
-        if ($role === 'ROLE_ADMIN'){
+        if ($role === 'ROLE_ADMIN') {
             return $this->json($user, 200, [], ['groups' => 'admins_read']);
         }
-        
-        
     }
-    
 }
