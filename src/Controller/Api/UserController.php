@@ -183,11 +183,13 @@ class UserController extends AbstractController
         // for this property.
         $errors = $validator->validate($user);
         // Counts the number of errors, if bigger than zero -> returns error 422
+        // returns an array of errors to the frontend
         if (count($errors) > 0) {
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         // We encode the password
+        // setPassword() fetches the password entered by the user ($user->getPassword) that's now been hashed
         $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
 
         // Save
@@ -203,7 +205,7 @@ class UserController extends AbstractController
      * 
      * @Route("/users/{id<\d+>}", name="api_users_patch", methods={"PATCH"})
      */
-    public function patch(User $user = null, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
+    public function patch(User $user = null, EntityManagerInterface $em, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder, Request $request, ValidatorInterface $validator)
     {
 
         if ($user === null) {
@@ -219,23 +221,20 @@ class UserController extends AbstractController
             $jsonContent,
             User::class,
             'json',
-            // On a cet argument en plus qui indique au serializer quelle entité existante modifier
+            // This extra argument specifies to the serializer which existing entity to modify
             [AbstractNormalizer::OBJECT_TO_POPULATE => $user]
         );
 
-        // Validation de l'entité désérialisée
         $errors = $validator->validate($user);
-        // Génération des erreurs
+
         if (count($errors) > 0) {
-            // On retourne le tableau d'erreurs en Json au front avec un status code 422
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
+        $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
         $user->setUpdatedAt(new \DateTime());
-        // On flush $movie qui a été modifiée par le Serializer
         $em->flush();
 
-        // @todo Conditionner le message de retour au cas où
-        // l'entité ne serait pas modifiée
         return $this->json(['message' => 'Utilisateur modifié.'], Response::HTTP_OK);
     }
 
@@ -244,7 +243,7 @@ class UserController extends AbstractController
      */
     public function connectedUser()
     {
-
+        // 
         $user = $this->getUser();
         $role = $user->getRoles()[0];
         // dump($user);
