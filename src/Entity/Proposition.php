@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PropositionRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +29,8 @@ class Proposition
      * @Groups("propositions_read")
      * @Groups("categories_read")
      * @Groups("departments_read")
+     * 
+     * @Assert\NotBlank
      */
     private $title;
 
@@ -37,6 +40,8 @@ class Proposition
      * @Groups("propositions_read")
      * @Groups("categories_read")
      * @Groups("departments_read")
+     * 
+     * @Assert\NotBlank
      */
     private $content;
 
@@ -72,6 +77,8 @@ class Proposition
      * @Groups("volunteers_read")
      * @Groups("propositions_read")
      * @Groups("departments_read")
+     * 
+     * @Assert\NotBlank
      */
     private $category;
 

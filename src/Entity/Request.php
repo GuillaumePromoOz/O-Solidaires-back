@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\RequestRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +29,8 @@ class Request
      * @Groups("requests_read")
      * @Groups("categories_read")
      * @Groups("departments_read")
+     * 
+     * @Assert\NotBlank
      */
     private $title;
 
@@ -36,6 +39,8 @@ class Request
      * @Groups("beneficiaries_read")
      * @Groups("categories_read")
      * @Groups("departments_read")
+     * 
+     * @Assert\NotBlank
      */
     private $content;
 
@@ -73,6 +78,8 @@ class Request
      * @Groups("beneficiaries_read")
      * @Groups("requests_read")
      * @Groups("departments_read")
+     * 
+     * @Assert\NotBlank
      */
     private $category;
 

@@ -39,6 +39,8 @@ class User implements UserInterface
      * @Groups("departments_read")
      * @Groups("categories_read")
      * @Groups("admins_read")
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private $email;
 
@@ -57,6 +59,13 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Count(min=8, max=16)
+     * 
+     * - au moins une lettre minuscule
+     * - au moins une lettre majuscule
+     * - au moins un chiffre
+     * @Assert\Regex("/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/")  
+     * 
      */
     private $password;
 
@@ -69,6 +78,8 @@ class User implements UserInterface
      * @Groups("departments_read")
      * @Groups("categories_read")
      * @Groups("admins_read")
+     * 
+     * @Assert\NotBlank
      */
     private $lastname;
 
@@ -81,6 +92,8 @@ class User implements UserInterface
      * @Groups("departments_read")
      * @Groups("categories_read")
      * @Groups("admins_read")
+     * 
+     * @Assert\NotBlank
      */
     private $firstname;
 
@@ -116,6 +129,7 @@ class User implements UserInterface
      * @Groups("categories_read")
      * @Groups("admins_read")
      * 
+     * @Assert\NotBlank
      */
     private $department;
 
