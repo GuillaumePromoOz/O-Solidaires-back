@@ -64,7 +64,8 @@ security:
 
         # BENEFICIARY
         - { path: ^/propositions, methods: [GET], roles: ROLE_BENEFICIARY }
-        - { path: ^/(requests|users), methods: [POST, PATCH], roles: ROLE_BENEFICIARY }
+        - { path: ^/requests, methods: [POST, PATCH], roles: ROLE_BENEFICIARY }
+        - { path: ^/users, methods: [PATCH], roles: ROLE_BENEFICIARY }
         - { path: ^/(volunteers|beneficiaries), methods: [GET], roles: ROLE_BENEFICIARY }
         # - { path: ^/users, methods: [POST,PATCH], roles: ROLE_BENEFICIARY }
         # - { path: ^/requests, methods: [POST, PATCH], roles: ROLE_BENEFICIARY }
@@ -74,7 +75,8 @@ security:
 
         # VOLUNTEER
         - { path: ^/requests, methods: [GET], roles: ROLE_VOLUNTEER }
-        - { path: ^/(propositions|users), methods: [POST, PATCH], roles: ROLE_VOLUNTEER }
+        - { path: ^/propositions, methods: [POST, PATCH], roles: ROLE_VOLUNTEER }
+        - { path: ^/users, methods: [PATCH], roles: ROLE_VOLUNTEER }
         - { path: ^/(volunteers|beneficiaries), methods: [GET], roles: ROLE_VOLUNTEER }
         # - { path: ^/users, methods: [POST, PATCH], roles: ROLE_VOLUNTEER }
         # - { path: ^/propositions, methods: [POST, PATCH], roles: ROLE_VOLUNTEER }

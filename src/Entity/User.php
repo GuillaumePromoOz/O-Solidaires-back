@@ -39,6 +39,7 @@ class User implements UserInterface
      * @Groups("departments_read")
      * @Groups("categories_read")
      * @Groups("admins_read")
+     * 
      * @Assert\NotBlank
      * @Assert\Email
      */
