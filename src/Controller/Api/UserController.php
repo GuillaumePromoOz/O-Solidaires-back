@@ -232,8 +232,9 @@ class UserController extends AbstractController
         if (count($errors) > 0) {
             return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
+        //dd($jsonContent['lastname']);
         $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
+        //dd($user);
         $user->setUpdatedAt(new \DateTime());
         $em->flush();
 
