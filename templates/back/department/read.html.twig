@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ department.name }}{% endblock %}
+
+{% block body %}
+<h1>{{ department.name }}</h1>
+
+
+
+<h2>Administrateurs</h2>
+<table class="table table-hover table-striped">
+  
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Prénom</th>
+      <th scope="col">Email</th>
+      <th
+    </tr>
+  </thead>
+  <tbody>
+     
+    {% for admin in admins %}    
+    <tr>
+      <th scope="row">{{ admin.id }}</th>
+      <td><a href="#">{{ admin.lastname }}</a></td>
+      <th scope="row">{{ admin.firstname }}</th>
+      <th scope="row">{{ admin.email }}</th>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+
+
+
+<h2>Bénévoles</h2>
+
+<table class="table table-hover table-striped">
+  
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Prénom</th>
+      <th scope="col">Email</th>
+      <th
+    </tr>
+  </thead>
+  <tbody>
+     
+    {% for volunteer in volunteers %}
+    <tr>
+      <th scope="row">{{ volunteer.id }}</th>
+      <td><a href="#">{{ volunteer.lastname }}</a></td>
+      <th scope="row">{{ volunteer.firstname }}</th>
+      <th scope="row">{{ volunteer.email }}</th>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+
+
+
+<h2>Bénéficiaires</h2>
+
+<table class="table table-hover table-striped">
+  
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Prénom</th>
+      <th scope="col">Email</th>
+      <th
+    </tr>
+  </thead>
+  <tbody>
+     
+    {% for beneficiary in beneficiaries %}     
+    <tr>
+      <th scope="row">{{ beneficiary.id }}</th>
+      <td><a href="#">{{ beneficiary.lastname }}</a></td>
+      <th scope="row">{{ beneficiary.firstname }}</th>
+      <th scope="row">{{ beneficiary.email }}</th>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+
+{% endblock %}

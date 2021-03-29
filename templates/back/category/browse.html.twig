@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catégories{% endblock %}
+
+{% block body %}
+<h1>Liste des Catégories</h1>
+
+<table class="table table-hover table-striped">
+  
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nom</th>
+      <th
+    </tr>
+  </thead>
+  <tbody>
+     
+    {% for category in categories %}        
+    <tr>
+      <th scope="row">{{ category.id }}</th>
+      <td><a href="{{ path('back_category_read', {id: category.id}) }}">{{ category.name }}</a></td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+{% endblock %}

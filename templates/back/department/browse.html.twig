@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Départements{% endblock %}
+
+{% block body %}
+<h1>Liste des Départements</h1>
+
+<table class="table table-hover table-striped">
+  
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nom</th>
+      <th
+    </tr>
+  </thead>
+  <tbody>
+     
+    {% for department in departments %}        
+    <tr>
+      <th scope="row">{{ department.id }}</th>
+      <td><a href="{{ path('back_department_read', {id: department.id}) }}">{{ department.name }}</a></td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+
+{% endblock %}
