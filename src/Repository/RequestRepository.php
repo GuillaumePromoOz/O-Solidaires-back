@@ -19,6 +19,44 @@ class RequestRepository extends ServiceEntityRepository
         parent::__construct($registry, Request::class);
     }
 
+
+    /**
+     * Find all propositions by category
+     * 
+     */
+    public function findAllByCategory($category)
+    {
+        
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT r
+            FROM App\Entity\Request r
+            WHERE r.category = :category '
+        )
+        ->setParameter('category', $category);
+        
+        return $query->getResult();
+    }
+
+    /**
+     * Find all requests ordered by date DESC 
+     * 
+     */
+    public function findAllOrderedByDateDesc()
+    {
+        
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT r
+            FROM App\Entity\Request r
+            ORDER BY r.createdAt DESC'
+        );
+        
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Request[] Returns an array of Request objects
     //  */

@@ -19,6 +19,46 @@ class PropositionRepository extends ServiceEntityRepository
         parent::__construct($registry, Proposition::class);
     }
 
+
+
+    /**
+     * Find all propositions by category
+     * 
+     */
+    public function findAllByCategory($category)
+    {
+        
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p
+            FROM App\Entity\Proposition p
+            WHERE p.category = :category '
+        )
+        ->setParameter('category', $category);
+        
+        return $query->getResult();
+    }
+
+    /**
+     * Find all propositions ordered by date DESC 
+     * 
+     */
+    public function findAllOrderedByDateDesc()
+    {
+        
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p
+            FROM App\Entity\Proposition p
+            ORDER BY p.createdAt DESC'
+        );
+        
+        return $query->getResult();
+    }
+
+
     // /**
     //  * @return Proposition[] Returns an array of Proposition objects
     //  */

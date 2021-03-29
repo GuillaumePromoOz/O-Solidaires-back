@@ -5,6 +5,61 @@
 {% block body %}
 <h1>{{ category.name }}</h1>
 
+<h2>Propositions</h2>
+<table class="table table-hover table-striped">
+  
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Titre</th>
+      <th scope="col">Contenu</th>
+      <th scope="col">Bénévole</th>
+      <th
+    </tr>
+  </thead>
+  <tbody>
+     
+    {% for proposition in propositions %}    
+    <tr>
+      <th scope="row">{{ proposition.id }}</th>
+      <td><a href="#">{{ proposition.title }}</a></td>
+      <th scope="row">{{ proposition.content }}</th>
+      <th scope="row"><a href="#">{{ proposition.user.lastname }} {{ proposition.user.firstname }}</a></th>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+
+
+
+<h2>Demandes</h2>
+
+<table class="table table-hover table-striped">
+  
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Titre</th>
+      <th scope="col">Contenu</th>
+      <th scope="col">Bénéficiaire</th>
+      <th
+    </tr>
+  </thead>
+  <tbody>
+     
+    {% for request in requests %}
+    <tr>
+      <th scope="row">{{ request.id }}</th>
+      <td><a href="#">{{ request.title }}</a></td>
+      <th scope="row">{{ request.content }}</th>
+      <th scope="row"><a href="#">{{ request.user.lastname }} {{ request.user.firstname }}</a></th>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
 
 
 

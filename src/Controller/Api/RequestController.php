@@ -22,7 +22,7 @@ class RequestController extends AbstractController
      */
     public function read(RequestRepository $requestRepository): Response
     {
-        $requests = $requestRepository->findAll();
+        $requests = $requestRepository->findAllOrderedByDateDesc();
 
         return $this->json($requests, 200, [], ['groups' => 'requests_read']);
     }
