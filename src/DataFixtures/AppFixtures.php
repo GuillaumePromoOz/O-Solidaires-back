@@ -34,6 +34,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         // Faker is a PHP library that generates fake data
+        // @see https://fakerphp.github.io/formatters/
         $faker = Factory::create('fr_FR');
         // Seed helps us generate the same data with each fixtures load 
         // (if for example you want to inject a new entity and user fixtures for that it won't generate a whole new batch of fake data)
@@ -59,7 +60,7 @@ class AppFixtures extends Fixture
             // we set the creation date of the department
             $department->setCreatedAt(new \DateTime());
             // We store a department inside the array 
-            $departementsList[] = $department;
+            $departmentsList[] = $department;
             $manager->persist($department);
         }
 
@@ -94,16 +95,20 @@ class AppFixtures extends Fixture
             $user->setLastname($faker->lastName());
             // we set the firstname
             $user->setFirstname($faker->firstName());
+            // we set the phone number
+            $user->setPhoneNumber($faker->phoneNumber());
+            // we set the user's biography
+            $user->setBio($faker->paragraph());
 
             // we create an email using the user's name (user->getLastname)
             // using preg_replace we cut out the spaces
             // using strtolower we get rid of any CAPS
             // we concatenate @gmail.com
-            $user->setEmail(strtolower(preg_replace('/\s+/', '', $user->getLastname())) . '@gmail.com');
+            $user->setEmail(strtolower(preg_replace('/\s+/', '', $user->getLastname())) . $i .'@gmail.com');
             // we set the user's role to beneficiary
             $user->setRoles(['ROLE_BENEFICIARY']);
             // we fetch a random Department in the departementsList
-            $randomDepartement = $departementsList[array_rand($departementsList)];
+            $randomDepartement = $departmentsList[array_rand($departmentsList)];
             // we assign this department to the current user
             $user->setDepartment($randomDepartement);
             // we set the creation date of the beneficiary
@@ -127,10 +132,14 @@ class AppFixtures extends Fixture
             $user->setFirstname($faker->firstName());
 
 
-            $user->setEmail(strtolower(preg_replace('/\s+/', '', $user->getLastname())) . '@gmail.com');
+            $user->setEmail(strtolower(preg_replace('/\s+/', '', $user->getLastname())) . $i .'@gmail.com');
             $user->setRoles(['ROLE_VOLUNTEER']);
+            // we set the phone number
+            $user->setPhoneNumber($faker->phoneNumber());
+            // we set the user's biography
+            $user->setBio($faker->paragraph());
 
-            $randomDepartement = $departementsList[array_rand($departementsList)];
+            $randomDepartement = $departmentsList[array_rand($departmentsList)];
             $user->setDepartment($randomDepartement);
 
             $user->setCreatedAt(new \DateTime());
@@ -155,7 +164,12 @@ class AppFixtures extends Fixture
             $user->setEmail('toto' . $i . '@gmail.com');
             $user->setRoles(['ROLE_ADMIN']);
 
-            $randomDepartement = $departementsList[array_rand($departementsList)];
+            // we set the phone number
+            $user->setPhoneNumber($faker->phoneNumber());
+            // we set the user's biography
+            $user->setBio($faker->paragraph());
+
+            $randomDepartement = $departmentsList[array_rand($departmentsList)];
             $user->setDepartment($randomDepartement);
 
             $user->setCreatedAt(new \DateTime());

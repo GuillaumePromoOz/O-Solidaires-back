@@ -155,6 +155,32 @@ class User implements UserInterface
      */
     private $requests;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * 
+     * @Groups("beneficiaries_read")
+     * @Groups("volunteers_read")
+     * @Groups("requests_read")
+     * @Groups("propositions_read")
+     * @Groups("categories_read")
+     * @Groups("admins_read")
+     */
+    private $bio;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     * 
+     * @Groups("beneficiaries_read")
+     * @Groups("volunteers_read")
+     * @Groups("requests_read")
+     * @Groups("propositions_read")
+     * @Groups("categories_read")
+     * @Groups("admins_read")
+     * @Assert\Regex("/^[0-9]{10}$/")  
+     * 
+     */
+    private $phoneNumber;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -371,6 +397,30 @@ class User implements UserInterface
                 $request->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
+
+    public function setBio(?string $bio): self
+    {
+        $this->bio = $bio;
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(?string $phoneNumber): self
+    {
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
