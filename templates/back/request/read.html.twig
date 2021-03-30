@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ request.title }}{% endblock %}
+
+{% block body %}
+<h1>{{ request.title }}</h1>
+
+<h3>Categorie :</h3>
+<p>{{ request.category }}</p>
+
+<hr>
+
+<h3>Contenu :</h3>
+<p>{{ request.content}}</p>
+
+<hr>
+
+<h3>Date de disponibilité :</h3>
+<p>{{ request.interventionDate|date('m/d/Y')}}</p>
+
+<hr>
+<h3>Bénévole</h3>
+<p>Nom : {{ request.user.lastname }}</p>
+<p>Prénom : {{ request.user.firstname }}</p>
+<p>Email : {{ request.user.email }}</p>
+<p>Téléphone : {{ request.user.phoneNumber }}</p>
+<p>Image : {{ request.user.picture }}</p>
+<p>Département : {{ request.user.department }}</p>
+<p>Biographie : {{ request.user.bio }}</p>
+
+<a class="btn btn-sm btn-success" href="{{ path('back_request_browse') }}">retour</a>
+
+{% endblock %}

@@ -33,15 +33,12 @@ class PropositionController extends AbstractController
      * 
      * @Route("/back/proposition/read/{id<\d+>}", name="back_proposition_read", methods="GET")
      */
-    public function read(Proposition $proposition = null, UserRepository $userRepository): Response
+    public function read(Proposition $proposition = null): Response
     {
         if ($proposition === null) {
-            throw $this->createNotFoundException('Département non trouvé.');
+            throw $this->createNotFoundException('Proposition non trouvée.');
         }
-        $id = $proposition->getId();
-        
-
-
+ 
         return $this->render('back/proposition/read.html.twig',[
             'proposition' => $proposition,
             
