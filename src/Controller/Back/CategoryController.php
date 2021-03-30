@@ -3,25 +3,49 @@
 namespace App\Controller\Back;
 
 use App\Entity\Category;
-use App\Repository\CategoryRepository;
-use App\Repository\PropositionRepository;
+use App\Form\CategoryType;
 use App\Repository\RequestRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\PropositionRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CategoryController extends AbstractController
 {
     /**
      * Get all categories
      * 
-     * @Route("/back/category/browse", name="back_category_browse", methods={"GET"})
+     * @Route("/back/category/browse", name="back_category_browse", methods={"GET", "POST"})
      */
-    public function browse(CategoryRepository $categoryRepository): Response
+    public function browse(CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
+
+        $category = new Category();
+
+        
+        $form = $this->createForm(CategoryType::class, $category);
+
+       
+        $form->handleRequest($request);
+
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            //dd($data);
+            $entityManager->persist($category);
+            $entityManager->flush();
+
+            
+            return $this->redirectToRoute('back_category_browse');
+        }
+       
         $categories = $categoryRepository->findAll();
 
         return $this->render('back/category/browse.html.twig', [
+            'form' => $form->createView(),
             'categories' => $categories,
         ]);
     }
@@ -48,4 +72,7 @@ class CategoryController extends AbstractController
             
         ]);
     }
+
+   
+
 }

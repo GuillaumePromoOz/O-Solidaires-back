@@ -3,6 +3,9 @@
 {% block title %}Catégories{% endblock %}
 
 {% block body %}
+
+
+
 <h1>Liste des Catégories</h1>
 
 <table class="table table-hover table-striped">
@@ -25,4 +28,11 @@
 
   </tbody>
 </table>
+
+
+<h3>Ajouter une catégorie</h3>
+
+{{ include('_form.html.twig') }}
+
 {% endblock %}
+
