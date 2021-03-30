@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
 
-    /*          _____  __  __ _____ _   _  
+    /*             _____  __  __ _____ _   _  
       /\   |  __ \|  \/  |_   _| \ | |/ ____|
      /  \  | |  | | \  / | | | |  \| | (___  
     / /\ \ | |  | | |\/| | | | | . ` |\___ \ 
@@ -26,7 +26,7 @@ class UserController extends AbstractController
     /**
      * Admins list
      * 
-     * @Route("/back/admin/browse", name="back_admin_browse", methods={"GET"})
+     * @Route("/back/admin/browse", name="admin_browse", methods={"GET"})
      */
     public function adminBrowse(UserRepository $userRepository): Response
     {
@@ -80,7 +80,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             // Redirects to list 
-            return $this->redirectToRoute('back_admin_browse');
+            return $this->redirectToRoute('admin_browse');
         }
 
         return $this->render('back/user/admin/add.html.twig', [
@@ -114,7 +114,7 @@ class UserController extends AbstractController
             // Saves the edits 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('back_admin_browse');
+            return $this->redirectToRoute('admin_browse');
         }
 
         return $this->render('back/user/admin/edit.html.twig', [
@@ -149,7 +149,7 @@ class UserController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('back_admin_browse');
+        return $this->redirectToRoute('admin_browse');
     }
 
     /*____  ______ _   _ ______ ______ _____ _____ _____          _____  _____ ______  _____ 
@@ -163,7 +163,7 @@ class UserController extends AbstractController
     /**
      * Beneficiaries list
      * 
-     * @Route("/back/beneficiary/browse", name="back_beneficiary_browse", methods={"GET"})
+     * @Route("/back/beneficiary/browse", name="beneficiary_browse", methods={"GET"})
      */
     public function beneficiaryBrowse(UserRepository $userRepository): Response
     {
@@ -217,7 +217,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             // Redirects to list 
-            return $this->redirectToRoute('back_beneficiary_browse');
+            return $this->redirectToRoute('beneficiary_browse');
         }
 
         return $this->render('back/user/beneficiary/add.html.twig', [
@@ -251,7 +251,7 @@ class UserController extends AbstractController
             // Saves the edits 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('back_beneficiary_browse');
+            return $this->redirectToRoute('beneficiary_browse');
         }
 
         return $this->render('back/user/beneficiary/edit.html.twig', [
@@ -286,7 +286,7 @@ class UserController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('back_beneficiary_browse');
+        return $this->redirectToRoute('beneficiary_browse');
     }
 
     /* 
@@ -301,7 +301,7 @@ class UserController extends AbstractController
     /**
      * Volunteers list
      * 
-     * @Route("/back/volunteer/browse", name="back_volunteer_browse", methods={"GET"})
+     * @Route("/back/volunteer/browse", name="volunteer_browse", methods={"GET"})
      */
     public function volunteersBrowse(UserRepository $userRepository): Response
     {
@@ -355,7 +355,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             // Redirects to list 
-            return $this->redirectToRoute('back_volunteer_browse');
+            return $this->redirectToRoute('volunteer_browse');
         }
 
         return $this->render('back/user/volunteer/add.html.twig', [
@@ -389,7 +389,7 @@ class UserController extends AbstractController
             // Saves the edits 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('back_volunteer_browse');
+            return $this->redirectToRoute('volunteer_browse');
         }
 
         return $this->render('back/user/volunteer/edit.html.twig', [
@@ -424,6 +424,6 @@ class UserController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('back_volunteer_browse');
+        return $this->redirectToRoute('volunteer_browse');
     }
 }
