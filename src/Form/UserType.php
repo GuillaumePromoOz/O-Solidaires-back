@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class UserType extends AbstractType
@@ -24,8 +25,19 @@ class UserType extends AbstractType
                 'constraints' => [
                     // Format E-mail valide
                     new Email(),
-                ]])
-            ->add('roles')
+                ]
+            ])
+            ->add('roles', ChoiceType::class, [
+                'choices' => [
+                    'Utilisateur' => 'ROLE_USER',
+                    'Manager' => 'ROLE_MANAGER',
+                    'Administrateur' => 'ROLE_ADMIN',
+                ],
+                // Tableau attendu côté PHP
+                'multiple' => true,
+                // Checkboxes
+                'expanded' => true,
+            ])
             ->add('password', PasswordType::class, [
                 'constraints' => [
                     new NotBlank(),
@@ -35,9 +47,9 @@ class UserType extends AbstractType
                     // - au moins un chiffre
                     // - au moins un de ces caractères spéciaux: $ @ % * + - _ !
                     //new Regex('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,16})$/'),
-                    ],
-                    //'help' => 'Entre 8 et 16 caractères, une majuscule, une minuscule, un chiffre, $@%*+-_!',
-                    
+                ],
+                //'help' => 'Entre 8 et 16 caractères, une majuscule, une minuscule, un chiffre, $@%*+-_!',
+
             ])
             ->add('lastname', TextType::class, [
                 'constraints' => new NotBlank(),
@@ -45,7 +57,7 @@ class UserType extends AbstractType
             ->add('firstname', TextType::class, [
                 'constraints' => new NotBlank(),
             ])
-            ->add('picture', FileType::class,[
+            ->add('picture', FileType::class, [
                 'constraints' => [
                     new File([
                         'maxSize' => '4096k',
@@ -56,9 +68,8 @@ class UserType extends AbstractType
                         'mimeTypesMessage' => 'Le fichier n\'est pas au bon format (formats acceptés: .png, .jpg, .jpeg)',
                     ]),
                 ]
-                ])
-            ->add('department')
-        ;
+            ])
+            ->add('department');
     }
 
     public function configureOptions(OptionsResolver $resolver)

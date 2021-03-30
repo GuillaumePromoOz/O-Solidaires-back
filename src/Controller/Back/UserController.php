@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
 {
@@ -41,12 +42,12 @@ class UserController extends AbstractController
         ]);
     }
 
-     /**
+    /**
      * Form to add an admin
      * 
      * @Route("/back/admin/add", name="admin_add")
      */
-    public function adminAdd(Request $request, EntityManagerInterface $entityManager)
+    public function adminAdd(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
     {
         // the entity to create
         $admin = new User();
@@ -58,6 +59,10 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // We encode the password
+            // setPassword() fetches the password entered by the user ($user->getPassword) that's now been hashed
+            $admin->setPassword($passwordEncoder->encodePassword($admin, $user->getPassword()));
 
             // save the new admin
             $entityManager->persist($admin);
@@ -71,6 +76,4 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
-
 }
