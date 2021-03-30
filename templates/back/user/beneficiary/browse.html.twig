@@ -3,6 +3,11 @@
 {% block title %}Bénéficiaires{% endblock %}
 
 {% block body %}
+
+<h1>Liste des bénéficiaires</h1>
+
+<p><a href="{{ path('beneficiary_add') }}" class="btn btn-success">Ajouter un bénéficiaire</a></p>
+
 <table class="table table-striped">
     {# En-têtes #}
   <thead>

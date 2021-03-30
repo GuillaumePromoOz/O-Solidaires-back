@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
@@ -29,8 +31,8 @@ class UserType extends AbstractType
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [
-                    'Utilisateur' => 'ROLE_USER',
-                    'Manager' => 'ROLE_MANAGER',
+                    'Bénéficiaire' => 'ROLE_BENEFICIARY',
+                    'Volontaire' => 'ROLE_VOLUNTEER',
                     'Administrateur' => 'ROLE_ADMIN',
                 ],
                 // Tableau attendu côté PHP
@@ -38,19 +40,57 @@ class UserType extends AbstractType
                 // Checkboxes
                 'expanded' => true,
             ])
-            ->add('password', PasswordType::class, [
-                'constraints' => [
-                    new NotBlank(),
-                    // - de 8 à 16 caractères
-                    // - au moins une lettre minuscule
-                    // - au moins une lettre majuscule
-                    // - au moins un chiffre
-                    // - au moins un de ces caractères spéciaux: $ @ % * + - _ !
-                    //new Regex('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,16})$/'),
-                ],
-                //'help' => 'Entre 8 et 16 caractères, une majuscule, une minuscule, un chiffre, $@%*+-_!',
+            // ->add('password', PasswordType::class, [
+            //     'constraints' => [
+            //         new NotBlank(),
+            //         // - de 8 à 16 caractères
+            //         // - au moins une lettre minuscule
+            //         // - au moins une lettre majuscule
+            //         // - au moins un chiffre
+            //         // - au moins un de ces caractères spéciaux: $ @ % * + - _ !
+            //         //new Regex('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,16})$/'),
+            //     ],
+            //     //'help' => 'Entre 8 et 16 caractères, une majuscule, une minuscule, un chiffre, $@%*+-_!',
 
-            ])
+            // ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                // Le user mappé sur le form
+                $user = $event->getData();
+                // L'objet form à récupérer pour travailler avec
+                // (car il est inconnu dans cette fonction anonyme)
+                $form = $event->getForm();
+
+                // L'entité $user existe-t-il en BDD ?
+                // Si $user a un identifiant, c'est qu'il existe en base
+                $id = $user->getId();
+
+                if ($id !== null) {
+                    // Si non => add
+                    $form->add('password', PasswordType::class, [
+                        // Si donnée vide (null), remplacer par chaine vide
+                        // @see https://symfony.com/doc/current/reference/forms/types/password.html#empty-data
+                        'empty_data' => '',
+                        'attr' => [
+                            'placeholder' => 'Laissez vide si inchangé',
+                        ],
+                        // @see https://symfony.com/doc/current/reference/forms/types/email.html#mapped
+                        // Ce champ ne sera présent que dans la requête et dans le form
+                        // mais PAS dans l'entité !
+                        'mapped' => false,
+
+                    ]);
+                } else {
+                    // Si oui => edit
+                    $form->add('password', PasswordType::class, [
+                        // Si donnée vide (null), remplacer par chaine vide
+                        // @see https://symfony.com/doc/current/reference/forms/types/password.html#empty-data
+                        'empty_data' => '',
+                        'constraints' => [
+                            new NotBlank(),
+                        ]
+                    ]);
+                }
+            })
             ->add('lastname', TextType::class, [
                 'constraints' => new NotBlank(),
             ])

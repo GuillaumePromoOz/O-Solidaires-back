@@ -3,6 +3,11 @@
 {% block title %}Admin{% endblock %}
 
 {% block body %}
+
+<h1>Liste des administrateurs</h1>
+
+<p><a href="{{ path('admin_add') }}" class="btn btn-success">Ajouter un administrateur</a></p>
+
 <table class="table table-striped">
     {# En-têtes #}
   <thead>
