@@ -38,6 +38,7 @@ class Request
     /**
      * @ORM\Column(type="text")
      * @Groups("beneficiaries_read")
+     * @Groups("requests_read")
      * @Groups("categories_read")
      * @Groups("departments_read")
      * 
