@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+<table class="table table-striped">
+    {# En-têtes #}
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Prénom</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {# Film #}
+    {% for admin in admins %}
+    <tr>
+      <th scope="row">{{ admin.id }}</th>
+      <td>{{ admin.lastname }}</td>
+      <td>{{ admin.firstname }}</td>
+      <td><form action="{{ path('admin_delete', {id: admin.id}) }}" onsubmit="return confirm('Supprimer l\'utilisateur #{{ admin.id }} ?')" method="POST">
+        {# Fake HTTP Method, see https://symfony.com/doc/current/routing.html#matching-http-methods #}
+        <input type="hidden" name="_method" value="DELETE"/>
+        {# CSRF Token manuel see https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually #}
+        <input type="hidden" name="token" value="{{ csrf_token('delete-admin') }}"/>
+        <a class="btn btn-sm btn-primary" href="{{ path('admin_edit', {id: admin.id}) }}">Modifier</a>
+        <button class="btn btn-sm btn-danger" type="submit">Supprimer</button>
+      </form></td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+{% endblock %}
