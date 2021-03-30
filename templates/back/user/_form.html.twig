@@ -1,0 +1,17 @@
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+    {#{{ form_widget(form) }} #}
+     {#
+        Pour ordonner les champs, notamment avec un Form Listener
+        on utilise form_row pour les rendre 1 par 1
+    #}
+
+    {{ form_row(form.email) }}
+    {{ form_row(form.password) }}
+    {{ form_row(form.roles) }}
+    {{ form_row(form.lastname) }}
+    {{ form_row(form.firstname) }}
+    {{ form_row(form.picture) }}
+    {{ form_row(form.department) }}
+
+    <button type="submit" class="btn btn-success">Enregistrer</button>
+{{ form_end(form) }}

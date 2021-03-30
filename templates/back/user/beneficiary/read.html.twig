@@ -3,7 +3,30 @@
 {% block title %}Admin{% endblock %}
 
 {% block body %}
-    <ul>
-        <li>{{ admin.lastname }}</li>
-    </ul>
+
+   <h1>{{ beneficiary.firstname }} {{ beneficiary.lastname }}</h1>
+
+<table class="table table-striped">
+    {# En-têtes #}
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Prénom</th>
+      <th scope="col">Email</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {# One admin #}
+    <tr>
+      <th scope="row">{{ admin.id }}</th>
+      <td>{{ admin.lastname }}</td>
+      <td>{{ admin.firstname }}</td>
+      <td>{{ admin.email }}</td>
+      <td><p><a href="{{ path('admin_browse') }}" class="btn btn-success">Retour</a></p></td>
+    </tr>
+  </tbody>
+</table>
 {% endblock %}
