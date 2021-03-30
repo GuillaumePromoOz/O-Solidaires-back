@@ -73,6 +73,58 @@ class CategoryController extends AbstractController
         ]);
     }
 
+    /**
+     * Edit one category
+     * 
+     * @Route("/back/category/edit/{id}", name="back_category_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Category $category): Response
+    {
+        
+
+        $form = $this->createForm(CategoryType::class, $category);
+        
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $category->setUpdatedAt(new \DateTime());
+
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('back_category_browse');
+        }
+
+        return $this->render('back/category/edit.html.twig', [
+            'category' => $category,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * DELETE one Category
+     * 
+     * @Route("/back/category/delete/{id<\d+>}", name="back_category_delete", methods={"DELETE"})
+     */
+    public function delete(Category $category = null, Request $request, EntityManagerInterface $entityManager)
+    {
+       
+        if ($category === null) {
+            throw $this->createNotFoundException('Catégorie non trouvée.');
+        }
+
+        $submittedToken = $request->request->get('token');
+
+        
+        if (! $this->isCsrfTokenValid('delete-category', $submittedToken)) {
+            throw $this->createAccessDeniedException('Accès refusé.');
+        }
+
+        $entityManager->remove($category);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('back_category_browse');
+    }
    
 
 }

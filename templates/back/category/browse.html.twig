@@ -14,6 +14,7 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Nom</th>
+      <th scope="col">Actions</th>
       <th
     </tr>
   </thead>
@@ -23,6 +24,15 @@
     <tr>
       <th scope="row">{{ category.id }}</th>
       <td><a href="{{ path('back_category_read', {id: category.id}) }}">{{ category.name }}</a></td>
+      <td>
+          <a class="btn btn-sm btn-primary" href="{{ path('back_category_edit', {id: category.id}) }}">Modifier</a>
+
+          <form action="{{ path('back_category_delete', {id:category.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ category.name|e('js') }} ?')" method="POST">
+            <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
+            <input type="hidden" name="_method" value="DELETE"/>
+            <input type="hidden" name="token" value="{{ csrf_token('delete-category') }}"/>
+          </form>
+      </td>
     </tr>
     {% endfor %}
 
