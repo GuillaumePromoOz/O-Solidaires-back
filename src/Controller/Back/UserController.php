@@ -170,7 +170,7 @@ class UserController extends AbstractController
         $beneficiaries = $userRepository->findAllByRole($role);
 
         return $this->render('back/user/beneficiary/browse.html.twig', [
-            'admins' => $beneficiaries,
+            'beneficiaries' => $beneficiaries,
         ]);
     }
 
