@@ -4,8 +4,36 @@
 
 {% block body %}
 <h1>Liste des Propositions</h1>
+<a class="btn btn-sm btn-success" href="{{ path('back_proposition_add') }}">Ajouter une proposition</a>
+<table class="table table-hover table-striped">
+  
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Catégorie</th>
+      <th scope="col">Titre</th>
+      <th scope="col">Contenu</th>
+      <th scope="col">disponibility_date</th>
+      <th scope="col">Bénévole</th>
+      <th scope="col">Département</th>
+    </tr>
+  </thead>
+  <tbody>
+     
+    {% for proposition in propositions %}        
+    <tr>
+      <th scope="row">{{ proposition.id }}</th>
+      <td>{{ proposition.category }}</td>
+      <td><a href="{{ path('back_proposition_read', {id: proposition.id}) }}">{{ proposition.title }}</a></td>
+      <td>{{ proposition.content }}</td>
+      <td>{{ proposition.disponibilityDate|date('m/d/Y')}}</td>
+      <td><a href="#">{{ proposition.user.lastname }} {{ proposition.user.firstname }}</a></td>
+      <td>{{ proposition.user.department }}</td>
+    </tr>
+    {% endfor %}
 
-
+  </tbody>
+</table>
   
   
 {% endblock %}

@@ -51,6 +51,7 @@ class Proposition
      * @Groups("categories_read")
      * @Groups("departments_read")
      * @Groups("volunteers_read")
+     * 
      */
     private $disponibilityDate;
 

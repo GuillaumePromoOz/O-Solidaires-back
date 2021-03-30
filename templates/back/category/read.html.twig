@@ -15,8 +15,6 @@
       <th scope="col">Contenu</th>
       <th scope="col">Bénévole</th>
       <th scope="col">Département</th>
-      <th
-      <th
     </tr>
   </thead>
   <tbody>
@@ -25,9 +23,9 @@
     <tr>
       <th scope="row">{{ proposition.id }}</th>
       <td><a href="#">{{ proposition.title }}</a></td>
-      <th scope="row">{{ proposition.content }}</th>
-      <th scope="row"><a href="#">{{ proposition.user.lastname }} {{ proposition.user.firstname }}</a></th>
-      <th scope="row">{{ proposition.user.department }}</th>
+      <td>{{ proposition.content }}</td>
+      <td><a href="#">{{ proposition.user.lastname }} {{ proposition.user.firstname }}</a></td>
+      <td>{{ proposition.user.department }}</td>
     </tr>
     {% endfor %}
 
@@ -48,7 +46,6 @@
       <th scope="col">Contenu</th>
       <th scope="col">Bénéficiaire</th>
       <th scope="col">Département</th>
-      <th
     </tr>
   </thead>
   <tbody>
@@ -57,9 +54,9 @@
     <tr>
       <th scope="row">{{ request.id }}</th>
       <td><a href="#">{{ request.title }}</a></td>
-      <th scope="row">{{ request.content }}</th>
-      <th scope="row"><a href="#">{{ request.user.lastname }} {{ request.user.firstname }}</a></th>
-      <th scope="row">{{ request.user.department }}</th>
+      <td>{{ request.content }}</td>
+      <td><a href="#">{{ request.user.lastname }} {{ request.user.firstname }}</a></td>
+      <td>{{ request.user.department }}</td>
     </tr>
     {% endfor %}
 
@@ -67,7 +64,7 @@
 </table>
 
 
-
+<a class="btn btn-sm btn-success" href="{{ path('back_category_browse') }}">retour</a>
 
 
 

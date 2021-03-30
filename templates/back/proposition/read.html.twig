@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ proposition.title }}{% endblock %}
+
+{% block body %}
+<h1>{{ proposition.title }}</h1>
+
+<h3>Categorie :</h3>
+<p>{{ proposition.category }}</p>
+
+<hr>
+
+<h3>Contenu :</h3>
+<p>{{ proposition.content}}</p>
+
+<hr>
+
+<h3>Date de disponibilité :</h3>
+<p>{{ proposition.disponibilityDate|date('m/d/Y')}}</p>
+
+<hr>
+<h3>Bénévole</h3>
+<p>Nom : {{ proposition.user.lastname }}</p>
+<p>Prénom : {{ proposition.user.firstname }}</p>
+<p>Email : {{ proposition.user.email }}</p>
+<p>Téléphone : {{ proposition.user.phoneNumber }}</p>
+<p>Image : {{ proposition.user.picture }}</p>
+<p>Département : {{ proposition.user.department }}</p>
+<p>Biographie : {{ proposition.user.bio }}</p>
+
+<a class="btn btn-sm btn-success" href="{{ path('back_proposition_browse') }}">retour</a>
+
+{% endblock %}

@@ -16,7 +16,6 @@
       <th scope="col">Nom</th>
       <th scope="col">Prénom</th>
       <th scope="col">Email</th>
-      <th
     </tr>
   </thead>
   <tbody>
@@ -25,8 +24,8 @@
     <tr>
       <th scope="row">{{ admin.id }}</th>
       <td><a href="#">{{ admin.lastname }}</a></td>
-      <th scope="row">{{ admin.firstname }}</th>
-      <th scope="row">{{ admin.email }}</th>
+      <td>{{ admin.firstname }}</td>
+      <td>{{ admin.email }}</td>
     </tr>
     {% endfor %}
 
@@ -46,7 +45,6 @@
       <th scope="col">Nom</th>
       <th scope="col">Prénom</th>
       <th scope="col">Email</th>
-      <th
     </tr>
   </thead>
   <tbody>
@@ -55,8 +53,8 @@
     <tr>
       <th scope="row">{{ volunteer.id }}</th>
       <td><a href="#">{{ volunteer.lastname }}</a></td>
-      <th scope="row">{{ volunteer.firstname }}</th>
-      <th scope="row">{{ volunteer.email }}</th>
+      <td>{{ volunteer.firstname }}</td>
+      <td>{{ volunteer.email }}</td>
     </tr>
     {% endfor %}
 
@@ -76,7 +74,6 @@
       <th scope="col">Nom</th>
       <th scope="col">Prénom</th>
       <th scope="col">Email</th>
-      <th
     </tr>
   </thead>
   <tbody>
@@ -85,13 +82,14 @@
     <tr>
       <th scope="row">{{ beneficiary.id }}</th>
       <td><a href="#">{{ beneficiary.lastname }}</a></td>
-      <th scope="row">{{ beneficiary.firstname }}</th>
-      <th scope="row">{{ beneficiary.email }}</th>
+      <td>{{ beneficiary.firstname }}</td>
+      <td>{{ beneficiary.email }}</td>
     </tr>
     {% endfor %}
 
   </tbody>
 </table>
 
+<a class="btn btn-sm btn-success" href="{{ path('back_departement_browse') }}">retour</a>
 
 {% endblock %}
