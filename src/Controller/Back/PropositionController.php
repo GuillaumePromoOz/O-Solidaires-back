@@ -75,4 +75,57 @@ class PropositionController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * Edit one proposition
+     * 
+     * @Route("/back/proposition/edit/{id}", name="back_proposition_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Proposition $proposition): Response
+    {
+        
+
+        $form = $this->createForm(PropositionType::class, $proposition);
+        
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $proposition->setUpdatedAt(new \DateTime());
+
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('back_proposition_browse');
+        }
+
+        return $this->render('back/proposition/edit.html.twig', [
+            'proposition' => $proposition,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * DELETE one Proposition
+     * 
+     * @Route("/back/proposition/delete/{id<\d+>}", name="back_proposition_delete", methods={"DELETE"})
+     */
+    public function delete(Proposition $proposition = null, Request $request, EntityManagerInterface $entityManager)
+    {
+       
+        if ($proposition === null) {
+            throw $this->createNotFoundException('Proposition non trouvée.');
+        }
+
+        $submittedToken = $request->request->get('token');
+
+        
+        if (! $this->isCsrfTokenValid('delete-proposition', $submittedToken)) {
+            throw $this->createAccessDeniedException('Accès refusé.');
+        }
+
+        $entityManager->remove($proposition);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('back_proposition_browse');
+    }
 }

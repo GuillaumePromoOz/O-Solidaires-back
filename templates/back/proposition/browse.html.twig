@@ -16,6 +16,7 @@
       <th scope="col">disponibility_date</th>
       <th scope="col">Bénévole</th>
       <th scope="col">Département</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -29,6 +30,15 @@
       <td>{{ proposition.disponibilityDate|date('m/d/Y')}}</td>
       <td><a href="#">{{ proposition.user.lastname }} {{ proposition.user.firstname }}</a></td>
       <td>{{ proposition.user.department }}</td>
+      <td>
+          <a class="btn btn-sm btn-primary" href="{{ path('back_proposition_edit', {id: proposition.id}) }}">Modifier</a>
+
+          <form action="{{ path('back_proposition_delete', {id:proposition.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ proposition.title|e('js') }} ?')" method="POST">
+            <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
+            <input type="hidden" name="_method" value="DELETE"/>
+            <input type="hidden" name="token" value="{{ csrf_token('delete-proposition') }}"/>
+          </form>
+      </td>
     </tr>
     {% endfor %}
 
