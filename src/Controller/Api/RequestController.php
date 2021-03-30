@@ -32,7 +32,7 @@ class RequestController extends AbstractController
      * 
      * @Route("/requests/{id<\d+>}", name="api_requests_read_item", methods="GET")
      */
-    public function readItem(Request $request = null): Response
+    public function readItem(RequestEntity $request = null): Response
     {
 
         // Checks if request is null
