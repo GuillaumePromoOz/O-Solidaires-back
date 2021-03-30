@@ -1,9 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bénévole{% endblock %}
+{% block title %}Bénévoles{% endblock %}
 
 {% block body %}
-    <ul>
-        <li>{{ admin.lastname }}</li>
-    </ul>
+
+   <h1>{{ volunteer.firstname }} {{ volunteer.lastname }}</h1>
+
+<table class="table table-striped">
+    {# En-têtes #}
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Prénom</th>
+      <th scope="col">Email</th>
+      <th scope="col">Department</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {# One beneficiary #}
+    <tr>
+      <th scope="row">{{ volunteer.id }}</th>
+      <td>{{ volunteer.lastname }}</td>
+      <td>{{ volunteer.firstname }}</td>
+      <td>{{ volunteer.email }}</td>
+      <td>{{ volunteer.department }}</td>
+    </tr>
+  </tbody>
+</table>
+
+{# Beneficiary's Requests #}
+
+<table class="table table-striped">
+    {# En-têtes #}
+  <thead>
+    <tr>
+     <th scope="col">Id</th>
+      <th scope="col">Titre</th>
+      <th scope="col">Contenu</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  <h2>Liste des demandes</h2>
+
+    {# Bénévole #}
+    {% for proposition in volunteer.propositions %}
+    <tr>
+      <th scope="row">{{ proposition.id }}</th>
+      <td>{{ proposition.title }}</td>
+      <td>{{ proposition.content }}</td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
 {% endblock %}
+

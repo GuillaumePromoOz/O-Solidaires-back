@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin{% endblock %}
+{% block title %}Bénéficiaires{% endblock %}
 
 {% block body %}
 
@@ -15,19 +15,46 @@
       <th scope="col">Prénom</th>
       <th scope="col">Email</th>
       <th scope="col">Department</th>
-      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
 
-    {# One admin #}
+    {# One beneficiary #}
     <tr>
-      <th scope="row">{{ admin.id }}</th>
-      <td>{{ admin.lastname }}</td>
-      <td>{{ admin.firstname }}</td>
-      <td>{{ admin.email }}</td>
-      <td><p><a href="{{ path('admin_browse') }}" class="btn btn-success">Retour</a></p></td>
+      <th scope="row">{{ beneficiary.id }}</th>
+      <td>{{ beneficiary.lastname }}</td>
+      <td>{{ beneficiary.firstname }}</td>
+      <td>{{ beneficiary.email }}</td>
+      <td>{{ beneficiary.department }}</td>
     </tr>
   </tbody>
 </table>
+
+{# Beneficiary's Requests #}
+
+<table class="table table-striped">
+    {# En-têtes #}
+  <thead>
+    <tr>
+     <th scope="col">Id</th>
+      <th scope="col">Titre</th>
+      <th scope="col">Contenu</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  <h2>Liste des demandes</h2>
+
+    {# Bénéficiaire #}
+    {% for request in beneficiary.requests %}
+    <tr>
+      <th scope="row">{{ request.id }}</th>
+      <td>{{ request.title }}</td>
+      <td>{{ request.content }}</td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
 {% endblock %}
