@@ -84,7 +84,7 @@
     {% for beneficiary in beneficiaries %}     
     <tr>
       <th scope="row">{{ beneficiary.id }}</th>
-      <td><a href="{{ {{ path('beneficiary_read', {id: beneficiary.id}) }} }}">{{ beneficiary.lastname }}</a></td>
+      <td><a href="{{ path('beneficiary_read', {id: beneficiary.id}) }}">{{ beneficiary.lastname }}</a></td>
       <td>{{ beneficiary.firstname }}</td>
       <td>{{ beneficiary.email }}</td>
     </tr>

@@ -12,7 +12,7 @@
     <p>Email : {{ admin.email }}</p>
     <p>Téléphone : {{ admin.phoneNumber }}</p>
     <p>Image : {{ admin.picture }}</p>
-    <p>Département : {{ admin.department }}</p>
+    <p>Département : <a href="{{ path('back_department_read', {id: admin.department.id}) }}">{{ admin.department.name }}</a></p>
     <p>Biographie : {{ admin.bio }}</p>
 
     <a class="btn btn-sm btn-success" href="{{ path('admin_browse') }}">retour</a>

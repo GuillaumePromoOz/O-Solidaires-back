@@ -30,7 +30,7 @@
       <td>{{ request.title }}</td>
       <td>{{ request.content }}</td>
       <td>{{ request.interventionDate|date('m/d/Y')}}</td>
-      <td><a href="#">{{ request.user.lastname }} {{ request.user.firstname }}</a></td>
+      <td>{{ request.user.lastname }} {{ request.user.firstname }}</td>
       <td>{{ request.user.department }}</td>
       <td><form action="{{ path('back_request_delete', {id:request.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ request.title|e('js') }} ?')" method="POST">
             <input type="hidden" name="_method" value="DELETE"/>

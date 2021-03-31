@@ -30,7 +30,7 @@
       <td>{{ proposition.title }}</td>
       <td>{{ proposition.content }}</td>
       <td>{{ proposition.disponibilityDate|date('m/d/Y')}}</td>
-      <td><a href="#">{{ proposition.user.lastname }} {{ proposition.user.firstname }}</a></td>
+      <td>{{ proposition.user.lastname }} {{ proposition.user.firstname }}</td>
       <td>{{ proposition.user.department }}</td>
       <td><form action="{{ path('back_proposition_delete', {id:proposition.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ proposition.title|e('js') }} ?')" method="POST">
             <input type="hidden" name="_method" value="DELETE"/>

@@ -38,7 +38,7 @@
     {% for request in beneficiary.requests %}
     <tr>
       <th scope="row">{{ request.id }}</th>
-      <td><a href="{{ path('back_category_read', {id: request.category.id}) }}">{{ request.category }}</a></td>
+      <td>{{ request.category }}</td>
       <td><a href="{{ path('back_request_read', {id: request.id}) }}">{{ request.title }}</a></td>
       <td>{{ request.content }}</td>
       <td>{{ request.interventionDate|date('m/d/Y')}}</td>

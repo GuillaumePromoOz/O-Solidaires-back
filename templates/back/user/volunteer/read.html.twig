@@ -39,7 +39,7 @@
     {% for proposition in volunteer.propositions %}
     <tr>
       <th scope="row">{{ proposition.id }}</th>
-      <td><a href="{{ path('back_category_read', {id: proposition.category.id}) }}">{{ proposition.category }}</a></td>
+      <td>{{ proposition.category }}</td>
       <td><a href="{{ path('back_proposition_read', {id: proposition.id}) }}">{{ proposition.title }}</a></td>
       <td>{{ proposition.content }}</td>
       <td>{{ proposition.disponibilityDate|date('m/d/Y')}}</td>
