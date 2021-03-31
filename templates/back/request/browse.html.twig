@@ -2,6 +2,8 @@
 
 {% block title %}Demande{% endblock %}
 
+{% block request %}active{% endblock %}
+
 {% block body %}
 <h1>Liste des demandes</h1>
 <a class="btn btn-sm btn-success" href="{{ path('back_request_add') }}">Ajouter une demande</a>
@@ -30,13 +32,13 @@
       <td>{{ request.interventionDate|date('m/d/Y')}}</td>
       <td><a href="#">{{ request.user.lastname }} {{ request.user.firstname }}</a></td>
       <td>{{ request.user.department }}</td>
-      <td><a class="btn btn-sm btn-primary" href="{{ path('back_request_edit', {id: request.id}) }}">Modifier</a>
-
-          <form action="{{ path('back_request_delete', {id:request.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ request.title|e('js') }} ?')" method="POST">
-            <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
+      <td><form action="{{ path('back_request_delete', {id:request.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ request.title|e('js') }} ?')" method="POST">
             <input type="hidden" name="_method" value="DELETE"/>
             <input type="hidden" name="token" value="{{ csrf_token('delete-request') }}"/>
-          </form></td>
+            <a class="btn btn-sm btn-primary" href="{{ path('back_request_edit', {id: request.id}) }}">Modifier</a>
+            <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
+          </form>
+      </td>
     </tr>
     {% endfor %}
 

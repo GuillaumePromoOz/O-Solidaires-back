@@ -2,6 +2,8 @@
 
 {% block title %}Catégories{% endblock %}
 
+{% block category %}active{% endblock %}
+
 {% block body %}
 
 
@@ -23,13 +25,11 @@
     <tr>
       <th scope="row">{{ category.id }}</th>
       <td><a href="{{ path('back_category_read', {id: category.id}) }}">{{ category.name }}</a></td>
-      <td>
-          <a class="btn btn-sm btn-primary" href="{{ path('back_category_edit', {id: category.id}) }}">Modifier</a>
-
-          <form action="{{ path('back_category_delete', {id:category.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ category.name|e('js') }} ?')" method="POST">
-            <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
+      <td><form action="{{ path('back_category_delete', {id:category.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ category.name|e('js') }} ?')" method="POST">
             <input type="hidden" name="_method" value="DELETE"/>
             <input type="hidden" name="token" value="{{ csrf_token('delete-category') }}"/>
+            <a class="btn btn-sm btn-primary" href="{{ path('back_category_edit', {id: category.id}) }}">Modifier</a>
+            <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
           </form>
       </td>
     </tr>

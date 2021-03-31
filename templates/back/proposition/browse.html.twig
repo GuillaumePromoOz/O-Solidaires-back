@@ -2,6 +2,8 @@
 
 {% block title %}Proposition{% endblock %}
 
+{% block proposition %}active{% endblock %}
+
 {% block body %}
 <h1>Liste des Propositions</h1>
 <a class="btn btn-sm btn-success" href="{{ path('back_proposition_add') }}">Ajouter une proposition</a>
@@ -30,13 +32,11 @@
       <td>{{ proposition.disponibilityDate|date('m/d/Y')}}</td>
       <td><a href="#">{{ proposition.user.lastname }} {{ proposition.user.firstname }}</a></td>
       <td>{{ proposition.user.department }}</td>
-      <td>
-          <a class="btn btn-sm btn-primary" href="{{ path('back_proposition_edit', {id: proposition.id}) }}">Modifier</a>
-
-          <form action="{{ path('back_proposition_delete', {id:proposition.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ proposition.title|e('js') }} ?')" method="POST">
-            <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
+      <td><form action="{{ path('back_proposition_delete', {id:proposition.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ proposition.title|e('js') }} ?')" method="POST">
             <input type="hidden" name="_method" value="DELETE"/>
             <input type="hidden" name="token" value="{{ csrf_token('delete-proposition') }}"/>
+            <a class="btn btn-sm btn-primary" href="{{ path('back_proposition_edit', {id: proposition.id}) }}">Modifier</a>
+            <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
           </form>
       </td>
     </tr>
