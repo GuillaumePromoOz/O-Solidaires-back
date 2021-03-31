@@ -44,9 +44,19 @@ class UserController extends AbstractController
      * 
      * @Route("/back/admin/read/{id}", name="admin_read", methods={"GET"})
      */
-    public function adminRead(User $user)
+    public function adminRead(User $user, UserRepository $userRepository)
     {
+        $id = $user->getId();
+        $role = '["ROLE_ADMIN"]';
 
+        // A custom method was created in the UserRepository
+        $admin = $userRepository->findUserById($role, $id);
+
+
+        // if there is no match, the beneficiary variable is considered empty and returns a 404
+        if (empty($admin)) {
+            throw $this->createNotFoundException('Utilisateur non trouvé.');
+        }
         return $this->render('back/user/admin/read.html.twig', [
             'admin' => $user,
         ]);
@@ -142,7 +152,7 @@ class UserController extends AbstractController
         // 'delete-{...}' is the same value used in the template to generate the token
         if (!$this->isCsrfTokenValid('delete-admin', $submittedToken)) {
             // We return a 403
-            throw $this->createAccessDeniedException('Are you token to me !??!??');
+            throw $this->createAccessDeniedException('Accès refusé.');
         }
 
         // Else we delete
@@ -279,7 +289,7 @@ class UserController extends AbstractController
         // 'delete-{...}' is the same value used in the template to generate the token
         if (!$this->isCsrfTokenValid('delete-beneficiary', $submittedToken)) {
             // We return a 403
-            throw $this->createAccessDeniedException('Are you token to me !??!??');
+            throw $this->createAccessDeniedException('Accès refusé.');
         }
 
         // Else we delete
@@ -417,7 +427,7 @@ class UserController extends AbstractController
         // 'delete-{...}' is the same value used in the template to generate the token
         if (!$this->isCsrfTokenValid('delete-volunteer', $submittedToken)) {
             // We return a 403
-            throw $this->createAccessDeniedException('Are you token to me !??!??');
+            throw $this->createAccessDeniedException('Accès refusé.');
         }
 
         // Else we delete

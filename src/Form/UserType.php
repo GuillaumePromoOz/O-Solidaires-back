@@ -40,19 +40,7 @@ class UserType extends AbstractType
                 // Checkboxes
                 'expanded' => true,
             ])
-            // ->add('password', PasswordType::class, [
-            //     'constraints' => [
-            //         new NotBlank(),
-            //         // - de 8 à 16 caractères
-            //         // - au moins une lettre minuscule
-            //         // - au moins une lettre majuscule
-            //         // - au moins un chiffre
-            //         // - au moins un de ces caractères spéciaux: $ @ % * + - _ !
-            //         //new Regex('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,16})$/'),
-            //     ],
-            //     //'help' => 'Entre 8 et 16 caractères, une majuscule, une minuscule, un chiffre, $@%*+-_!',
-
-            // ])
+            
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 // Le user mappé sur le form
                 $user = $event->getData();
@@ -85,18 +73,13 @@ class UserType extends AbstractType
                         // Si donnée vide (null), remplacer par chaine vide
                         // @see https://symfony.com/doc/current/reference/forms/types/password.html#empty-data
                         'empty_data' => '',
-                        'constraints' => [
-                            new NotBlank(),
-                        ]
                     ]);
                 }
             })
-            ->add('lastname', TextType::class, [
-                'constraints' => new NotBlank(),
-            ])
-            ->add('firstname', TextType::class, [
-                'constraints' => new NotBlank(),
-            ])
+            ->add('lastname', TextType::class)
+
+            ->add('firstname', TextType::class)
+
             ->add('picture', FileType::class, [
                 'constraints' => [
                     new File([

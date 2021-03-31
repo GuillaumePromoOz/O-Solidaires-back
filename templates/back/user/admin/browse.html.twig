@@ -28,7 +28,7 @@
       <th scope="row">{{ admin.id }}</th>
       <td>{{ admin.lastname }}</td>
       <td>{{ admin.firstname }}</td>
-      <td><form action="{{ path('admin_delete', {id: admin.id}) }}" onsubmit="return confirm('Supprimer l\'utilisateur #{{ admin.id }} ?')" method="POST">
+      <td><form action="{{ path('admin_delete', {id: admin.id}) }}" onsubmit="return confirm('Supprimer l\'administrateur {{ admin.lastname }} {{ admin.firstname }}?')" method="POST">
         {# Fake HTTP Method, see https://symfony.com/doc/current/routing.html#matching-http-methods #}
         <input type="hidden" name="_method" value="DELETE"/>
         {# CSRF Token manuel see https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually #}
