@@ -90,7 +90,21 @@ class UserType extends AbstractType
                 'label' => 'Prénom',
             ])
 
-            ->add('picture', UrlType::class)
+            ->add('picture', FileType::class, [
+                'label' => 'Image',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '4096k',
+                        'mimeTypes' => [
+                            'image/png',
+                            'image/jpeg',
+                        ],
+                        'mimeTypesMessage' => 'Le fichier n\'est pas au bon format (formats acceptés: .png, .jpg, .jpeg)',
+                    ]),
+                ]
+            ])
 
             ->add('phoneNumber', TextType::class, [
                 'label' => 'Numéro de téléphone',
