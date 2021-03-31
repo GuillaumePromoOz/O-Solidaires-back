@@ -22,7 +22,7 @@
 
 <hr>
 <h3>Bénévole</h3>
-<p>Nom : {{ proposition.user.lastname }} <a class="btn btn-sm btn-secondary" href="{{ path('volunteer_read', {id: proposition.user.id}) }}">Voir</a> </p>
+<p>Nom : <a href="{{ path('volunteer_read', {id: proposition.user.id}) }}">{{ proposition.user.lastname }}</a> </p>
 <p>Prénom : {{ proposition.user.firstname }}</p>
 <p>Email : {{ proposition.user.email }}</p>
 <p>Téléphone : {{ proposition.user.phoneNumber }}</p>

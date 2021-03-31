@@ -3,20 +3,24 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Entity\Department;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class UserType extends AbstractType
 {
@@ -32,7 +36,7 @@ class UserType extends AbstractType
             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'Bénéficiaire' => 'ROLE_BENEFICIARY',
-                    'Volontaire' => 'ROLE_VOLUNTEER',
+                    'Bénévole' => 'ROLE_VOLUNTEER',
                     'Administrateur' => 'ROLE_ADMIN',
                 ],
                 // Tableau attendu côté PHP
@@ -40,7 +44,7 @@ class UserType extends AbstractType
                 // Checkboxes
                 'expanded' => true,
             ])
-            
+
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 // Le user mappé sur le form
                 $user = $event->getData();
@@ -55,6 +59,7 @@ class UserType extends AbstractType
                 if ($id !== null) {
                     // Si non => add
                     $form->add('password', PasswordType::class, [
+                        'label' => 'Mot de passe',
                         // Si donnée vide (null), remplacer par chaine vide
                         // @see https://symfony.com/doc/current/reference/forms/types/password.html#empty-data
                         'empty_data' => '',
@@ -70,29 +75,34 @@ class UserType extends AbstractType
                 } else {
                     // Si oui => edit
                     $form->add('password', PasswordType::class, [
+                        'label' => 'Mot de passe',
                         // Si donnée vide (null), remplacer par chaine vide
                         // @see https://symfony.com/doc/current/reference/forms/types/password.html#empty-data
                         'empty_data' => '',
                     ]);
                 }
             })
-            ->add('lastname', TextType::class)
-
-            ->add('firstname', TextType::class)
-
-            ->add('picture', FileType::class, [
-                'constraints' => [
-                    new File([
-                        'maxSize' => '4096k',
-                        'mimeTypes' => [
-                            'image/png',
-                            'image/jpeg',
-                        ],
-                        'mimeTypesMessage' => 'Le fichier n\'est pas au bon format (formats acceptés: .png, .jpg, .jpeg)',
-                    ]),
-                ]
+            ->add('lastname', TextType::class, [
+                'label' => 'Nom',
             ])
-            ->add('department');
+
+            ->add('firstname', TextType::class, [
+                'label' => 'Prénom',
+            ])
+
+            ->add('picture', UrlType::class)
+
+            ->add('phoneNumber', TextType::class, [
+                'label' => 'Numéro de téléphone',
+            ])
+            ->add('bio', TextareaType::class, [
+                'label' => 'Votre biographie',
+            ])
+            ->add('department', EntityType::class, [
+                'class' => Department::class,
+                'choice_label' => 'name',
+                'label' => 'Département',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

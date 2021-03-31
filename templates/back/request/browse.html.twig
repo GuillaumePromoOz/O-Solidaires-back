@@ -6,7 +6,7 @@
 
 {% block body %}
 <h1>Liste des demandes</h1>
-<a class="btn btn-sm btn-success" href="{{ path('back_request_add') }}">Ajouter une demande</a>
+<a class="btn btn-sm btn-success mb-4" href="{{ path('back_request_add') }}">Ajouter une demande</a>
 <table class="table table-hover table-striped">
   
   <thead>
@@ -35,8 +35,8 @@
       <td><form action="{{ path('back_request_delete', {id:request.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ request.title|e('js') }} ?')" method="POST">
             <input type="hidden" name="_method" value="DELETE"/>
             <input type="hidden" name="token" value="{{ csrf_token('delete-request') }}"/>
-            <a class="btn btn-sm btn-secondary" href="{{ path('back_request_read', {id: request.id}) }}">Voir</a>
-            <a class="btn btn-sm btn-primary" href="{{ path('back_request_edit', {id: request.id}) }}">Modifier</a>
+            <a class="btn btn-sm btn-secondary mb-2" href="{{ path('back_request_read', {id: request.id}) }}">Voir</a>
+            <a class="btn btn-sm btn-primary mb-2" href="{{ path('back_request_edit', {id: request.id}) }}">Modifier</a>
             <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
           </form>
       </td>
