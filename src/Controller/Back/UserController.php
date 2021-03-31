@@ -121,6 +121,9 @@ class UserController extends AbstractController
                 $user->setPassword($hashedPassword);
             }
 
+            // Sets the new datetime in the database updated_at field
+            $user->setUpdatedAt(new \DateTime());
+
             // Saves the edits 
             $this->getDoctrine()->getManager()->flush();
 
@@ -191,8 +194,19 @@ class UserController extends AbstractController
      * 
      * @Route("/back/beneficiary/read/{id}", name="beneficiary_read", methods={"GET"})
      */
-    public function beneficiaryRead(User $user)
+    public function beneficiaryRead(User $user, UserRepository $userRepository)
     {
+        $id = $user->getId();
+        $role = '["ROLE_BENEFICIARY"]';
+
+        // A custom method was created in the UserRepository
+        $beneficiary = $userRepository->findUserById($role, $id);
+
+
+        // if there is no match, the beneficiary variable is considered empty and returns a 404
+        if (empty($beneficiary)) {
+            throw $this->createNotFoundException('Utilisateur non trouvé.');
+        }
 
         return $this->render('back/user/beneficiary/read.html.twig', [
             'beneficiary' => $user,
@@ -257,6 +271,9 @@ class UserController extends AbstractController
                 $hashedPassword = $passwordEncoder->encodePassword($user, $form->get('password')->getData());
                 $user->setPassword($hashedPassword);
             }
+
+            // Sets the new datetime in the database updated_at field
+            $user->setUpdatedAt(new \DateTime());
 
             // Saves the edits 
             $this->getDoctrine()->getManager()->flush();
@@ -329,8 +346,19 @@ class UserController extends AbstractController
      * 
      * @Route("/back/volunteer/read/{id}", name="volunteer_read", methods={"GET"})
      */
-    public function volunteerRead(User $user)
+    public function volunteerRead(User $user, UserRepository $userRepository)
     {
+        $id = $user->getId();
+        $role = '["ROLE_VOLUNTEER"]';
+
+        // A custom method was created in the UserRepository
+        $volunteer = $userRepository->findUserById($role, $id);
+
+
+        // if there is no match, the beneficiary variable is considered empty and returns a 404
+        if (empty($volunteer)) {
+            throw $this->createNotFoundException('Utilisateur non trouvé.');
+        }
 
         return $this->render('back/user/volunteer/read.html.twig', [
             'volunteer' => $user,
@@ -395,6 +423,9 @@ class UserController extends AbstractController
                 $hashedPassword = $passwordEncoder->encodePassword($user, $form->get('password')->getData());
                 $user->setPassword($hashedPassword);
             }
+
+            // Sets the new datetime in the database updated_at field
+            $user->setUpdatedAt(new \DateTime());
 
             // Saves the edits 
             $this->getDoctrine()->getManager()->flush();

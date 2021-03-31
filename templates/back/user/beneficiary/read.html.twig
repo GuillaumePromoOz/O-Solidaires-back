@@ -8,30 +8,15 @@
 
    <h1>{{ beneficiary.firstname }} {{ beneficiary.lastname }}</h1>
 
-<table class="table table-striped">
-    {# En-têtes #}
-  <thead>
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Nom</th>
-      <th scope="col">Prénom</th>
-      <th scope="col">Email</th>
-      <th scope="col">Department</th>
-    </tr>
-  </thead>
-  <tbody>
+    <p>Email : {{ beneficiary.email }}</p>
+    <p>Téléphone : {{ beneficiary.phoneNumber }}</p>
+    <p>Image : {{ beneficiary.picture }}</p>
+    <p>Département : {{ beneficiary.department }}</p>
+    <p>Biographie : {{ beneficiary.bio }}</p>
 
-    {# One beneficiary #}
-    <tr>
-      <th scope="row">{{ beneficiary.id }}</th>
-      <td>{{ beneficiary.lastname }}</td>
-      <td>{{ beneficiary.firstname }}</td>
-      <td>{{ beneficiary.email }}</td>
-      <td>{{ beneficiary.department }}</td>
-    </tr>
-  </tbody>
-</table>
+    <a class="btn btn-sm btn-success" href="{{ path('beneficiary_browse') }}">retour</a>
 
+    <hr>
 {# Beneficiary's Requests #}
 
 <table class="table table-striped">
@@ -39,8 +24,10 @@
   <thead>
     <tr>
      <th scope="col">Id</th>
+     <th scope="col">Catégorie</th>
       <th scope="col">Titre</th>
       <th scope="col">Contenu</th>
+      <th scope="col">Intervention</th>
     </tr>
   </thead>
   <tbody>
@@ -51,8 +38,10 @@
     {% for request in beneficiary.requests %}
     <tr>
       <th scope="row">{{ request.id }}</th>
-      <td>{{ request.title }}</td>
+      <td><a href="{{ path('back_category_read', {id: request.category.id}) }}">{{ request.category }}</a></td>
+      <td><a href="{{ path('back_request_read', {id: request.id}) }}">{{ request.title }}</a></td>
       <td>{{ request.content }}</td>
+      <td>{{ request.interventionDate|date('m/d/Y')}}</td>
     </tr>
     {% endfor %}
 

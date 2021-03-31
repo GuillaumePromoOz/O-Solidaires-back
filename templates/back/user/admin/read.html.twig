@@ -8,28 +8,13 @@
 
    <h1>{{ admin.firstname }} {{ admin.lastname }}</h1>
 
-<table class="table table-striped">
-    {# En-têtes #}
-  <thead>
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Nom</th>
-      <th scope="col">Prénom</th>
-      <th scope="col">Email</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
 
-    {# One admin #}
-    <tr>
-      <th scope="row">{{ admin.id }}</th>
-      <td>{{ admin.lastname }}</td>
-      <td>{{ admin.firstname }}</td>
-      <td>{{ admin.email }}</td>
-      <td><p><a href="{{ path('admin_browse') }}" class="btn btn-success">Retour</a></p></td>
-    </tr>
-  </tbody>
-</table>
+    <p>Email : {{ admin.email }}</p>
+    <p>Téléphone : {{ admin.phoneNumber }}</p>
+    <p>Image : {{ admin.picture }}</p>
+    <p>Département : {{ admin.department }}</p>
+    <p>Biographie : {{ admin.bio }}</p>
+
+    <a class="btn btn-sm btn-success" href="{{ path('admin_browse') }}">retour</a>
 {% endblock %}
 

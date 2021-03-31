@@ -27,7 +27,7 @@
     <tr>
       <th scope="row">{{ request.id }}</th>
       <td>{{ request.category }}</td>
-      <td><a href="{{ path('back_request_read', {id: request.id}) }}">{{ request.title }}</a></td>
+      <td>{{ request.title }}</td>
       <td>{{ request.content }}</td>
       <td>{{ request.interventionDate|date('m/d/Y')}}</td>
       <td><a href="#">{{ request.user.lastname }} {{ request.user.firstname }}</a></td>
@@ -35,6 +35,7 @@
       <td><form action="{{ path('back_request_delete', {id:request.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ request.title|e('js') }} ?')" method="POST">
             <input type="hidden" name="_method" value="DELETE"/>
             <input type="hidden" name="token" value="{{ csrf_token('delete-request') }}"/>
+            <a class="btn btn-sm btn-secondary" href="{{ path('back_request_read', {id: request.id}) }}">Voir</a>
             <a class="btn btn-sm btn-primary" href="{{ path('back_request_edit', {id: request.id}) }}">Modifier</a>
             <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
           </form>

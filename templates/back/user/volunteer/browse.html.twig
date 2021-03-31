@@ -28,11 +28,12 @@
       <th scope="row">{{ volunteer.id }}</th>
       <td>{{ volunteer.lastname }}</td>
       <td>{{ volunteer.firstname }}</td>
-      <td><form action="{{ path('volunteer_delete', {id: volunteer.id}) }}" onsubmit="return confirm('Supprimer l\'utilisateur #{{ volunteer.id }} ?')" method="POST">
+      <td><form action="{{ path('volunteer_delete', {id: volunteer.id}) }}" onsubmit="return confirm('Supprimer l\'utilisateur {{ volunteer.lastname|e('js') }} {{ volunteer.firstname|e('js') }} ?')" method="POST">
         {# Fake HTTP Method, see https://symfony.com/doc/current/routing.html#matching-http-methods #}
         <input type="hidden" name="_method" value="DELETE"/>
         {# CSRF Token manuel see https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually #}
         <input type="hidden" name="token" value="{{ csrf_token('delete-volunteer') }}"/>
+        <a class="btn btn-sm btn-secondary" href="{{ path('volunteer_read', {id: volunteer.id}) }}">Voir</a>
         <a class="btn btn-sm btn-primary" href="{{ path('volunteer_edit', {id: volunteer.id}) }}">Modifier</a>
         <button class="btn btn-sm btn-danger" type="submit">Supprimer</button>
       </form></td>

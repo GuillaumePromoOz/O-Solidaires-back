@@ -27,7 +27,7 @@
     <tr>
       <th scope="row">{{ proposition.id }}</th>
       <td>{{ proposition.category }}</td>
-      <td><a href="{{ path('back_proposition_read', {id: proposition.id}) }}">{{ proposition.title }}</a></td>
+      <td>{{ proposition.title }}</td>
       <td>{{ proposition.content }}</td>
       <td>{{ proposition.disponibilityDate|date('m/d/Y')}}</td>
       <td><a href="#">{{ proposition.user.lastname }} {{ proposition.user.firstname }}</a></td>
@@ -35,6 +35,7 @@
       <td><form action="{{ path('back_proposition_delete', {id:proposition.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ proposition.title|e('js') }} ?')" method="POST">
             <input type="hidden" name="_method" value="DELETE"/>
             <input type="hidden" name="token" value="{{ csrf_token('delete-proposition') }}"/>
+            <a class="btn btn-sm btn-secondary" href="{{ path('back_proposition_read', {id: proposition.id}) }}">Voir</a>
             <a class="btn btn-sm btn-primary" href="{{ path('back_proposition_edit', {id: proposition.id}) }}">Modifier</a>
             <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
           </form>

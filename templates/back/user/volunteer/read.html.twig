@@ -8,30 +8,15 @@
 
    <h1>{{ volunteer.firstname }} {{ volunteer.lastname }}</h1>
 
-<table class="table table-striped">
-    {# En-têtes #}
-  <thead>
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Nom</th>
-      <th scope="col">Prénom</th>
-      <th scope="col">Email</th>
-      <th scope="col">Department</th>
-    </tr>
-  </thead>
-  <tbody>
+    <p>Email : {{ volunteer.email }}</p>
+    <p>Téléphone : {{ volunteer.phoneNumber }}</p>
+    <p>Image : {{ volunteer.picture }}</p>
+    <p>Département : {{ volunteer.department }}</p>
+    <p>Biographie : {{ volunteer.bio }}</p>
 
-    {# One beneficiary #}
-    <tr>
-      <th scope="row">{{ volunteer.id }}</th>
-      <td>{{ volunteer.lastname }}</td>
-      <td>{{ volunteer.firstname }}</td>
-      <td>{{ volunteer.email }}</td>
-      <td>{{ volunteer.department }}</td>
-    </tr>
-  </tbody>
-</table>
+    <a class="btn btn-sm btn-success" href="{{ path('beneficiary_browse') }}">retour</a>
 
+<hr>
 {# Beneficiary's Requests #}
 
 <table class="table table-striped">
@@ -39,8 +24,11 @@
   <thead>
     <tr>
      <th scope="col">Id</th>
+     <th scope="col">Catégorie</th>
       <th scope="col">Titre</th>
       <th scope="col">Contenu</th>
+      <th scope="col">Disponibilité</th>
+      
     </tr>
   </thead>
   <tbody>
@@ -51,8 +39,10 @@
     {% for proposition in volunteer.propositions %}
     <tr>
       <th scope="row">{{ proposition.id }}</th>
-      <td>{{ proposition.title }}</td>
+      <td><a href="{{ path('back_category_read', {id: proposition.category.id}) }}">{{ proposition.category }}</a></td>
+      <td><a href="{{ path('back_proposition_read', {id: proposition.id}) }}">{{ proposition.title }}</a></td>
       <td>{{ proposition.content }}</td>
+      <td>{{ proposition.disponibilityDate|date('m/d/Y')}}</td>
     </tr>
     {% endfor %}
 
