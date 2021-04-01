@@ -56,7 +56,7 @@ security:
         # ADMIN
         - { path: ^/categories, methods: [POST,PATCH], roles: ROLE_ADMIN } 
         # pour le BACK OFFICE
-        - { path: ^/back, methods: [GET, POST, PUT, PATCH, DELETE], roles: ROLE_ADMIN }
+        #- { path: ^/back, methods: [GET, POST, PUT, PATCH, DELETE], roles: ROLE_ADMIN }
         # - { path: ^/categories, methods: [GET,POST,PATCH], roles: ROLE_ADMIN }
         # - { path: ^/departments, methods: [GET], roles: ROLE_ADMIN }
         

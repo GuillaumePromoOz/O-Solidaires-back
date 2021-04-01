@@ -305,6 +305,13 @@ class User implements UserInterface
         return $this;
     }
 
+    public function setPictureFilename($pictureFilename)
+    {
+        $this->pictureFilename = $pictureFilename;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -425,8 +432,9 @@ class User implements UserInterface
         return $this;
     }
 
-    public function __toString() {
-        
-        return $this->firstname.' '.$this->lastname;
+    public function __toString()
+    {
+
+        return $this->firstname . ' ' . $this->lastname;
     }
 }

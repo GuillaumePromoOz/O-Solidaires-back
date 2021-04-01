@@ -9,7 +9,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
@@ -64,10 +67,10 @@ class UserController extends AbstractController
 
     /**
      * Form to add an admin
-     * 
+     * @var UploadedFile $uploadedFile 
      * @Route("/back/admin/add", name="admin_add")
      */
-    public function adminAdd(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function adminAdd(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger)
     {
         // the entity to create
         $admin = new User();
@@ -84,6 +87,34 @@ class UserController extends AbstractController
             $hashedPassword = $passwordEncoder->encodePassword($admin, $admin->getPassword());
             // We reassing the encoded password in the User object via $admin
             $admin->setPassword($hashedPassword);
+
+            $uploadedFile = $form->get('picture')->getData();
+            //dump($uploadedFile);
+
+            // this condition is needed because the 'brochure' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if ($uploadedFile) {
+                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                //dump($safeFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+                //dd($newFilename);
+                // Move the file to the directory where brochures are stored
+                try {
+                    $uploadedFile->move(
+                        $this->getParameter('pictures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // @todo... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $admin->setPictureFilename($newFilename);
+                $admin->setPicture($newFilename);
+            }
 
             // saves the new user
             $entityManager->persist($admin);
