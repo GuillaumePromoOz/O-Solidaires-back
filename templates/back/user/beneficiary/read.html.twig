@@ -10,7 +10,7 @@
 
     <p>Email : {{ beneficiary.email }}</p>
     <p>Téléphone : {{ beneficiary.phoneNumber }}</p>
-    <p>Image :<img src="{{ beneficiary.picture }}" width = "30px"></p>
+   <p>Image : <img src="{{ asset('uploads/pictures/' ~ beneficiary.picture)}}" width = "30px"></p>
     <p>Département : {{ beneficiary.department }}</p>
     <p>Biographie : {{ beneficiary.bio }}</p>
 
