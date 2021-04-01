@@ -88,19 +88,18 @@ class UserController extends AbstractController
             // We reassing the encoded password in the User object via $admin
             $admin->setPassword($hashedPassword);
 
+            //@see https://symfony.com/doc/current/controller/upload_file.html
             $uploadedFile = $form->get('picture')->getData();
-            //dump($uploadedFile);
 
-            // this condition is needed because the 'brochure' field is not required
-            // so the PDF file must be processed only when a file is uploaded
+            // this condition is needed because the 'picture' field is not required
+            // so the picture file must be processed only when a file is uploaded
             if ($uploadedFile) {
                 $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
                 // this is needed to safely include the file name as part of the URL
                 $safeFilename = $slugger->slug($originalFilename);
-                //dump($safeFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
-                //dd($newFilename);
-                // Move the file to the directory where brochures are stored
+
+                // Move the file to the directory where pictures are stored
                 try {
                     $uploadedFile->move(
                         $this->getParameter('pictures_directory'),
