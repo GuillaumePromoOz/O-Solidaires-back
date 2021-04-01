@@ -109,7 +109,7 @@ class UserController extends AbstractController
                     // @todo... handle exception if something happens during file upload
                 }
 
-                // updates the 'brochureFilename' property to store the PDF file name
+                // updates the 'pictureFilename' property to store the picture file name
                 // instead of its contents
                 $admin->setPictureFilename($newFilename);
                 $admin->setPicture($newFilename);
@@ -248,7 +248,7 @@ class UserController extends AbstractController
      * 
      * @Route("/back/beneficiary/add", name="beneficiary_add")
      */
-    public function beneficiaryAdd(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function beneficiaryAdd(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger)
     {
         // the entity to create
         $beneficiary = new User();
@@ -265,6 +265,33 @@ class UserController extends AbstractController
             $hashedPassword = $passwordEncoder->encodePassword($beneficiary, $beneficiary->getPassword());
             // We reassing the encoded password in the User object via $admin
             $beneficiary->setPassword($hashedPassword);
+
+            //@see https://symfony.com/doc/current/controller/upload_file.html
+            $uploadedFile = $form->get('picture')->getData();
+
+            // this condition is needed because the 'picture' field is not required
+            // so the picture file must be processed only when a file is uploaded
+            if ($uploadedFile) {
+                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+
+                // Move the file to the directory where pictures are stored
+                try {
+                    $uploadedFile->move(
+                        $this->getParameter('pictures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // @todo... handle exception if something happens during file upload
+                }
+
+                // updates the 'pictureFilename' property to store the picture file name
+                // instead of its contents
+                $beneficiary->setPictureFilename($newFilename);
+                $beneficiary->setPicture($newFilename);
+            }
 
             // saves the new user
             $entityManager->persist($beneficiary);
@@ -400,7 +427,7 @@ class UserController extends AbstractController
      * 
      * @Route("/back/volunteer/add", name="volunteer_add")
      */
-    public function volunteerAdd(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function volunteerAdd(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger)
     {
         // the entity to create
         $volunteer = new User();
@@ -417,6 +444,33 @@ class UserController extends AbstractController
             $hashedPassword = $passwordEncoder->encodePassword($volunteer, $volunteer->getPassword());
             // We reassing the encoded password in the User object via $volunteer
             $volunteer->setPassword($hashedPassword);
+
+            //@see https://symfony.com/doc/current/controller/upload_file.html
+            $uploadedFile = $form->get('picture')->getData();
+
+            // this condition is needed because the 'picture' field is not required
+            // so the picture file must be processed only when a file is uploaded
+            if ($uploadedFile) {
+                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+
+                // Move the file to the directory where pictures are stored
+                try {
+                    $uploadedFile->move(
+                        $this->getParameter('pictures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // @todo... handle exception if something happens during file upload
+                }
+
+                // updates the 'pictureFilename' property to store the picture file name
+                // instead of its contents
+                $volunteer->setPictureFilename($newFilename);
+                $volunteer->setPicture($newFilename);
+            }
 
             // saves the new user
             $entityManager->persist($volunteer);
