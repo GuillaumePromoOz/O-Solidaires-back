@@ -88,6 +88,7 @@ class UserController extends AbstractController
             // We reassing the encoded password in the User object via $admin
             $admin->setPassword($hashedPassword);
 
+            //Uploading a picture
             //@see https://symfony.com/doc/current/controller/upload_file.html
             $uploadedFile = $form->get('picture')->getData();
 
@@ -245,7 +246,7 @@ class UserController extends AbstractController
 
     /**
      * Form to add a beneficiary
-     * 
+     * @var UploadedFile $uploadedFile 
      * @Route("/back/beneficiary/add", name="beneficiary_add")
      */
     public function beneficiaryAdd(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger)
@@ -266,6 +267,7 @@ class UserController extends AbstractController
             // We reassing the encoded password in the User object via $admin
             $beneficiary->setPassword($hashedPassword);
 
+            //Uploading a picture
             //@see https://symfony.com/doc/current/controller/upload_file.html
             $uploadedFile = $form->get('picture')->getData();
 
@@ -424,7 +426,7 @@ class UserController extends AbstractController
 
     /**
      * Form to add a volunteer
-     * 
+     * @var UploadedFile $uploadedFile 
      * @Route("/back/volunteer/add", name="volunteer_add")
      */
     public function volunteerAdd(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger)
@@ -445,6 +447,7 @@ class UserController extends AbstractController
             // We reassing the encoded password in the User object via $volunteer
             $volunteer->setPassword($hashedPassword);
 
+            //Uploading a picture
             //@see https://symfony.com/doc/current/controller/upload_file.html
             $uploadedFile = $form->get('picture')->getData();
 
