@@ -273,7 +273,12 @@ class UserController extends AbstractController
             );
         }
         if ($role === 'ROLE_ADMIN') {
-            return $this->json($user, 200, [], ['groups' => 'admins_read']);
+            //return $this->json($user, 200, [], ['groups' => 'admins_read']);
+            return $this->redirectToRoute(
+                'admin_browse',
+                [],
+                Response::HTTP_FOUND
+            );
         }
     }
 }
