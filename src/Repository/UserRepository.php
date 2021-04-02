@@ -38,8 +38,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
 
 
-
-
     public function findAllByRole($role)
     {
         $entityManager = $this->getEntityManager();
@@ -47,13 +45,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $query = $entityManager->createQuery(
             'SELECT u
             FROM App\Entity\User u
-            WHERE u.roles = :role'
+            WHERE u.roles = :role
+            ORDER BY u.createdAt DESC'
         )->setParameter('role', $role);
 
         return $query->getResult();
     }
-
-
 
 
 
@@ -67,11 +64,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             WHERE u.roles = :role 
             AND u.id = :id'
         )
-        ->setParameter('role', $role)
-        ->setParameter('id', $id);
+            ->setParameter('role', $role)
+            ->setParameter('id', $id);
 
         return $query->getResult();
     }
+
 
     public function findUserByDepartmentAndRole($role, $department)
     {
@@ -83,15 +81,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             WHERE u.roles = :role 
             AND u.department = :department'
         )
-        ->setParameter('role', $role)
-        ->setParameter('department', $department);
+            ->setParameter('role', $role)
+            ->setParameter('department', $department);
 
         return $query->getResult();
     }
 
 
 
-    
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

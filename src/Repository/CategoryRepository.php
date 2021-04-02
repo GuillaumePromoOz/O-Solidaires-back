@@ -19,6 +19,24 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    /**
+     * Find all requests ordered by date DESC 
+     * 
+     */
+    public function findAllOrderedByDateDesc()
+    {
+
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT c
+            FROM App\Entity\Category c
+            ORDER BY c.createdAt DESC'
+        );
+
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Category[] Returns an array of Category objects
     //  */

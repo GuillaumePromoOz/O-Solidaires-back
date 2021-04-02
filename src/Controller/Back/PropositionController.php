@@ -21,7 +21,7 @@ class PropositionController extends AbstractController
      */
     public function browse(PropositionRepository $propositionRepository): Response
     {
-        $propositions = $propositionRepository->findAll();
+        $propositions = $propositionRepository->findAllOrderedByDateDesc();
 
         return $this->render('back/proposition/browse.html.twig', [
             'propositions' => $propositions,
@@ -38,21 +38,21 @@ class PropositionController extends AbstractController
         if ($proposition === null) {
             throw $this->createNotFoundException('Proposition non trouvée.');
         }
- 
-        return $this->render('back/proposition/read.html.twig',[
+
+        return $this->render('back/proposition/read.html.twig', [
             'proposition' => $proposition,
-            
+
         ]);
     }
 
-     /**
+    /**
      * Create proposition
      *
      * @Route("/back/proposition/add", name="back_proposition_add", methods={"GET", "POST"})
      */
-    public function add(Request $request, EntityManagerInterface $entityManager ): Response
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
-       
+
         $proposition = new Proposition();
 
         $form = $this->createForm(PropositionType::class, $proposition);
@@ -61,7 +61,7 @@ class PropositionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            
+
             $entityManager->persist($proposition);
             $entityManager->flush();
 
@@ -80,10 +80,10 @@ class PropositionController extends AbstractController
      */
     public function edit(Request $request, Proposition $proposition): Response
     {
-        
+
 
         $form = $this->createForm(PropositionType::class, $proposition);
-        
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -108,15 +108,15 @@ class PropositionController extends AbstractController
      */
     public function delete(Proposition $proposition = null, Request $request, EntityManagerInterface $entityManager)
     {
-       
+
         if ($proposition === null) {
             throw $this->createNotFoundException('Proposition non trouvée.');
         }
 
         $submittedToken = $request->request->get('token');
 
-        
-        if (! $this->isCsrfTokenValid('delete-proposition', $submittedToken)) {
+
+        if (!$this->isCsrfTokenValid('delete-proposition', $submittedToken)) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 

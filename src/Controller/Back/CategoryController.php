@@ -25,24 +25,24 @@ class CategoryController extends AbstractController
 
         $category = new Category();
 
-        
+
         $form = $this->createForm(CategoryType::class, $category);
 
-       
+
         $form->handleRequest($request);
 
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             //dd($data);
             $entityManager->persist($category);
             $entityManager->flush();
 
-            
+
             return $this->redirectToRoute('back_category_browse');
         }
-       
-        $categories = $categoryRepository->findAll();
+
+        $categories = $categoryRepository->findAllOrderedByDateDesc();
 
         return $this->render('back/category/browse.html.twig', [
             'form' => $form->createView(),
@@ -65,11 +65,11 @@ class CategoryController extends AbstractController
         $propositions = $propositionRepository->findAllByCategory($id);
         $requests = $requestRepository->findAllByCategory($id);
 
-        return $this->render('back/category/read.html.twig',[
+        return $this->render('back/category/read.html.twig', [
             'category' => $category,
             'propositions' => $propositions,
             'requests' => $requests,
-            
+
         ]);
     }
 
@@ -80,10 +80,10 @@ class CategoryController extends AbstractController
      */
     public function edit(Request $request, Category $category): Response
     {
-        
+
 
         $form = $this->createForm(CategoryType::class, $category);
-        
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -108,15 +108,15 @@ class CategoryController extends AbstractController
      */
     public function delete(Category $category = null, Request $request, EntityManagerInterface $entityManager)
     {
-       
+
         if ($category === null) {
             throw $this->createNotFoundException('Catégorie non trouvée.');
         }
 
         $submittedToken = $request->request->get('token');
 
-        
-        if (! $this->isCsrfTokenValid('delete-category', $submittedToken)) {
+
+        if (!$this->isCsrfTokenValid('delete-category', $submittedToken)) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
@@ -125,6 +125,4 @@ class CategoryController extends AbstractController
 
         return $this->redirectToRoute('back_category_browse');
     }
-   
-
 }

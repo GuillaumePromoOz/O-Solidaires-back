@@ -14,14 +14,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RequestController extends AbstractController
 {
-     /**
+    /**
      * Get all requests
      * 
      * @Route("/back/request/browse", name="back_request_browse", methods={"GET"})
      */
     public function browse(RequestRepository $requestRepository): Response
     {
-        $requests = $requestRepository->findAll();
+        $requests = $requestRepository->findAllOrderedByDateDesc();
 
         return $this->render('back/request/browse.html.twig', [
             'requests' => $requests,
@@ -39,20 +39,20 @@ class RequestController extends AbstractController
             throw $this->createNotFoundException('Demande non trouvée.');
         }
 
-        return $this->render('back/request/read.html.twig',[
+        return $this->render('back/request/read.html.twig', [
             'request' => $requestModel,
-            
+
         ]);
     }
 
-     /**
+    /**
      * Create request
      *
      * @Route("/back/request/add", name="back_request_add", methods={"GET", "POST"})
      */
-    public function add(Request $request, EntityManagerInterface $entityManager ): Response
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
-       
+
         $requestModel = new RequestEntity();
 
         $form = $this->createForm(RequestType::class, $requestModel);
@@ -61,7 +61,7 @@ class RequestController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            
+
             $entityManager->persist($requestModel);
             $entityManager->flush();
 
@@ -80,10 +80,10 @@ class RequestController extends AbstractController
      */
     public function edit(Request $request, RequestEntity $requestModel): Response
     {
-        
+
 
         $form = $this->createForm(RequestType::class, $requestModel);
-        
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -108,15 +108,15 @@ class RequestController extends AbstractController
      */
     public function delete(RequestEntity $requestModel = null, Request $request, EntityManagerInterface $entityManager)
     {
-       
+
         if ($requestModel === null) {
             throw $this->createNotFoundException('Demande non trouvée.');
         }
 
         $submittedToken = $request->request->get('token');
 
-        
-        if (! $this->isCsrfTokenValid('delete-request', $submittedToken)) {
+
+        if (!$this->isCsrfTokenValid('delete-request', $submittedToken)) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
