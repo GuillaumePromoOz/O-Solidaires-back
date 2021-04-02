@@ -1,0 +1,6 @@
+{# read and display just one flash message type #}
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}

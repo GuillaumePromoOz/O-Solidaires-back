@@ -142,14 +142,14 @@ class User implements UserInterface
     private $department;
 
     /**
-     * @ORM\OneToMany(targetEntity=Proposition::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Proposition::class, mappedBy="user", cascade={"remove"})
      * @Groups("volunteers_read")
      * @Groups("departments_read")
      */
     private $propositions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="user", cascade={"remove"})
      * @Groups("beneficiaries_read")
      * @Groups("departments_read")
      */

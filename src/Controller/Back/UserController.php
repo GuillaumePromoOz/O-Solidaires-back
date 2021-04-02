@@ -226,6 +226,9 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            // Flash
+            $this->addFlash('success', 'Utilisateur créé avec succès !');
+
             $role = $user->getRoles()[0];
 
             if ($role === "ROLE_ADMIN") {
@@ -275,6 +278,9 @@ class UserController extends AbstractController
 
             // Saves the edits 
             $this->getDoctrine()->getManager()->flush();
+
+            // Flash
+            $this->addFlash('success', 'Utilisateur créé avec succès !');
 
             $role = $user->getRoles()[0];
 
