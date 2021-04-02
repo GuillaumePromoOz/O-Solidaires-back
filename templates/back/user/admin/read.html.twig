@@ -11,10 +11,10 @@
 
     <p>Email : {{ admin.email }}</p>
     <p>Téléphone : {{ admin.phoneNumber }}</p>
-    <p>Image : <img src="{{ asset('uploads/pictures/' ~ admin.picture)}}" width = "30px"></p>
+    <p>Image : <img src="{{ asset('uploads/pictures/' ~ admin.picture)}}" width = "70px"></p>
     <p>Département : <a href="{{ path('back_department_read', {id: admin.department.id}) }}">{{ admin.department.name }}</a></p>
     <p>Biographie : {{ admin.bio }}</p>
 
-    <a class="btn btn-sm btn-success" href="{{ path('admin_browse') }}">retour</a>
+    <a class="btn btn-sm btn-success" href="{{ path('back_admin_browse') }}">retour</a>
 {% endblock %}
 

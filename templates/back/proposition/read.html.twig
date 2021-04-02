@@ -22,11 +22,11 @@
 
 <hr>
 <h3>Bénévole</h3>
-<p>Nom : <a href="{{ path('volunteer_read', {id: proposition.user.id}) }}">{{ proposition.user.lastname }}</a> </p>
+<p>Nom : <a href="{{ path('back_volunteer_read', {id: proposition.user.id}) }}">{{ proposition.user.lastname }}</a> </p>
 <p>Prénom : {{ proposition.user.firstname }}</p>
 <p>Email : {{ proposition.user.email }}</p>
 <p>Téléphone : {{ proposition.user.phoneNumber }}</p>
-<p>Image : <img src="{{ asset('uploads/pictures/' ~ proposition.user.picture)}}" width = "30px"></p>
+<p>Image : <img src="{{ asset('uploads/pictures/' ~ proposition.user.picture)}}" width = "70px"></p>
 <p>Département : {{ proposition.user.department }}</p>
 <p>Biographie : {{ proposition.user.bio }}</p>
 

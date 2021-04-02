@@ -8,7 +8,7 @@
 
 <h1>Liste des administrateurs</h1>
 
-<p><a href="{{ path('admin_add') }}" class="btn btn-success">Ajouter un administrateur</a></p>
+<p><a href="{{ path('back_user_add') }}" class="btn btn-success">Ajouter un administrateur</a></p>
 
 <table class="table table-striped">
     {# En-têtes #}
@@ -28,13 +28,13 @@
       <th scope="row">{{ admin.id }}</th>
       <td>{{ admin.lastname }}</td>
       <td>{{ admin.firstname }}</td>
-      <td><form action="{{ path('admin_delete', {id: admin.id}) }}" onsubmit="return confirm('Supprimer l\'administrateur {{ admin.lastname|e('js') }} {{ admin.firstname|e('js') }}?')" method="POST">
+      <td><form action="{{ path('back_user_delete', {id: admin.id}) }}" onsubmit="return confirm('Supprimer l\'utilisateur {{ admin.lastname|e('js') }} {{ admin.firstname|e('js') }}?')" method="POST">
         {# Fake HTTP Method, see https://symfony.com/doc/current/routing.html#matching-http-methods #}
         <input type="hidden" name="_method" value="DELETE"/>
         {# CSRF Token manuel see https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually #}
-        <input type="hidden" name="token" value="{{ csrf_token('delete-admin') }}"/>
-        <a class="btn btn-sm btn-secondary" href="{{ path('admin_read', {id: admin.id}) }}">Voir</a>
-        <a class="btn btn-sm btn-primary" href="{{ path('admin_edit', {id: admin.id}) }}">Modifier</a>
+        <input type="hidden" name="token" value="{{ csrf_token('delete') }}"/>
+        <a class="btn btn-sm btn-secondary" href="{{ path('back_admin_read', {id: admin.id}) }}">Voir</a>
+        <a class="btn btn-sm btn-primary" href="{{ path('back_user_edit', {id: admin.id}) }}">Modifier</a>
         <button class="btn btn-sm btn-danger" type="submit">Supprimer</button>
       </form></td>
     </tr>

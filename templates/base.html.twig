@@ -10,20 +10,20 @@
 
     <body>
         <nav class="navbar navbar-expand-lg navbar-light mb-5"  style="background-color: #75B2C8;">
-            <a class="navbar-brand" href="{{ path('admin_browse') }}"><img src="{{ asset('logo2.svg') }}" class="img-fluid" width = "70px"></a>
+            <a class="navbar-brand" href="{{ path('back_admin_browse') }}"><img src="{{ asset('logo2.svg') }}" class="img-fluid" width = "70px"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                 <li class="nav-item {% block admin %}{% endblock %}">
-                    <a class="nav-link" href="{{ path('admin_browse') }}">Administrateurs</a>
+                    <a class="nav-link" href="{{ path('back_admin_browse') }}">Administrateurs</a>
                 </li>
                 <li class="nav-item {% block volunteer %}{% endblock %}">
-                    <a class="nav-link" href="{{ path('volunteer_browse') }}">Bénévoles</a>
+                    <a class="nav-link" href="{{ path('back_volunteer_browse') }}">Bénévoles</a>
                 </li>
                 <li class="nav-item {% block beneficiary %}{% endblock %}">
-                    <a class="nav-link" href="{{ path('beneficiary_browse') }}">Bénéficiaires</a>
+                    <a class="nav-link" href="{{ path('back_beneficiary_browse') }}">Bénéficiaires</a>
                 </li>
                 <li class="nav-item {% block proposition %}{% endblock %}">
                     <a class="nav-link" href="{{ path('back_proposition_browse') }}">Proposition</a>

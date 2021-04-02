@@ -10,11 +10,11 @@
 
     <p>Email : {{ beneficiary.email }}</p>
     <p>Téléphone : {{ beneficiary.phoneNumber }}</p>
-    <p>Image : <img src="{{ asset('uploads/pictures/' ~ beneficiary.picture)}}" width = "30px"></p>
+    <p>Image : <img src="{{ asset('uploads/pictures/' ~ beneficiary.picture)}}" width = "70px"></p>
     <p>Département : {{ beneficiary.department }}</p>
     <p>Biographie : {{ beneficiary.bio }}</p>
 
-    <a class="btn btn-sm btn-success" href="{{ path('beneficiary_browse') }}">retour</a>
+    <a class="btn btn-sm btn-success" href="{{ path('back_beneficiary_browse') }}">retour</a>
 
     <hr>
 {# Beneficiary's Requests #}
@@ -32,7 +32,7 @@
   </thead>
   <tbody>
 
-  <h2>Liste des demandes</h2>
+  <h2>Liste des demandes</h2>delete
 
     {# Bénéficiaire #}
     {% for request in beneficiary.requests %}

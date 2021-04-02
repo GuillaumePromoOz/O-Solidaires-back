@@ -29,7 +29,7 @@ class UserController extends AbstractController
     /**
      * Admins list
      * 
-     * @Route("/back/admin/browse", name="admin_browse", methods={"GET"})
+     * @Route("/back/admin/browse", name="back_admin_browse", methods={"GET"})
      */
     public function adminBrowse(UserRepository $userRepository): Response
     {
@@ -45,7 +45,7 @@ class UserController extends AbstractController
     /**
      * Show one admin
      * 
-     * @Route("/back/admin/read/{id}", name="admin_read", methods={"GET"})
+     * @Route("/back/admin/read/{id}", name="back_admin_read", methods={"GET"})
      */
     public function adminRead(User $user, UserRepository $userRepository)
     {
@@ -65,137 +65,6 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * Form to add an admin
-     * @var UploadedFile $uploadedFile 
-     * @Route("/back/admin/add", name="admin_add")
-     */
-    public function adminAdd(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger)
-    {
-        // the entity to create
-        $admin = new User();
-
-        // generates form
-        $form = $this->createForm(UserType::class, $admin);
-
-        // we inspect the request and map the datas posted on the form
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // We encode the User's password that's inside our variable $admin
-            $hashedPassword = $passwordEncoder->encodePassword($admin, $admin->getPassword());
-            // We reassing the encoded password in the User object via $admin
-            $admin->setPassword($hashedPassword);
-
-            //Uploading a picture
-            //@see https://symfony.com/doc/current/controller/upload_file.html
-            $uploadedFile = $form->get('picture')->getData();
-
-            // this condition is needed because the 'picture' field is not required
-            // so the picture file must be processed only when a file is uploaded
-            if ($uploadedFile) {
-                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
-
-                // Move the file to the directory where pictures are stored
-                try {
-                    $uploadedFile->move(
-                        $this->getParameter('pictures_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // @todo... handle exception if something happens during file upload
-                }
-
-                // updates the 'pictureFilename' property to store the picture file name
-                // instead of its contents
-                $admin->setPictureFilename($newFilename);
-                $admin->setPicture($newFilename);
-            }
-
-            // saves the new user
-            $entityManager->persist($admin);
-            $entityManager->flush();
-
-            // Redirects to list 
-            return $this->redirectToRoute('admin_browse');
-        }
-
-        return $this->render('back/user/admin/add.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * Form to Edit an admin
-     * 
-     * @Route("/back/admin/edit/{id}", name="admin_edit", methods={"GET","POST"})
-     */
-    public function adminEdit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder)
-    {
-        // Creates and returns a Form instance from the type of the form (UserType).
-        $form = $this->createForm(UserType::class, $user);
-
-        // The user's password will be overwritten by $request 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // If the form's password field is not empty 
-            // that means we want to change it !
-            if ($form->get('password')->getData() !== '') {
-
-                $hashedPassword = $passwordEncoder->encodePassword($user, $form->get('password')->getData());
-                $user->setPassword($hashedPassword);
-            }
-
-            // Sets the new datetime in the database updated_at field
-            $user->setUpdatedAt(new \DateTime());
-
-            // Saves the edits 
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('admin_browse');
-        }
-
-        return $this->render('back/user/admin/edit.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * Delete admin
-     * 
-     * @Route("back/admin/delete/{id}", name="admin_delete", methods={"DELETE"})
-     */
-    public function adminDelete(Request $request, User $user, EntityManagerInterface $entityManager): Response
-    {
-        // 404 ?
-        if ($user === null) {
-            throw $this->createNotFoundException('Utilisateur non trouvé.');
-        }
-
-        // @see https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually
-        // We fetch the token's name that we dropped into the form
-        $submittedToken = $request->request->get('token');
-
-        // 'delete-{...}' is the same value used in the template to generate the token
-        if (!$this->isCsrfTokenValid('delete-admin', $submittedToken)) {
-            // We return a 403
-            throw $this->createAccessDeniedException('Accès refusé.');
-        }
-
-        // Else we delete
-        $entityManager->remove($user);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('admin_browse');
-    }
-
     /*____  ______ _   _ ______ ______ _____ _____ _____          _____  _____ ______  _____ 
     |  _ \|  ____| \ | |  ____|  ____|_   _/ ____|_   _|   /\   |  __ \|_   _|  ____|/ ____|
     | |_) | |__  |  \| | |__  | |__    | || |      | |    /  \  | |__) | | | | |__  | (___  
@@ -207,7 +76,7 @@ class UserController extends AbstractController
     /**
      * Beneficiaries list
      * 
-     * @Route("/back/beneficiary/browse", name="beneficiary_browse", methods={"GET"})
+     * @Route("/back/beneficiary/browse", name="back_beneficiary_browse", methods={"GET"})
      */
     public function beneficiaryBrowse(UserRepository $userRepository): Response
     {
@@ -223,7 +92,7 @@ class UserController extends AbstractController
     /**
      * Show one beneficiary
      * 
-     * @Route("/back/beneficiary/read/{id}", name="beneficiary_read", methods={"GET"})
+     * @Route("/back/beneficiary/read/{id}", name="back_beneficiary_read", methods={"GET"})
      */
     public function beneficiaryRead(User $user, UserRepository $userRepository)
     {
@@ -244,137 +113,6 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * Form to add a beneficiary
-     * @var UploadedFile $uploadedFile 
-     * @Route("/back/beneficiary/add", name="beneficiary_add")
-     */
-    public function beneficiaryAdd(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger)
-    {
-        // the entity to create
-        $beneficiary = new User();
-
-        // generates form
-        $form = $this->createForm(UserType::class, $beneficiary);
-
-        // we inspect the request and map the datas posted on the form
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // We encode the User's password that's inside our variable $beneficiary
-            $hashedPassword = $passwordEncoder->encodePassword($beneficiary, $beneficiary->getPassword());
-            // We reassing the encoded password in the User object via $admin
-            $beneficiary->setPassword($hashedPassword);
-
-            //Uploading a picture
-            //@see https://symfony.com/doc/current/controller/upload_file.html
-            $uploadedFile = $form->get('picture')->getData();
-
-            // this condition is needed because the 'picture' field is not required
-            // so the picture file must be processed only when a file is uploaded
-            if ($uploadedFile) {
-                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
-
-                // Move the file to the directory where pictures are stored
-                try {
-                    $uploadedFile->move(
-                        $this->getParameter('pictures_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // @todo... handle exception if something happens during file upload
-                }
-
-                // updates the 'pictureFilename' property to store the picture file name
-                // instead of its contents
-                $beneficiary->setPictureFilename($newFilename);
-                $beneficiary->setPicture($newFilename);
-            }
-
-            // saves the new user
-            $entityManager->persist($beneficiary);
-            $entityManager->flush();
-
-            // Redirects to list 
-            return $this->redirectToRoute('beneficiary_browse');
-        }
-
-        return $this->render('back/user/beneficiary/add.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * Form to Edit a beneficiary
-     * 
-     * @Route("/back/beneficiary/edit/{id}", name="beneficiary_edit", methods={"GET","POST"})
-     */
-    public function beneficiaryEdit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder)
-    {
-        // Creates and returns a Form instance from the type of the form (UserType).
-        $form = $this->createForm(UserType::class, $user);
-
-        // The user's password will be overwritten by $request 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // If the form's password field is not empty 
-            // that means we want to change it !
-            if ($form->get('password')->getData() !== '') {
-
-                $hashedPassword = $passwordEncoder->encodePassword($user, $form->get('password')->getData());
-                $user->setPassword($hashedPassword);
-            }
-
-            // Sets the new datetime in the database updated_at field
-            $user->setUpdatedAt(new \DateTime());
-
-            // Saves the edits 
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('beneficiary_browse');
-        }
-
-        return $this->render('back/user/beneficiary/edit.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * Delete a beneficiary
-     * 
-     * @Route("back/beneficiary/delete/{id}", name="beneficiary_delete", methods={"DELETE"})
-     */
-    public function beneficiaryDelete(Request $request, User $user, EntityManagerInterface $entityManager): Response
-    {
-        // 404 ?
-        if ($user === null) {
-            throw $this->createNotFoundException('Utilisateur non trouvé.');
-        }
-
-        // @see https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually
-        // We fetch the token's name that we dropped into the form
-        $submittedToken = $request->request->get('token');
-
-        // 'delete-{...}' is the same value used in the template to generate the token
-        if (!$this->isCsrfTokenValid('delete-beneficiary', $submittedToken)) {
-            // We return a 403
-            throw $this->createAccessDeniedException('Accès refusé.');
-        }
-
-        // Else we delete
-        $entityManager->remove($user);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('beneficiary_browse');
-    }
-
     /* 
     __      ______  _     _    _ _   _ _______ ______ ______ _____   _____ 
     \ \    / / __ \| |   | |  | | \ | |__   __|  ____|  ____|  __ \ / ____|
@@ -387,7 +125,7 @@ class UserController extends AbstractController
     /**
      * Volunteers list
      * 
-     * @Route("/back/volunteer/browse", name="volunteer_browse", methods={"GET"})
+     * @Route("/back/volunteer/browse", name="back_volunteer_browse", methods={"GET"})
      */
     public function volunteersBrowse(UserRepository $userRepository): Response
     {
@@ -403,7 +141,7 @@ class UserController extends AbstractController
     /**
      * Show one volunteer
      * 
-     * @Route("/back/volunteer/read/{id}", name="volunteer_read", methods={"GET"})
+     * @Route("/back/volunteer/read/{id}", name="back_volunteer_read", methods={"GET"})
      */
     public function volunteerRead(User $user, UserRepository $userRepository)
     {
@@ -424,28 +162,37 @@ class UserController extends AbstractController
         ]);
     }
 
+    /*
+ _    _  _____ ______ _____             _____  _____     ________ _____ _____ _______  _______  ______ _      ______ _______ ______ 
+| |  | |/ ____|  ____|  __ \      /\   |  __ \|  __ \   / /  ____|  __ \_   _|__   __|/ /  __ \|  ____| |    |  ____|__   __|  ____|
+| |  | | (___ | |__  | |__) |    /  \  | |  | | |  | | / /| |__  | |  | || |    | |  / /| |  | | |__  | |    | |__     | |  | |__   
+| |  | |\___ \|  __| |  _  /    / /\ \ | |  | | |  | |/ / |  __| | |  | || |    | | / / | |  | |  __| | |    |  __|    | |  |  __|  
+| |__| |____) | |____| | \ \   / ____ \| |__| | |__| / /  | |____| |__| || |_   | |/ /  | |__| | |____| |____| |____   | |  | |____ 
+ \____/|_____/|______|_|  \_\ /_/    \_\_____/|_____/_/   |______|_____/_____|  |_/_/   |_____/|______|______|______|  |_|  |______|
+    */
+
     /**
-     * Form to add a volunteer
+     * Form to add a user
      * @var UploadedFile $uploadedFile 
-     * @Route("/back/volunteer/add", name="volunteer_add")
+     * @Route("/back/user/add", name="back_user_add")
      */
-    public function volunteerAdd(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger)
+    public function add(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger)
     {
         // the entity to create
-        $volunteer = new User();
+        $user = new User();
 
         // generates form
-        $form = $this->createForm(UserType::class, $volunteer);
+        $form = $this->createForm(UserType::class, $user);
 
         // we inspect the request and map the datas posted on the form
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // We encode the User's password that's inside our variable $volunteer
-            $hashedPassword = $passwordEncoder->encodePassword($volunteer, $volunteer->getPassword());
-            // We reassing the encoded password in the User object via $volunteer
-            $volunteer->setPassword($hashedPassword);
+            // We encode the User's password that's inside our variable $admin
+            $hashedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
+            // We reassing the encoded password in the User object via $admin
+            $user->setPassword($hashedPassword);
 
             //Uploading a picture
             //@see https://symfony.com/doc/current/controller/upload_file.html
@@ -471,29 +218,41 @@ class UserController extends AbstractController
 
                 // updates the 'pictureFilename' property to store the picture file name
                 // instead of its contents
-                $volunteer->setPictureFilename($newFilename);
-                $volunteer->setPicture($newFilename);
+                $user->setPictureFilename($newFilename);
+                $user->setPicture($newFilename);
             }
 
             // saves the new user
-            $entityManager->persist($volunteer);
+            $entityManager->persist($user);
             $entityManager->flush();
 
-            // Redirects to list 
-            return $this->redirectToRoute('volunteer_browse');
+            $role = $user->getRoles()[0];
+
+            if ($role === "ROLE_ADMIN") {
+                // Redirects to list 
+                return $this->redirectToRoute('back_admin_browse');
+            }
+            if ($role === "ROLE_BENEFICIARY") {
+                // Redirects to list 
+                return $this->redirectToRoute('back_beneficiary_browse');
+            }
+            if ($role === "ROLE_VOLUNTEER") {
+                // Redirects to list 
+                return $this->redirectToRoute('back_volunteer_browse');
+            }
         }
 
-        return $this->render('back/user/volunteer/add.html.twig', [
+        return $this->render('back/user/add.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * Form to Edit a volunteer
+     * Form to Edit a user
      * 
-     * @Route("/back/volunteer/edit/{id}", name="volunteer_edit", methods={"GET","POST"})
+     * @Route("/back/user/edit/{id}", name="back_user_edit", methods={"GET","POST"})
      */
-    public function volunteerEdit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder)
+    public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder)
     {
         // Creates and returns a Form instance from the type of the form (UserType).
         $form = $this->createForm(UserType::class, $user);
@@ -517,21 +276,34 @@ class UserController extends AbstractController
             // Saves the edits 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('volunteer_browse');
+            $role = $user->getRoles()[0];
+
+            if ($role === "ROLE_ADMIN") {
+                // Redirects to list 
+                return $this->redirectToRoute('back_admin_browse');
+            }
+            if ($role === "ROLE_BENEFICIARY") {
+                // Redirects to list 
+                return $this->redirectToRoute('back_beneficiary_browse');
+            }
+            if ($role === "ROLE_VOLUNTEER") {
+                // Redirects to list 
+                return $this->redirectToRoute('back_volunteer_browse');
+            }
         }
 
-        return $this->render('back/user/volunteer/edit.html.twig', [
+        return $this->render('back/user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * Delete a volunteer
+     * Delete a user
      * 
-     * @Route("back/volunteer/delete/{id}", name="volunteer_delete", methods={"DELETE"})
+     * @Route("back/user/delete/{id}", name="back_user_delete", methods={"DELETE"})
      */
-    public function volunteerDelete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         // 404 ?
         if ($user === null) {
@@ -543,7 +315,7 @@ class UserController extends AbstractController
         $submittedToken = $request->request->get('token');
 
         // 'delete-{...}' is the same value used in the template to generate the token
-        if (!$this->isCsrfTokenValid('delete-volunteer', $submittedToken)) {
+        if (!$this->isCsrfTokenValid('delete', $submittedToken)) {
             // We return a 403
             throw $this->createAccessDeniedException('Accès refusé.');
         }
@@ -552,6 +324,19 @@ class UserController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('volunteer_browse');
+        $role = $user->getRoles()[0];
+
+        if ($role === "ROLE_ADMIN") {
+            // Redirects to list 
+            return $this->redirectToRoute('back_admin_browse');
+        }
+        if ($role === "ROLE_BENEFICIARY") {
+            // Redirects to list 
+            return $this->redirectToRoute('back_beneficiary_browse');
+        }
+        if ($role === "ROLE_VOLUNTEER") {
+            // Redirects to list 
+            return $this->redirectToRoute('back_volunteer_browse');
+        }
     }
 }

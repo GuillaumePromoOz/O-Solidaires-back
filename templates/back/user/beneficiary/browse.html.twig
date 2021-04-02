@@ -8,7 +8,7 @@
 
 <h1>Liste des bénéficiaires</h1>
 
-<p><a href="{{ path('beneficiary_add') }}" class="btn btn-success">Ajouter un bénéficiaire</a></p>
+<p><a href="{{ path('back_user_add') }}" class="btn btn-success">Ajouter un bénéficiaire</a></p>
 
 <table class="table table-striped">
     {# En-têtes #}
@@ -28,13 +28,13 @@
       <th scope="row">{{ beneficiary.id }}</th>
       <td>{{ beneficiary.lastname }}</td>
       <td>{{ beneficiary.firstname }}</td>
-      <td><form action="{{ path('beneficiary_delete', {id: beneficiary.id}) }}" onsubmit="return confirm('Supprimer l\'utilisateur {{ beneficiary.lastname|e('js') }} {{ beneficiary.firstname|e('js') }} ?')" method="POST">
+      <td><form action="{{ path('back_user_delete', {id: beneficiary.id}) }}" onsubmit="return confirm('Supprimer l\'utilisateur {{ beneficiary.lastname|e('js') }} {{ beneficiary.firstname|e('js') }} ?')" method="POST">
         {# Fake HTTP Method, see https://symfony.com/doc/current/routing.html#matching-http-methods #}
         <input type="hidden" name="_method" value="DELETE"/>
         {# CSRF Token manuel see https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually #}
-        <input type="hidden" name="token" value="{{ csrf_token('delete-beneficiary') }}"/>
-        <a class="btn btn-sm btn-secondary" href="{{ path('beneficiary_read', {id: beneficiary.id}) }}">Voir</a>
-        <a class="btn btn-sm btn-primary" href="{{ path('beneficiary_edit', {id: beneficiary.id}) }}">Modifier</a>
+        <input type="hidden" name="token" value="{{ csrf_token('delete') }}"/>
+        <a class="btn btn-sm btn-secondary" href="{{ path('back_beneficiary_read', {id: beneficiary.id}) }}">Voir</a>
+        <a class="btn btn-sm btn-primary" href="{{ path('back_user_edit', {id: beneficiary.id}) }}">Modifier</a>
         <button class="btn btn-sm btn-danger" type="submit">Supprimer</button>
       </form></td>
     </tr>

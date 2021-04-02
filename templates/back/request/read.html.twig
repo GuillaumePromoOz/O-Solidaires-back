@@ -22,11 +22,11 @@
 
 <hr>
 <h3>Bénéficiaire</h3>
-<p>Nom : <a href="{{ path('beneficiary_read', {id: request.user.id}) }}">{{ request.user.lastname }}</a> </p>
+<p>Nom : <a href="{{ path('back_beneficiary_read', {id: request.user.id}) }}">{{ request.user.lastname }}</a> </p>
 <p>Prénom : {{ request.user.firstname }}</p>
 <p>Email : {{ request.user.email }}</p>
 <p>Téléphone : {{ request.user.phoneNumber }}</p>
-<p>Image : <img src="{{ asset('uploads/pictures/' ~ request.user.picture)}}" width = "30px"></p>
+<p>Image : <img src="{{ asset('uploads/pictures/' ~ request.user.picture)}}" width = "70px"></p>
 <p>Département : {{ request.user.department }}</p>
 <p>Biographie : {{ request.user.bio }}</p>
 
