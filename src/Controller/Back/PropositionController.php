@@ -65,6 +65,10 @@ class PropositionController extends AbstractController
             $entityManager->persist($proposition);
             $entityManager->flush();
 
+            // Flash
+            $this->addFlash('success', 'Utilisateur créé avec succès !');
+
+
             return $this->redirectToRoute('back_proposition_browse');
         }
 
@@ -91,6 +95,9 @@ class PropositionController extends AbstractController
             $proposition->setUpdatedAt(new \DateTime());
 
             $this->getDoctrine()->getManager()->flush();
+
+            // Flash
+            $this->addFlash('warning', 'Utilisateur modifié !');
 
             return $this->redirectToRoute('back_proposition_browse');
         }
@@ -122,6 +129,9 @@ class PropositionController extends AbstractController
 
         $entityManager->remove($proposition);
         $entityManager->flush();
+
+        // Flash
+        $this->addFlash('danger', 'Utilisateur supprimé !');
 
         return $this->redirectToRoute('back_proposition_browse');
     }

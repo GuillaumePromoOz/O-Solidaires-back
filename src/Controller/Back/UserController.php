@@ -280,7 +280,7 @@ class UserController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
 
             // Flash
-            $this->addFlash('success', 'Utilisateur créé avec succès !');
+            $this->addFlash('warning', 'Utilisateur modifié !');
 
             $role = $user->getRoles()[0];
 
@@ -329,6 +329,9 @@ class UserController extends AbstractController
         // Else we delete
         $entityManager->remove($user);
         $entityManager->flush();
+
+        // Flash
+        $this->addFlash('danger', 'Utilisateur supprimé !');
 
         $role = $user->getRoles()[0];
 

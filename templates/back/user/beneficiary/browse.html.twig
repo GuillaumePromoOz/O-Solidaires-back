@@ -8,6 +8,9 @@
 
 <h1>Liste des bénéficiaires</h1>
 
+{# Flash message #}
+{{ include('back/_flash_messages.html.twig') }}
+
 <p><a href="{{ path('back_user_add') }}" class="btn btn-success">Ajouter un bénéficiaire</a></p>
 
 <table class="table table-striped">

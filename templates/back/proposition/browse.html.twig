@@ -5,7 +5,12 @@
 {% block proposition %}active{% endblock %}
 
 {% block body %}
+
 <h1>Liste des Propositions</h1>
+
+{# Flash message #}
+{{ include('back/_flash_messages.html.twig') }}
+
 <a class="btn btn-sm btn-success mb-4" href="{{ path('back_proposition_add') }}">Ajouter une proposition</a>
 <table class="table table-hover table-striped">
   
