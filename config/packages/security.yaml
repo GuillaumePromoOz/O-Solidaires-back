@@ -24,8 +24,9 @@ security:
                 success_handler:          lexik_jwt_authentication.handler.authentication_success
                 failure_handler:          lexik_jwt_authentication.handler.authentication_failure
 
+            # All of our back office routes that MUST start with /back
         main:
-            pattern : ^/back/login
+            pattern : ^/back
             anonymous: true
             lazy: true
             provider: app_user_provider
@@ -42,7 +43,8 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
-
+            
+            # All of our API routes, that must start with / (nb: it would have been better to call it /api...)
         api:
             pattern:   ^/
             stateless: true
@@ -59,8 +61,9 @@ security:
 
         # ADMIN
         - { path: ^/categories, methods: [POST,PATCH], roles: ROLE_ADMIN } 
-        # pour le BACK OFFICE
-        # - { path: ^/back, methods: [GET, POST, PUT, PATCH, DELETE], roles: ROLE_ADMIN }
+        # BACK OFFICE ("back/login" is the ONLY route that must be accessible to anyone, 
+        # therefore all the other routes must be specified in the path: for ROLE_ADMIN )
+        - { path: ^/back/(category|department|proposition|request|admin|beneficiary|volunteer|user), methods: [GET, POST, PUT, PATCH, DELETE], roles: ROLE_ADMIN }
         # - { path: ^/categories, methods: [GET,POST,PATCH], roles: ROLE_ADMIN }
         # - { path: ^/departments, methods: [GET], roles: ROLE_ADMIN }
         
