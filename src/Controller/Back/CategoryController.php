@@ -38,6 +38,8 @@ class CategoryController extends AbstractController
             $entityManager->persist($category);
             $entityManager->flush();
 
+            // Flash
+            $this->addFlash('success', 'Utilisateur créé avec succès !');
 
             return $this->redirectToRoute('back_category_browse');
         }
@@ -92,6 +94,9 @@ class CategoryController extends AbstractController
 
             $this->getDoctrine()->getManager()->flush();
 
+            // Flash
+            $this->addFlash('warning', 'Utilisateur modifié !');
+
             return $this->redirectToRoute('back_category_browse');
         }
 
@@ -122,6 +127,9 @@ class CategoryController extends AbstractController
 
         $entityManager->remove($category);
         $entityManager->flush();
+
+        // Flash
+        $this->addFlash('danger', 'Utilisateur supprimé !');
 
         return $this->redirectToRoute('back_category_browse');
     }

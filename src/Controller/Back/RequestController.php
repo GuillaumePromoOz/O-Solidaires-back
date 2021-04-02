@@ -65,6 +65,10 @@ class RequestController extends AbstractController
             $entityManager->persist($requestModel);
             $entityManager->flush();
 
+            // Flash
+            $this->addFlash('success', 'Utilisateur créé avec succès !');
+
+
             return $this->redirectToRoute('back_request_browse');
         }
 
@@ -91,6 +95,9 @@ class RequestController extends AbstractController
             $requestModel->setUpdatedAt(new \DateTime());
 
             $this->getDoctrine()->getManager()->flush();
+
+            // Flash
+            $this->addFlash('warning', 'Utilisateur modifié !');
 
             return $this->redirectToRoute('back_request_browse');
         }
@@ -122,6 +129,9 @@ class RequestController extends AbstractController
 
         $entityManager->remove($requestModel);
         $entityManager->flush();
+
+        // Flash
+        $this->addFlash('danger', 'Utilisateur supprimé !');
 
         return $this->redirectToRoute('back_request_browse');
     }
