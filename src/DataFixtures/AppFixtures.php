@@ -77,6 +77,7 @@ class AppFixtures extends Fixture
         //--- BENEFICIARY ---//
         $phoneNumberBeneficiary = '06990515';
         $indexPhoneBeneficiary = 12;
+        $indexBeneficiary = 1;
         $beneficiaries = $faker->getBeneficiaries();
         // we declare a variable that will store a list of beneficiaries
         $beneficiariesList = [];
@@ -120,13 +121,15 @@ class AppFixtures extends Fixture
             $user->setRoles(['ROLE_BENEFICIARY']);
             // we use this condition to dispatch one department for three users, 
             // so for instance if it's key 1 or 2 or 3 the user will be attributed department [30]
-            if ($key === 1 || $key === 2 || $key === 3) {
+            if ($indexBeneficiary === 1 || $indexBeneficiary === 2 || $indexBeneficiary === 3) {
                 // we assign this department to the current user
                 $user->setDepartment($departmentsList[30]);
-            } else {
+            } 
+            if($indexBeneficiary === 4 || $indexBeneficiary === 5 || $indexBeneficiary === 6) {
                 $user->setDepartment($departmentsList[76]);
             }
 
+            $indexBeneficiary = $indexBeneficiary + 1;
             // we set the creation date of the beneficiary
             $user->setCreatedAt(new \DateTime());
             // We store a beneficiary inside the array 
@@ -138,6 +141,7 @@ class AppFixtures extends Fixture
         //--- VOLUNTEER ---//
         $phoneNumberVolunteer = '06822317';
         $indexPhoneVolunteer = 31;
+        $indexVolunteer = 1;
         $volunteers = $faker->getVolunteers();
         $volunteersList = [];
         foreach ($volunteers as $key => $content) {
@@ -165,12 +169,14 @@ class AppFixtures extends Fixture
             $user->setEmail(strtolower(preg_replace('/\s+/', '', $user->getLastname())) . '@gmail.com');
             $user->setRoles(['ROLE_VOLUNTEER']);
 
-            if ($key === 1 || $key === 2 || $key === 3) {
+            if ($indexVolunteer === 1 || $indexVolunteer === 2 || $indexVolunteer === 3) {
                 $user->setDepartment($departmentsList[30]);
-            } else {
+            } 
+            if ($indexVolunteer === 4 || $indexVolunteer === 5 || $indexVolunteer === 6) {
                 $user->setDepartment($departmentsList[76]);
             }
 
+            $indexVolunteer = $indexVolunteer + 1;
             $user->setCreatedAt(new \DateTime());
             $volunteersList[] = $user;
 
