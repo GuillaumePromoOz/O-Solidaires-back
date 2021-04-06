@@ -26,7 +26,7 @@
       <th scope="row">{{ proposition.id }}</th>
       <td><a href="{{ path('back_proposition_read', {id: proposition.id} )}}">{{ proposition.title }}</a></td>
       <td>{{ proposition.content }}</td>
-      <td><a href="{{ path('volunteer_read', {id: proposition.user.id}) }}">{{ proposition.user.lastname }} {{ proposition.user.firstname }}</a></td>
+      <td><a href="{{ path('back_volunteer_read', {id: proposition.user.id}) }}">{{ proposition.user.lastname }} {{ proposition.user.firstname }}</a></td>
       <td>{{ proposition.user.department }}</td>
     </tr>
     {% endfor %}
@@ -57,7 +57,7 @@
       <th scope="row">{{ request.id }}</th>
       <td><a href="{{ path('back_request_read', {id: request.id}) }}">{{ request.title }}</a></td>
       <td>{{ request.content }}</td>
-      <td><a href="{{ path('beneficiary_read', {id: request.user.id}) }}">{{ request.user.lastname }} {{ request.user.firstname }}</a></td>
+      <td><a href="{{ path('back_beneficiary_read', {id: request.user.id}) }}">{{ request.user.lastname }} {{ request.user.firstname }}</a></td>
       <td>{{ request.user.department }}</td>
     </tr>
     {% endfor %}

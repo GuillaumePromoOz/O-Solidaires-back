@@ -39,7 +39,7 @@
       <td>{{ request.user.department }}</td>
       <td><form action="{{ path('back_request_delete', {id:request.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ request.title|e('js') }} ?')" method="POST">
             <input type="hidden" name="_method" value="DELETE"/>
-            <input type="hidden" name="token" value="{{ csrf_token('delete-request') }}"/>
+            <input type="hidden" name="token" value="{{ csrf_token('delete') }}"/>
             <a class="btn btn-sm btn-secondary mb-2" href="{{ path('back_request_read', {id: request.id}) }}">Voir</a>
             <a class="btn btn-sm btn-primary mb-2" href="{{ path('back_request_edit', {id: request.id}) }}">Modifier</a>
             <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>

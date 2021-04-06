@@ -26,7 +26,7 @@
     {% for admin in admins %}    
     <tr>
       <th scope="row">{{ admin.id }}</th>
-      <td><a href="{{ path('admin_read', {id: admin.id}) }}">{{ admin.lastname }}</a></td>
+      <td><a href="{{ path('back_admin_read', {id: admin.id}) }}">{{ admin.lastname }}</a></td>
       <td>{{ admin.firstname }}</td>
       <td>{{ admin.email }}</td>
     </tr>
@@ -55,7 +55,7 @@
     {% for volunteer in volunteers %}
     <tr>
       <th scope="row">{{ volunteer.id }}</th>
-      <td><a href="{{ path('volunteer_read', {id: volunteer.id}) }}">{{ volunteer.lastname }}</a></td>
+      <td><a href="{{ path('back_volunteer_read', {id: volunteer.id}) }}">{{ volunteer.lastname }}</a></td>
       <td>{{ volunteer.firstname }}</td>
       <td>{{ volunteer.email }}</td>
     </tr>
@@ -84,7 +84,7 @@
     {% for beneficiary in beneficiaries %}     
     <tr>
       <th scope="row">{{ beneficiary.id }}</th>
-      <td><a href="{{ path('beneficiary_read', {id: beneficiary.id}) }}">{{ beneficiary.lastname }}</a></td>
+      <td><a href="{{ path('back_beneficiary_read', {id: beneficiary.id}) }}">{{ beneficiary.lastname }}</a></td>
       <td>{{ beneficiary.firstname }}</td>
       <td>{{ beneficiary.email }}</td>
     </tr>

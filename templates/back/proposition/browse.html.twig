@@ -39,7 +39,7 @@
       <td>{{ proposition.user.department }}</td>
       <td><form action="{{ path('back_proposition_delete', {id:proposition.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ proposition.title|e('js') }} ?')" method="POST">
             <input type="hidden" name="_method" value="DELETE"/>
-            <input type="hidden" name="token" value="{{ csrf_token('delete-proposition') }}"/>
+            <input type="hidden" name="token" value="{{ csrf_token('delete') }}"/>
             <a class="btn btn-sm btn-secondary mb-2" href="{{ path('back_proposition_read', {id: proposition.id}) }}">Voir</a>
             <a class="btn btn-sm btn-primary mb-2" href="{{ path('back_proposition_edit', {id: proposition.id}) }}">Modifier</a>
             <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
