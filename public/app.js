@@ -19,8 +19,6 @@ const handleBodyColorSwitch = function(event) {
     bodyElement.classList.add('theme--' + themes[random]);
     bodyElement.classList.remove('theme--dark0');
 
-   
-
 };
 
 document.addEventListener('DOMContentLoaded', init);

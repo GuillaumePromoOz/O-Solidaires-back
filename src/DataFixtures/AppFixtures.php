@@ -25,10 +25,6 @@ class AppFixtures extends Fixture
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    //we declare constants that contain the number of fixtures needed
-    const NB_USERS = 10;
-    const NB_PROPOSITIONS = 2 * self::NB_USERS;
-    const NB_REQUESTS = 2 * self::NB_USERS;
 
 
     public function load(ObjectManager $manager)
@@ -66,22 +62,21 @@ class AppFixtures extends Fixture
 
         //--- CATEGORY ---//
         $categories = $faker->getCategories();
-        $categoriesList = [];
         foreach ($categories as $content) {
             $categorie = new Category();
             $categorie->setName($content);
             $categorie->setCreatedAt(new \DateTime());
-            $categoriesList[] = $categorie;
             $manager->persist($categorie);
         }
 
         //--- BENEFICIARY ---//
 
+        $beneficiaries = $faker->getBeneficiairies();
         // we declare a variable that will store a list of beneficiaries
         $beneficiariesList = [];
 
-        // the loop iterates as many times as the number that is stored in the constant NB_USERS (in this case it's 10)
-        for ($i = 1; $i <= self::NB_USERS; $i++) {
+        // the first loop browses through the array $beneficiaries with a key and a content
+        foreach ($beneficiaries as $key => $content) {
 
             // we create an instance of User
             $user = new User();
@@ -91,26 +86,40 @@ class AppFixtures extends Fixture
             $encoded = $this->passwordEncoder->encodePassword($user, $plainPassword);
             // we assign this password to the current user
             $user->setPassword($encoded);
-            // we set the lastName
-            $user->setLastname($faker->lastName());
-            // we set the firstname
-            $user->setFirstname($faker->firstName());
             // we set the phone number
             $user->setPhoneNumber($faker->phoneNumber());
-            // we set the user's biography
-            $user->setBio($faker->paragraph());
+            // the second loop browses through the array $content as it is a multidimensional array to fetch the key and value in that second array
+            foreach ($content as $key => $value) {
+                if ($key === 'lastname') {
+                    // we set the lastName
+                    $user->setLastname($value);
+                }
+                if ($key === 'firstname') {
+                    // we set the firstname
+                    $user->setFirstname($value);
+                }
+                if ($key === 'bio') {
+                    // we set the user's biography
+                    $user->setBio($value);
+                }
+            }
 
             // we create an email using the user's name (user->getLastname)
             // using preg_replace we cut out the spaces
             // using strtolower we get rid of any CAPS
             // we concatenate @gmail.com
-            $user->setEmail(strtolower(preg_replace('/\s+/', '', $user->getLastname())) . $i .'@gmail.com');
+            $user->setEmail(strtolower(preg_replace('/\s+/', '', $user->getLastname())) . '@gmail.com');
             // we set the user's role to beneficiary
             $user->setRoles(['ROLE_BENEFICIARY']);
-            // we fetch a random Department in the departementsList
-            $randomDepartement = $departmentsList[array_rand($departmentsList)];
-            // we assign this department to the current user
-            $user->setDepartment($randomDepartement);
+            // we use this condition to dispatch one department for three users, 
+            // so for instance if it's key 1 or 2 or 3 the user will be attributed department [30]
+            if ($key === 1 || $key === 2 || $key === 3) {
+                // we assign this department to the current user
+                $user->setDepartment($departmentsList[30]);
+            } else {
+                $user->setDepartment($departmentsList[76]);
+            }
+
             // we set the creation date of the beneficiary
             $user->setCreatedAt(new \DateTime());
             // We store a beneficiary inside the array 
@@ -121,26 +130,37 @@ class AppFixtures extends Fixture
 
         //--- VOLUNTEER ---//
 
+        $volunteers = $faker->getVolunteers();
         $volunteersList = [];
-        for ($i = 1; $i <= self::NB_USERS; $i++) {
+        foreach ($volunteers as $key => $content) {
+
 
             $user = new User();
             $plainPassword = 'Az123456';
             $encoded = $this->passwordEncoder->encodePassword($user, $plainPassword);
             $user->setPassword($encoded);
-            $user->setLastname($faker->lastName());
-            $user->setFirstname($faker->firstName());
-
-
-            $user->setEmail(strtolower(preg_replace('/\s+/', '', $user->getLastname())) . $i .'@gmail.com');
-            $user->setRoles(['ROLE_VOLUNTEER']);
-            // we set the phone number
             $user->setPhoneNumber($faker->phoneNumber());
-            // we set the user's biography
-            $user->setBio($faker->paragraph());
 
-            $randomDepartement = $departmentsList[array_rand($departmentsList)];
-            $user->setDepartment($randomDepartement);
+            foreach ($content as $key => $value) {
+                if ($key === 'lastname') {
+                    $user->setLastname($value);
+                }
+                if ($key === 'firstname') {
+                    $user->setFirstname($value);
+                }
+                if ($key === 'bio') {
+                    $user->setBio($value);
+                }
+            }
+
+            $user->setEmail(strtolower(preg_replace('/\s+/', '', $user->getLastname())) . '@gmail.com');
+            $user->setRoles(['ROLE_VOLUNTEER']);
+
+            if ($key === 1 || $key === 2 || $key === 3) {
+                $user->setDepartment($departmentsList[30]);
+            } else {
+                $user->setDepartment($departmentsList[76]);
+            }
 
             $user->setCreatedAt(new \DateTime());
             $volunteersList[] = $user;
@@ -150,7 +170,6 @@ class AppFixtures extends Fixture
 
         //--- ADMIN ---//
 
-        $adminsList = [];
         for ($i = 1; $i <= 2; $i++) {
 
             $user = new User();
@@ -169,64 +188,88 @@ class AppFixtures extends Fixture
             // we set the user's biography
             $user->setBio($faker->paragraph());
 
-            $randomDepartement = $departmentsList[array_rand($departmentsList)];
-            $user->setDepartment($randomDepartement);
+
+            if ($i === 1) {
+                $user->setDepartment($departmentsList[30]);
+            } else {
+                $user->setDepartment($departmentsList[76]);
+            }
 
             $user->setCreatedAt(new \DateTime());
-
-            $adminsList[] = $user;
 
             $manager->persist($user);
         }
 
         //--- PROPOSITION ---//
 
-        // we declare a variable that will store a list of propositions
-        $propositionsList = [];
-        // the loop iterates as many times as the number that is stored in the constant NB_PROPOSITIONS (in this case it's 2 * self::NB_USERS)
-        for ($i = 1; $i <= self::NB_PROPOSITIONS; $i++) {
+        $propositions = $faker->getPropositions();
+
+        foreach ($propositions as $key => $content) {
             // we create an instance of Proposition
             $proposition = new Proposition();
-            // we set a title using the Faker service
-            $proposition->setTitle($faker->title());
-            // we set a content using the Faker service
-            $proposition->setContent($faker->content());
+
+            foreach ($content as $key => $value) {
+                if ($key === 'title') {
+                    // we set a title using the Faker service
+                    $proposition->setTitle($value);
+                }
+                if ($key === 'content') {
+                    // we set a content using the Faker service
+                    $proposition->setContent($value);
+                }
+                if ($key === 'category') {
+                    //  we assing this category to the current proposition
+                    $proposition->setCategory($value);
+                }
+            }
+
+
+
             // we set the disponibility date of the proposition
             $proposition->setDisponibilityDate(new \DateTime());
             // we set the creation date of the proposition
             $proposition->setCreatedAt(new \DateTime());
-            // we fetch a random volunteer in the volunteersList
-            $randomVolunteer = $volunteersList[array_rand($volunteersList)];
+            // we fetch a volunteer in the volunteersList
+            $volunteer = $volunteersList[$key - 1];
             // we assing this volunteer to the current proposition
-            $proposition->setUser($randomVolunteer);
-            // we fetch a random category in the categoriesList
-            $randomCategory = $categoriesList[array_rand($categoriesList)];
-            //  we assing this category to the current proposition
-            $proposition->setCategory($randomCategory);
-
-            $propositionsList[] = $proposition;
+            $proposition->setUser($volunteer);
 
             $manager->persist($proposition);
         }
 
         //--- REQUEST ---//
 
-        $requestsList = [];
-        for ($i = 1; $i <= self::NB_REQUESTS; $i++) {
-
+        $requests = $faker->getRequests();
+        // the loop iterates as many times as the number that is stored in the constant NB_PROPOSITIONS (in this case it's 2 * self::NB_USERS)
+        foreach ($requests as $key => $content) {
+            // we create an instance of Proposition
             $request = new Request();
-            $request->setTitle($faker->title());
-            $request->setContent($faker->content());
+
+            foreach ($content as $key => $value) {
+                if ($key === 'title') {
+                    // we set a title using the Faker service
+                    $request->setTitle($value);
+                }
+                if ($key === 'content') {
+                    // we set a content using the Faker service
+                    $request->setContent($value);
+                }
+                if ($key === 'category') {
+                    //  we assing this category to the current proposition
+                    $request->setCategory($value);
+                }
+            }
+
+
+
+            // we set the disponibility date of the proposition
             $request->setInterventionDate(new \DateTime());
+            // we set the creation date of the proposition
             $request->setCreatedAt(new \DateTime());
-
-            $randomBeneficiary = $beneficiariesList[array_rand($beneficiariesList)];
-            $request->setUser($randomBeneficiary);
-
-            $randomCategory = $categoriesList[array_rand($categoriesList)];
-            $request->setCategory($randomCategory);
-
-            $requestsList[] = $request;
+            // we fetch a volunteer in the volunteersList
+            $beneficiary = $beneficiariesList[$key - 1];
+            // we assing this volunteer to the current proposition
+            $request->setUser($beneficiary);
 
             $manager->persist($request);
         }
