@@ -245,7 +245,7 @@ class OsolidaireProvider
         ],
         6 => [
             'title' => 'Bricoleur du dimanche',
-            'content' => 'Bonjour, je m\'appel Thomas et je suis bricoleur à mes heures perdues. Si vous avez besoin d\'aide pour refaire votre terrasse je suis l\'homme qu\'il vous faut. En plus j\'ai récemment investis dans divers outils de bonnes qualités que j\'ai acheté chez Lidl ! Tout le monde le dit, "Thomas c\'est un vrai bricolo et en plus il trouve toujours de bonnes affaires !"',
+            'content' => 'Bonjour, je m\'appel Patrick et je suis bricoleur à mes heures perdues. Si vous avez besoin d\'aide pour refaire votre terrasse je suis l\'homme qu\'il vous faut. En plus j\'ai récemment investis dans divers outils de bonnes qualités que j\'ai acheté chez Lidl ! Tout le monde le dit, "Patrick c\'est un vrai bricolo et en plus il trouve toujours de bonnes affaires !"',
             'category' => 'Bricolage',
         ],
     ];
