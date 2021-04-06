@@ -186,8 +186,6 @@ class AppFixtures extends Fixture
             $plainPassword = 'Az123456';
             $encoded = $this->passwordEncoder->encodePassword($user, $plainPassword);
             $user->setPassword($encoded);
-            $user->setLastname($faker->lastName());
-            $user->setFirstname($faker->firstName());
 
 
             $user->setEmail('toto' . $i . '@gmail.com');
@@ -196,13 +194,20 @@ class AppFixtures extends Fixture
             // we set the phone number
             $user->setPhoneNumber($phoneNumberAdmin . $indexPhoneAdmin);
             $indexPhoneAdmin = $indexPhoneAdmin + 10;
-            if ($i = 1) {
+
+            if ($i === 1) {
+                
+                $user->setLastname('Parker');
+                $user->setFirstname('Peter');
                 // we set the user's biography
                 $user->setBio('Je soutiens ce projet o\'solidaire car l\'entraide est un moyen de créer des liens');
-            } else {
+            } 
+            if ($i === 2) {
+                
+                $user->setLastname('Watson');
+                $user->setFirstname('Mary-Jane');
                 $user->setBio('L\'entraide est rare donc partageons la');
             }
-
 
 
             if ($i === 1) {
