@@ -71,8 +71,12 @@ class AppFixtures extends Fixture
             $manager->persist($categorie);
         }
 
-        //--- BENEFICIARY ---//
 
+
+
+        //--- BENEFICIARY ---//
+        $phoneNumberBeneficiary = '06990515';
+        $indexPhoneBeneficiary = 12;
         $beneficiaries = $faker->getBeneficiaries();
         // we declare a variable that will store a list of beneficiaries
         $beneficiariesList = [];
@@ -89,7 +93,8 @@ class AppFixtures extends Fixture
             // we assign this password to the current user
             $user->setPassword($encoded);
             // we set the phone number
-            $user->setPhoneNumber($faker->phoneNumber());
+            $user->setPhoneNumber($phoneNumberBeneficiary . $indexPhoneBeneficiary);
+            $indexPhoneBeneficiary = $indexPhoneBeneficiary + 10;
             // the second loop browses through the array $content as it is a multidimensional array to fetch the key and value in that second array
             foreach ($content as $key => $value) {
                 if ($key === 'lastname') {
@@ -131,7 +136,8 @@ class AppFixtures extends Fixture
         }
 
         //--- VOLUNTEER ---//
-
+        $phoneNumberVolunteer = '06822317';
+        $indexPhoneVolunteer = 31;
         $volunteers = $faker->getVolunteers();
         $volunteersList = [];
         foreach ($volunteers as $key => $content) {
@@ -141,7 +147,8 @@ class AppFixtures extends Fixture
             $plainPassword = 'Az123456';
             $encoded = $this->passwordEncoder->encodePassword($user, $plainPassword);
             $user->setPassword($encoded);
-            $user->setPhoneNumber($faker->phoneNumber());
+            $user->setPhoneNumber($phoneNumberVolunteer . $indexPhoneVolunteer);
+            $indexPhoneVolunteer = $indexPhoneVolunteer + 10;
 
             foreach ($content as $key => $value) {
                 if ($key === 'lastname') {
