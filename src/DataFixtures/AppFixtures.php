@@ -178,7 +178,8 @@ class AppFixtures extends Fixture
         }
 
         //--- ADMIN ---//
-
+        $phoneNumberAdmin = '06742842';
+        $indexPhoneAdmin = 28;
         for ($i = 1; $i <= 2; $i++) {
 
             $user = new User();
@@ -193,9 +194,15 @@ class AppFixtures extends Fixture
             $user->setRoles(['ROLE_ADMIN']);
 
             // we set the phone number
-            $user->setPhoneNumber($faker->phoneNumber());
-            // we set the user's biography
-            $user->setBio($faker->paragraph());
+            $user->setPhoneNumber($phoneNumberAdmin . $indexPhoneAdmin);
+            $indexPhoneAdmin = $indexPhoneAdmin + 10;
+            if ($i = 1) {
+                // we set the user's biography
+                $user->setBio('Je soutiens ce projet o\'solidaire car l\'entraide est un moyen de créer des liens');
+            } else {
+                $user->setBio('L\'entraide est rare donc partageons la');
+            }
+
 
 
             if ($i === 1) {
