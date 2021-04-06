@@ -110,10 +110,10 @@ class OsolidaireProvider
     ];
 
     private $categories = [
+        'Animaux',
         'Jardinage',
         'Bricolage',
         'Courses',
-        'Animaux',
         'Visite',
         'Cuisine',
     ];
@@ -241,6 +241,7 @@ class OsolidaireProvider
         5 => [
             'title' => 'Culture',
             'content' => 'Avis au amateur de culture, mon épouse et moi-même organisons régulièrement des sorties en groupes, objectif : se cultiver! Si cela vous intéresse, on peux même venir vour récupèrer à votre domicile directement. Alors pourquoi s\'en priver ? Salutations.',
+            'category' => 'Visite',
         ],
         6 => [
             'title' => 'Bricoleur du dimanche',

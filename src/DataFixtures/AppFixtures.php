@@ -62,16 +62,18 @@ class AppFixtures extends Fixture
 
         //--- CATEGORY ---//
         $categories = $faker->getCategories();
+        $categoriesList = [];
         foreach ($categories as $content) {
             $categorie = new Category();
             $categorie->setName($content);
             $categorie->setCreatedAt(new \DateTime());
+            $categoriesList[] = $categorie;
             $manager->persist($categorie);
         }
 
         //--- BENEFICIARY ---//
 
-        $beneficiaries = $faker->getBeneficiairies();
+        $beneficiaries = $faker->getBeneficiaries();
         // we declare a variable that will store a list of beneficiaries
         $beneficiariesList = [];
 
@@ -203,7 +205,7 @@ class AppFixtures extends Fixture
         //--- PROPOSITION ---//
 
         $propositions = $faker->getPropositions();
-
+        $indexProposition = 0;
         foreach ($propositions as $key => $content) {
             // we create an instance of Proposition
             $proposition = new Proposition();
@@ -218,8 +220,12 @@ class AppFixtures extends Fixture
                     $proposition->setContent($value);
                 }
                 if ($key === 'category') {
-                    //  we assing this category to the current proposition
-                    $proposition->setCategory($value);
+                    foreach ($categoriesList as $category) {
+                        if ($category->getName() === $value) {
+                            //  we assing this category to the current proposition
+                            $proposition->setCategory($category);
+                        }
+                    }
                 }
             }
 
@@ -227,10 +233,11 @@ class AppFixtures extends Fixture
 
             // we set the disponibility date of the proposition
             $proposition->setDisponibilityDate(new \DateTime());
-            // we set the creation date of the proposition
+            // we set the creation date of targetEntity=Category::classe proposition
             $proposition->setCreatedAt(new \DateTime());
             // we fetch a volunteer in the volunteersList
-            $volunteer = $volunteersList[$key - 1];
+            $volunteer = $volunteersList[$indexProposition];
+            $indexProposition = $indexProposition + 1;
             // we assing this volunteer to the current proposition
             $proposition->setUser($volunteer);
 
@@ -240,6 +247,7 @@ class AppFixtures extends Fixture
         //--- REQUEST ---//
 
         $requests = $faker->getRequests();
+        $indexRequest = 0;
         // the loop iterates as many times as the number that is stored in the constant NB_PROPOSITIONS (in this case it's 2 * self::NB_USERS)
         foreach ($requests as $key => $content) {
             // we create an instance of Proposition
@@ -255,8 +263,12 @@ class AppFixtures extends Fixture
                     $request->setContent($value);
                 }
                 if ($key === 'category') {
-                    //  we assing this category to the current proposition
-                    $request->setCategory($value);
+                    foreach ($categoriesList as $category) {
+                        if ($category->getName() === $value) {
+                            //  we assing this category to the current request
+                            $request->setCategory($category);
+                        }
+                    }
                 }
             }
 
@@ -267,7 +279,8 @@ class AppFixtures extends Fixture
             // we set the creation date of the proposition
             $request->setCreatedAt(new \DateTime());
             // we fetch a volunteer in the volunteersList
-            $beneficiary = $beneficiariesList[$key - 1];
+            $beneficiary = $beneficiariesList[$indexRequest];
+            $indexRequest = $indexRequest + 1;
             // we assing this volunteer to the current proposition
             $request->setUser($beneficiary);
 
