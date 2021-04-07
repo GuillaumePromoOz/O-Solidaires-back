@@ -212,6 +212,9 @@ class UserController extends AbstractController
      */
     public function patchUser(User $user = null, EntityManagerInterface $em, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder, Request $request, ValidatorInterface $validator)
     {
+        // Le User courant a-t-il le droits de modifier cette question
+        $this->denyAccessUnlessGranted('patchUser', $user);
+
 
         if ($user === null) {
 

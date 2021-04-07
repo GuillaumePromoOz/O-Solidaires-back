@@ -98,6 +98,9 @@ class RequestController extends AbstractController
      */
     public function patchRequest(RequestEntity $userRequest = null, EntityManagerInterface $em, SerializerInterface $serializer, ValidatorInterface $validator, Request $request)
     {
+        // Le User courant a-t-il le droits de modifier cette question
+        $this->denyAccessUnlessGranted('patchRequest', $userRequest);
+
         // We would like to modify the request via the id sent by the URL
 
         // Checks for errors

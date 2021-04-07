@@ -107,6 +107,16 @@ class PropositionController extends AbstractController
      */
     public function patchPropostion(Proposition $proposition = null, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
     {
+
+        //  $user = $this->getUser();
+        //    Si le user n'est pas l'auteur de la question, il sort
+        // if ($user !== $proposition->getUser()) {
+        //     throw $this->createAccessDeniedException('Pas le droit !');
+        // }
+
+        // Le User courant a-t-il le droits de modifier cette question
+        $this->denyAccessUnlessGranted('patchProposition', $proposition);
+
         // We would like to modify the request via the id sent by the URL
 
         if ($proposition === null) {
