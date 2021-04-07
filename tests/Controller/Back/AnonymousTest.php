@@ -23,19 +23,19 @@ class AnonymousTest extends WebTestCase
     public function urlProvider()
     {
         yield ['/back/department/browse'];
-        yield ['/back/department/read/708'];
+        yield ['/back/department/read/1'];
         yield ['/back/category/browse'];
-        yield ['/back/category/read/47'];
+        yield ['/back/category/read/1'];
         yield ['/back/request/browse'];
-        yield ['/back/request/read/58'];
+        yield ['/back/request/read/1'];
         yield ['/back/proposition/browse'];
-        yield ['/back/proposition/read/60'];
+        yield ['/back/proposition/read/1'];
         yield ['/back/admin/browse'];
-        yield ['/back/admin/read/128'];
+        yield ['/back/admin/read/13'];
         yield ['/back/beneficiary/browse'];
-        yield ['/back/beneficiary/read/116'];
+        yield ['/back/beneficiary/read/1'];
         yield ['/back/volunteer/browse'];
-        yield ['/back/volunteer/read/122'];
+        yield ['/back/volunteer/read/7'];
        
     }
 
@@ -54,13 +54,13 @@ class AnonymousTest extends WebTestCase
     public function urlProviderForPost()
     {
         yield ['/back/category/browse'];
-        yield ['/back/category/edit/74'];
+        yield ['/back/category/edit/1'];
         yield ['/back/request/add'];
-        yield ['/back/request/edit/58'];
+        yield ['/back/request/edit/1'];
         yield ['/back/proposition/add'];
-        yield ['/back/proposition/edit/60'];
+        yield ['/back/proposition/edit/1'];
         yield ['/back/user/add'];
-        yield ['/back/user/edit/122'];
+        yield ['/back/user/edit/1'];
     }
 
     /**
@@ -77,9 +77,9 @@ class AnonymousTest extends WebTestCase
 
     public function urlProviderForDelete()
     {
-        yield ['/back/user/delete/122'];
-        yield ['/back/proposition/delete/60'];
-        yield ['/back/request/delete/58'];
-        yield ['/back/category/delete/47'];
+        yield ['/back/user/delete/1'];
+        yield ['/back/proposition/delete/1'];
+        yield ['/back/request/delete/1'];
+        yield ['/back/category/delete/1'];
     }
 }
