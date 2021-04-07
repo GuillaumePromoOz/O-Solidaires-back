@@ -8,6 +8,7 @@ use App\Entity\Request;
 use App\Entity\Category;
 use App\Entity\Department;
 use App\Entity\Proposition;
+use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\DataFixtures\Provider\OsolidaireProvider;
@@ -18,17 +19,36 @@ class AppFixtures extends Fixture
     // Password encoder
     private $passwordEncoder;
 
+    private $connexion;
+
     //We inject the service password encoder
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, Connection $connection)
     {
 
         $this->passwordEncoder = $passwordEncoder;
+        $this->connection = $connection;
     }
 
+    private function truncate()
+    {
+        // On passen mode SQL ! On cause avec MySQL
+        // Désactivation des contraintes FK
+        $users = $this->connection->query('SET foreign_key_checks = 0');
+        // On tronque
+        $users = $this->connection->query('TRUNCATE TABLE category');
+        $users = $this->connection->query('TRUNCATE TABLE department');
+        $users = $this->connection->query('TRUNCATE TABLE proposition');
+        $users = $this->connection->query('TRUNCATE TABLE request');
+        $users = $this->connection->query('TRUNCATE TABLE user');
+        // etc.
+    }
 
 
     public function load(ObjectManager $manager)
     {
+        // On va truncate nos tables à la main pour revenir à id=1
+        $this->truncate();
+
         // Faker is a PHP library that generates fake data
         // @see https://fakerphp.github.io/formatters/
         $faker = Factory::create('fr_FR');
