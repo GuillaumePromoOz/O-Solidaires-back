@@ -197,7 +197,7 @@ class UserController extends AbstractController
 
             //Uploading a picture
             //@see https://symfony.com/doc/current/controller/upload_file.html
-            $uploadedFile = $form->get('picture')->getData();
+            /*$uploadedFile = $form->get('picture')->getData();
 
             // this condition is needed because the 'picture' field is not required
             // so the picture file must be processed only when a file is uploaded
@@ -221,7 +221,7 @@ class UserController extends AbstractController
                 // instead of its contents
                 $user->setPictureFilename($newFilename);
                 $user->setPicture($newFilename);
-            }
+            }*/
 
             // saves the new user
             $entityManager->persist($user);

@@ -26,7 +26,7 @@ class RequestRepository extends ServiceEntityRepository
      */
     public function findAllByCategory($category)
     {
-        
+
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
@@ -34,8 +34,8 @@ class RequestRepository extends ServiceEntityRepository
             FROM App\Entity\Request r
             WHERE r.category = :category '
         )
-        ->setParameter('category', $category);
-        
+            ->setParameter('category', $category);
+
         return $query->getResult();
     }
 
@@ -43,17 +43,17 @@ class RequestRepository extends ServiceEntityRepository
      * Find all requests ordered by date DESC 
      * 
      */
-    public function findAllOrderedByDateDesc()
+    public function findAllOrderedByIdDesc()
     {
-        
+
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
             'SELECT r
             FROM App\Entity\Request r
-            ORDER BY r.createdAt DESC'
+            ORDER BY r.id DESC'
         );
-        
+
         return $query->getResult();
     }
 

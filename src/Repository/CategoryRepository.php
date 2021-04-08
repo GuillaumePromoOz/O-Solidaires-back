@@ -23,7 +23,7 @@ class CategoryRepository extends ServiceEntityRepository
      * Find all requests ordered by date DESC 
      * 
      */
-    public function findAllOrderedByDateDesc()
+    public function findAllOrderedByIdDesc()
     {
 
         $entityManager = $this->getEntityManager();
@@ -31,7 +31,7 @@ class CategoryRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             'SELECT c
             FROM App\Entity\Category c
-            ORDER BY c.createdAt DESC'
+            ORDER BY c.id DESC'
         );
 
         return $query->getResult();

@@ -27,7 +27,7 @@
                     <a class="nav-link" href="{{ path('back_beneficiary_browse') }}">Bénéficiaires</a>
                 </li>
                 <li class="nav-item {% block proposition %}{% endblock %}">
-                    <a class="nav-link" href="{{ path('back_proposition_browse') }}">Proposition</a>
+                    <a class="nav-link" href="{{ path('back_proposition_browse') }}">Propositions</a>
                 </li>
                 <li class="nav-item {% block request %}{% endblock %}">
                     <a class="nav-link" href="{{ path('back_request_browse') }}">Demandes</a>
@@ -49,6 +49,7 @@
             </div>
         </nav>
         
+        {# Background theme en JS #}
         {# <div>
         <a class="container-theme" href="#"><img src="{{ asset('lightbulb.png')}}" width = "70px"></a>
         </div> #}

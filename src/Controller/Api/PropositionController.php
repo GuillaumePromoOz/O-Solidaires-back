@@ -23,7 +23,7 @@ class PropositionController extends AbstractController
      */
     public function read(PropositionRepository $propositionRepository): Response
     {
-        $propostions = $propositionRepository->findAllOrderedByDateDesc();
+        $propostions = $propositionRepository->findAllOrderedByIdDesc();
 
         return $this->json($propostions, 200, [], ['groups' => 'propositions_read']);
     }

@@ -26,7 +26,7 @@
 <p>Prénom : {{ request.user.firstname }}</p>
 <p>Email : {{ request.user.email }}</p>
 <p>Téléphone : {{ request.user.phoneNumber }}</p>
-<p>Image : <img src="{{ asset('uploads/pictures/' ~ request.user.picture)}}" width = "70px"></p>
+{# <p>Image : <img src="{{ asset('uploads/pictures/' ~ request.user.picture)}}" width = "70px"></p> #}
 <p>Département : {{ request.user.department }}</p>
 <p>Biographie : {{ request.user.bio }}</p>
 

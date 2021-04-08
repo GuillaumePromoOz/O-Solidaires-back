@@ -21,7 +21,7 @@ class PropositionController extends AbstractController
      */
     public function browse(PropositionRepository $propositionRepository): Response
     {
-        $propositions = $propositionRepository->findAllOrderedByDateDesc();
+        $propositions = $propositionRepository->findAllOrderedByIdDesc();
 
         return $this->render('back/proposition/browse.html.twig', [
             'propositions' => $propositions,
@@ -66,7 +66,7 @@ class PropositionController extends AbstractController
             $entityManager->flush();
 
             // Flash
-            $this->addFlash('success', 'Utilisateur créé avec succès !');
+            $this->addFlash('success', 'Proposition créée avec succès !');
 
 
             return $this->redirectToRoute('back_proposition_browse');
@@ -97,7 +97,7 @@ class PropositionController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
 
             // Flash
-            $this->addFlash('warning', 'Utilisateur modifié !');
+            $this->addFlash('warning', 'Proposition modifiée !');
 
             return $this->redirectToRoute('back_proposition_browse');
         }
@@ -123,7 +123,7 @@ class PropositionController extends AbstractController
         $submittedToken = $request->request->get('token');
 
 
-        if (!$this->isCsrfTokenValid('delete-proposition', $submittedToken)) {
+        if (!$this->isCsrfTokenValid('delete', $submittedToken)) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
@@ -131,7 +131,7 @@ class PropositionController extends AbstractController
         $entityManager->flush();
 
         // Flash
-        $this->addFlash('danger', 'Utilisateur supprimé !');
+        $this->addFlash('danger', 'propostion supprimée !');
 
         return $this->redirectToRoute('back_proposition_browse');
     }

@@ -39,12 +39,12 @@ class CategoryController extends AbstractController
             $entityManager->flush();
 
             // Flash
-            $this->addFlash('success', 'Utilisateur créé avec succès !');
+            $this->addFlash('success', 'Catégorie créée avec succès !');
 
             return $this->redirectToRoute('back_category_browse');
         }
 
-        $categories = $categoryRepository->findAllOrderedByDateDesc();
+        $categories = $categoryRepository->findAllOrderedByIdDesc();
 
         return $this->render('back/category/browse.html.twig', [
             'form' => $form->createView(),
@@ -60,7 +60,7 @@ class CategoryController extends AbstractController
     public function read(Category $category = null, PropositionRepository $propositionRepository, RequestRepository $requestRepository): Response
     {
         if ($category === null) {
-            throw $this->createNotFoundException('Département non trouvé.');
+            throw $this->createNotFoundException('Categorie non trouvée.');
         }
         $id = $category->getId();
 
@@ -95,7 +95,7 @@ class CategoryController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
 
             // Flash
-            $this->addFlash('warning', 'Utilisateur modifié !');
+            $this->addFlash('warning', 'Categorie modifiée !');
 
             return $this->redirectToRoute('back_category_browse');
         }
@@ -121,7 +121,7 @@ class CategoryController extends AbstractController
         $submittedToken = $request->request->get('token');
 
 
-        if (!$this->isCsrfTokenValid('delete-category', $submittedToken)) {
+        if (!$this->isCsrfTokenValid('delete', $submittedToken)) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
@@ -129,7 +129,7 @@ class CategoryController extends AbstractController
         $entityManager->flush();
 
         // Flash
-        $this->addFlash('danger', 'Utilisateur supprimé !');
+        $this->addFlash('danger', 'Catégorie supprimée !');
 
         return $this->redirectToRoute('back_category_browse');
     }

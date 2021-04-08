@@ -46,7 +46,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             'SELECT u
             FROM App\Entity\User u
             WHERE u.roles = :role
-            ORDER BY u.createdAt DESC'
+            ORDER BY u.id DESC'
         )->setParameter('role', $role);
 
         return $query->getResult();
@@ -87,7 +87,23 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $query->getResult();
     }
 
+    /**
+     * Find all users ordered by date DESC 
+     * 
+     */
+    public function findAllOrderedByIdDesc()
+    {
 
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT u
+            FROM App\Entity\User u
+            ORDER BY u.id DESC'
+        );
+
+        return $query->getResult();
+    }
 
 
     // /**

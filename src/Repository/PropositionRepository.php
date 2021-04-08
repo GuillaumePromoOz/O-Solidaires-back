@@ -27,7 +27,7 @@ class PropositionRepository extends ServiceEntityRepository
      */
     public function findAllByCategory($category)
     {
-        
+
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
@@ -35,8 +35,8 @@ class PropositionRepository extends ServiceEntityRepository
             FROM App\Entity\Proposition p
             WHERE p.category = :category '
         )
-        ->setParameter('category', $category);
-        
+            ->setParameter('category', $category);
+
         return $query->getResult();
     }
 
@@ -44,17 +44,17 @@ class PropositionRepository extends ServiceEntityRepository
      * Find all propositions ordered by date DESC 
      * 
      */
-    public function findAllOrderedByDateDesc()
+    public function findAllOrderedByIdDesc()
     {
-        
+
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
             'SELECT p
             FROM App\Entity\Proposition p
-            ORDER BY p.createdAt DESC'
+            ORDER BY p.id DESC'
         );
-        
+
         return $query->getResult();
     }
 

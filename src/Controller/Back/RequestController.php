@@ -21,7 +21,7 @@ class RequestController extends AbstractController
      */
     public function browse(RequestRepository $requestRepository): Response
     {
-        $requests = $requestRepository->findAllOrderedByDateDesc();
+        $requests = $requestRepository->findAllOrderedByIdDesc();
 
         return $this->render('back/request/browse.html.twig', [
             'requests' => $requests,
@@ -66,7 +66,7 @@ class RequestController extends AbstractController
             $entityManager->flush();
 
             // Flash
-            $this->addFlash('success', 'Utilisateur créé avec succès !');
+            $this->addFlash('success', 'Demande créée avec succès !');
 
 
             return $this->redirectToRoute('back_request_browse');
@@ -97,7 +97,7 @@ class RequestController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
 
             // Flash
-            $this->addFlash('warning', 'Utilisateur modifié !');
+            $this->addFlash('warning', 'Demande modifiée !');
 
             return $this->redirectToRoute('back_request_browse');
         }
@@ -123,7 +123,7 @@ class RequestController extends AbstractController
         $submittedToken = $request->request->get('token');
 
 
-        if (!$this->isCsrfTokenValid('delete-request', $submittedToken)) {
+        if (!$this->isCsrfTokenValid('delete', $submittedToken)) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
@@ -131,7 +131,7 @@ class RequestController extends AbstractController
         $entityManager->flush();
 
         // Flash
-        $this->addFlash('danger', 'Utilisateur supprimé !');
+        $this->addFlash('danger', 'Demande supprimée !');
 
         return $this->redirectToRoute('back_request_browse');
     }
