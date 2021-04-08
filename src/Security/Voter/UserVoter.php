@@ -52,6 +52,8 @@ class UserVoter extends Voter
                 }
                 // logic to determine if the user can EDIT
                 // return true or false
+                // in this case since User doesn't have a property $user hence not getter (no getUser)
+                // we simply say that $user equals the entity/object User
                 return $user === $subject;
                 break;
         }

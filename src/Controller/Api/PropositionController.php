@@ -105,7 +105,7 @@ class PropositionController extends AbstractController
      * 
      * @Route("/propositions/{id<\d+>}", name="api_propositions_patch", methods={"PATCH"})
      */
-    public function patchPropostion(Proposition $proposition = null, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
+    public function patchProposition(Proposition $proposition = null, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
     {
 
         //  $user = $this->getUser();
@@ -114,7 +114,7 @@ class PropositionController extends AbstractController
         //     throw $this->createAccessDeniedException('Pas le droit !');
         // }
 
-        // Le User courant a-t-il le droits de modifier cette question
+        // Le User courant a-t-il le droits de modifier cette question (gèré via le PropositionVoter)
         $this->denyAccessUnlessGranted('patchProposition', $proposition);
 
         // We would like to modify the request via the id sent by the URL

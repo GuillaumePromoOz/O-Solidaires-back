@@ -28,20 +28,21 @@ class DepartmentControllerTest extends WebTestCase
 
     //     $client->request('GET', '/back/department/read/708');
 
-        
+
 
     //     $this->assertEquals(200, $client->getResponse()->getStatusCode());
     // }
 
     /**
-     * L'anonyme n'as pas accès à l'ajout d'une critique
+     * Cette methode sert à vérifier que l'anonyme n'a pas accès au back office
+     * (on peu prendre comme exemple n'importe quelle route, ici en l'occurence department/browse)
      * En GET
      */
     public function testbrowseFailure()
     {
-        
+
         $client = static::createClient();
-        
+
         $crawler = $client->request('GET', '/back/department/browse');
 
         // La réponse a un statut 3xx car redirection vers /login

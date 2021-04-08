@@ -21,7 +21,8 @@ class AppFixtures extends Fixture
 
     private $connexion;
 
-    //We inject the service password encoder
+    // We inject the service password encoder
+    // We inject the connection service from DBAL
     public function __construct(UserPasswordEncoderInterface $passwordEncoder, Connection $connection)
     {
 
@@ -29,9 +30,11 @@ class AppFixtures extends Fixture
         $this->connection = $connection;
     }
 
+    // This method will reset all id's to 1
+
     private function truncate()
     {
-        // On passen mode SQL ! On cause avec MySQL
+        // On passe en mode SQL ! On cause avec MySQL
         // Désactivation des contraintes FK
         $users = $this->connection->query('SET foreign_key_checks = 0');
         // On tronque
@@ -144,8 +147,8 @@ class AppFixtures extends Fixture
             if ($indexBeneficiary === 1 || $indexBeneficiary === 2 || $indexBeneficiary === 3) {
                 // we assign this department to the current user
                 $user->setDepartment($departmentsList[30]);
-            } 
-            if($indexBeneficiary === 4 || $indexBeneficiary === 5 || $indexBeneficiary === 6) {
+            }
+            if ($indexBeneficiary === 4 || $indexBeneficiary === 5 || $indexBeneficiary === 6) {
                 $user->setDepartment($departmentsList[76]);
             }
 
@@ -191,7 +194,7 @@ class AppFixtures extends Fixture
 
             if ($indexVolunteer === 1 || $indexVolunteer === 2 || $indexVolunteer === 3) {
                 $user->setDepartment($departmentsList[30]);
-            } 
+            }
             if ($indexVolunteer === 4 || $indexVolunteer === 5 || $indexVolunteer === 6) {
                 $user->setDepartment($departmentsList[76]);
             }
@@ -222,14 +225,14 @@ class AppFixtures extends Fixture
             $indexPhoneAdmin = $indexPhoneAdmin + 10;
 
             if ($i === 1) {
-                
+
                 $user->setLastname('Parker');
                 $user->setFirstname('Peter');
                 // we set the user's biography
                 $user->setBio('Je soutiens ce projet o\'solidaire car l\'entraide est un moyen de créer des liens');
-            } 
+            }
             if ($i === 2) {
-                
+
                 $user->setLastname('Watson');
                 $user->setFirstname('Mary-Jane');
                 $user->setBio('L\'entraide est rare donc partageons la');
