@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -348,4 +349,23 @@ class UserController extends AbstractController
             return $this->redirectToRoute('back_volunteer_browse');
         }
     }
+
+    /**
+     * @Route("/back/theme", name="back_theme")
+     */
+    /* public function theme(SessionInterface $session)
+    {
+        // Définir le thème dark en session si pas présent
+        if ($session->get('theme') == null) {
+            // Définissons un attribut de session, disons 'theme' à 'dark' (clé => valeur)
+            $session->set('theme', 'dark'); // $_SESSION['theme'] = 'dark';
+        } else {
+            // Sinon, on le supprime
+            $session->remove('theme');
+        }
+
+        // On redirige vers la home
+
+        return $this->redirectToRoute('home');
+    }*/
 }

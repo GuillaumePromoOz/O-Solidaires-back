@@ -105,7 +105,7 @@ class UserController extends AbstractController
 
     /**
      * Get all volunteers
-     * 
+     * i
      * @Route("/volunteers", name="api_volunteers", methods="GET")
      */
     public function readVolunteers(UserRepository $userRepository): Response
