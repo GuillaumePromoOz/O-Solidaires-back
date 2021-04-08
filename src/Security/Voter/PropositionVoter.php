@@ -19,7 +19,7 @@ class PropositionVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        
+
         // https://symfony.com/doc/current/security/voters.html
 
         // if the attribute isn't one we support, return false

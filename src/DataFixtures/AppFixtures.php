@@ -8,6 +8,7 @@ use App\Entity\Request;
 use App\Entity\Category;
 use App\Entity\Department;
 use App\Entity\Proposition;
+use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\DataFixtures\Provider\OsolidaireProvider;
@@ -18,17 +19,39 @@ class AppFixtures extends Fixture
     // Password encoder
     private $passwordEncoder;
 
-    //We inject the service password encoder
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    private $connexion;
+
+    // We inject the service password encoder
+    // We inject the connection service from DBAL
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, Connection $connection)
     {
 
         $this->passwordEncoder = $passwordEncoder;
+        $this->connection = $connection;
     }
 
+    // This method will reset all id's to 1
+
+    private function truncate()
+    {
+        // On passe en mode SQL ! On cause avec MySQL
+        // Désactivation des contraintes FK
+        $users = $this->connection->query('SET foreign_key_checks = 0');
+        // On tronque
+        $users = $this->connection->query('TRUNCATE TABLE category');
+        $users = $this->connection->query('TRUNCATE TABLE department');
+        $users = $this->connection->query('TRUNCATE TABLE proposition');
+        $users = $this->connection->query('TRUNCATE TABLE request');
+        $users = $this->connection->query('TRUNCATE TABLE user');
+        // etc.
+    }
 
 
     public function load(ObjectManager $manager)
     {
+        // On va truncate nos tables à la main pour revenir à id=1
+        $this->truncate();
+
         // Faker is a PHP library that generates fake data
         // @see https://fakerphp.github.io/formatters/
         $faker = Factory::create('fr_FR');
@@ -124,8 +147,8 @@ class AppFixtures extends Fixture
             if ($indexBeneficiary === 1 || $indexBeneficiary === 2 || $indexBeneficiary === 3) {
                 // we assign this department to the current user
                 $user->setDepartment($departmentsList[30]);
-            } 
-            if($indexBeneficiary === 4 || $indexBeneficiary === 5 || $indexBeneficiary === 6) {
+            }
+            if ($indexBeneficiary === 4 || $indexBeneficiary === 5 || $indexBeneficiary === 6) {
                 $user->setDepartment($departmentsList[76]);
             }
 
@@ -171,7 +194,7 @@ class AppFixtures extends Fixture
 
             if ($indexVolunteer === 1 || $indexVolunteer === 2 || $indexVolunteer === 3) {
                 $user->setDepartment($departmentsList[30]);
-            } 
+            }
             if ($indexVolunteer === 4 || $indexVolunteer === 5 || $indexVolunteer === 6) {
                 $user->setDepartment($departmentsList[76]);
             }
@@ -202,14 +225,14 @@ class AppFixtures extends Fixture
             $indexPhoneAdmin = $indexPhoneAdmin + 10;
 
             if ($i === 1) {
-                
+
                 $user->setLastname('Parker');
                 $user->setFirstname('Peter');
                 // we set the user's biography
                 $user->setBio('Je soutiens ce projet o\'solidaire car l\'entraide est un moyen de créer des liens');
-            } 
+            }
             if ($i === 2) {
-                
+
                 $user->setLastname('Watson');
                 $user->setFirstname('Mary-Jane');
                 $user->setBio('L\'entraide est rare donc partageons la');
