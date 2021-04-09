@@ -12,44 +12,60 @@
 {{ include('back/_flash_messages.html.twig') }}
 
 <a class="btn btn-sm btn-success mb-4" href="{{ path('back_proposition_add') }}">Ajouter une proposition</a>
-<table class="table table-hover table-striped">
-  
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Catégorie</th>
-      <th scope="col">Titre</th>
-      <th scope="col">Contenu</th>
-      <th scope="col">Disponibilité</th>
-      <th scope="col">Bénévole</th>
-      <th scope="col">Département</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-     
-    {% for proposition in propositions %}        
-    <tr>
-      <th scope="row">{{ proposition.id }}</th>
-      <td>{{ proposition.category }}</td>
-      <td>{{ proposition.title }}</td>
-      <td>{{ proposition.content }}</td>
-      <td>{{ proposition.disponibilityDate|date('m/d/Y')}}</td>
-      <td>{{ proposition.user.lastname }} {{ proposition.user.firstname }}</td>
-      <td>{{ proposition.user.department }}</td>
-      <td><form action="{{ path('back_proposition_delete', {id:proposition.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ proposition.title|e('js') }} ?')" method="POST">
-            <input type="hidden" name="_method" value="DELETE"/>
-            <input type="hidden" name="token" value="{{ csrf_token('delete') }}"/>
-            <a class="btn btn-sm btn-secondary mb-2" href="{{ path('back_proposition_read', {id: proposition.id}) }}">Voir</a>
-            <a class="btn btn-sm btn-primary mb-2" href="{{ path('back_proposition_edit', {id: proposition.id}) }}">Modifier</a>
-            <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
-          </form>
-      </td>
-    </tr>
-    {% endfor %}
 
-  </tbody>
-</table>
+{# Get a proposition by category #}
+{% for category in categories %}   
+  <a href='{{ path('back_category_filter', {id: category.id}) }}'> --> {{ category.name }} <-- </a>
+{% endfor %}
+
+ 
+     
+      <table class="table table-hover table-striped">
+      
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Catégorie</th>
+          <th scope="col">Titre</th>
+          <th scope="col">Contenu</th>
+          <th scope="col">Disponibilité</th>
+          <th scope="col">Bénévole</th>
+          <th scope="col">Département</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+
+    {# On met les conditions sur les for puisqu'ils bouclent sur le même tableau #}    
+      {% if filteredPropositions is defined %}
+        {% for proposition in filteredPropositions %}  
+      {% else %}
+        {% for proposition in propositions %}  
+      {% endif %}
+              
+        <tr>
+          <th scope="row">{{ proposition.id }}</th>
+          <td>{{ proposition.category }}</td>
+          <td>{{ proposition.title }}</td>
+          <td>{{ proposition.content }}</td>
+          <td>{{ proposition.disponibilityDate|date('m/d/Y')}}</td>
+          <td>{{ proposition.user.lastname }} {{ proposition.user.firstname }}</td>
+          <td>{{ proposition.user.department }}</td>
+          <td><form action="{{ path('back_proposition_delete', {id:proposition.id}) }}" onsubmit="return confirm('Voulez-vous supprimez : {{ proposition.title|e('js') }} ?')" method="POST">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <input type="hidden" name="token" value="{{ csrf_token('delete') }}"/>
+                <a class="btn btn-sm btn-secondary mb-2" href="{{ path('back_proposition_read', {id: proposition.id}) }}">Voir</a>
+                <a class="btn btn-sm btn-primary mb-2" href="{{ path('back_proposition_edit', {id: proposition.id}) }}">Modifier</a>
+                <button class="btn btn-sm btn-danger" type="submit" >Supprimer</button>
+              </form>
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+
   
   
 {% endblock %}

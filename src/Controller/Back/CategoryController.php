@@ -133,4 +133,25 @@ class CategoryController extends AbstractController
 
         return $this->redirectToRoute('back_category_browse');
     }
+
+    /**
+     * Get one category
+     * 
+     * @Route("/back/category/filter/{id<\d+>}", name="back_category_filter", methods="GET")
+     */
+    public function filter(Category $category = null, PropositionRepository $propositionRepository): Response
+    {
+        if ($category === null) {
+            throw $this->createNotFoundException('Categorie non trouvée.');
+        }
+        $id = $category->getId();
+
+        $filteredPropositions = $propositionRepository->findAllByCategory($id);
+
+
+        return $this->render('back/proposition/read.html.twig', [
+            'filteredPropositions' => $filteredPropositions,
+
+        ]);
+    }
 }

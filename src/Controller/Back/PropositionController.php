@@ -2,9 +2,11 @@
 
 namespace App\Controller\Back;
 
+use App\Entity\Category;
 use App\Entity\Proposition;
 use App\Form\PropositionType;
 use App\Repository\UserRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PropositionRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,12 +21,14 @@ class PropositionController extends AbstractController
      * 
      * @Route("/back/proposition/browse", name="back_proposition_browse", methods={"GET"})
      */
-    public function browse(PropositionRepository $propositionRepository): Response
+    public function browse(PropositionRepository $propositionRepository, CategoryRepository $categoryRepository): Response
     {
         $propositions = $propositionRepository->findAllOrderedByIdDesc();
+        $categories = $categoryRepository->findAll();
 
         return $this->render('back/proposition/browse.html.twig', [
             'propositions' => $propositions,
+            'categories' => $categories,
         ]);
     }
 
